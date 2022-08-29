@@ -90,4 +90,6 @@
 ### Development Dependencies
 
 - script:
-   `npm i -D @types/async @types/compression @types/luxon @types/mongoose @types/serve-favicon concurrently`
+  `npm i -D @types/async @types/compression @types/luxon @types/mongoose @types/serve-favicon concurrently`
+
+## Mongoose Models
