@@ -1,0 +1,65 @@
+{
+  "$id": "https://github.com/justEstif/Project-Blog-Api/blob/main/others/post.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Post",
+  "description": "A post of the blog api",
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string",
+      "description": "Random ObjectId assigned by Mongodb"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 3
+    },
+    "body": {
+      "type": "string",
+      "minLength": 10
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "published": {
+    "type": "boolean",
+    "default": false
+  },
+  "publication-date": {
+    "type": "string",
+    "description": "Date when published; assigned/updated when published becomes true",
+  },
+  "comment-ids": {
+    "type": "array",
+    "items": {
+      "type": "string",
+      "description": "ObjectId of comments made to post"
+    }
+  },
+  "if": {
+    "properties": {
+      "published": {
+        "boolean": true
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "publication-date": {
+        "default": "{Date.now()}",
+        "minLength": 1
+      }
+    }
+  },
+  "required": ["_id", "title", "body", "tags", "published", "comment-ids"]
+}

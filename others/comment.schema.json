@@ -1,0 +1,26 @@
+{
+  "$id": "https://github.com/justEstif/Project-Blog-Api/blob/main/others/comment.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Comment",
+  "description": "A comment of the blog api",
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string",
+      "description": "Random ObjectId assigned by Mongodb"
+    },
+    "user-id": {
+      "type": "string",
+      "description": "ObjectId of the current user"
+    },
+    "body": {
+      "type": "string",
+      "minLength": 3
+    },
+    "comment-date": {
+      "type": "string",
+      "description": "Date that the comment was made"
+    }
+  },
+  "required": ["_id", "user", "body", "comment-date"]
+}

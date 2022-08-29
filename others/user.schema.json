@@ -1,0 +1,30 @@
+{
+  "$id": "https://github.com/justEstif/Project-Blog-Api/blob/main/others/user.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "User",
+  "description": "A user of the blog api",
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "ObjectId",
+      "description": "Random ObjectId assigned by Mongodb"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email of user"
+    },
+    "username": {
+      "type": "string",
+      "minLength": 3
+    },
+    "hashedPassword": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "boolean",
+      "default": false,
+      "description": "The owner gets access to more privilages on the api."
+    }
+  },
+  "required": ["_id", "email", "username", "hashedPassword", "owner"]
+}
