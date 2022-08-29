@@ -19,7 +19,7 @@
     },
     "summary": {
       "type": "string",
-      "maxLength": 50
+      "maxLength": 5
     },
     "tags": {
       "type": "array",
@@ -37,9 +37,9 @@
   },
   "publication_date": {
     "type": "string",
-    "description": "Date when published; assigned/updated when published becomes true",
+    "description": "Date when published; assigned when published becomes true"
   },
-  "comment-ids": {
+  "comment_ids": {
     "type": "array",
     "items": {
       "type": "string",
@@ -61,5 +61,13 @@
       }
     }
   },
-  "required": ["_id", "title", "body", "tags", "published", "comment_ids"]
+  "required": [
+    "_id",
+    "title",
+    "body",
+    "summary",
+    "tags",
+    "published",
+    "comment_ids"
+  ]
 }
