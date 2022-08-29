@@ -4,22 +4,17 @@
 
 1. Design your back end models and schemas.
 
-- For a simple blog with only a single author you might not need a user model, but you might want to set up authentication so that you can protect the editing functions with a username and password.
-  - It might make sense to set up a minimal user model, even if you are the only user.
-- Your blog should have posts and comments, so think about the fields you are going to want to include for each of those.
+   1. Models: think about the fields of the following models
 
-  - Are you going to require users to leave a username or email with their comments?
-  - Are you going to display a date or timestamps for posts and comments?
-  - Posts should probably have a title, but should comments?
-  - A useful feature for a blog is the ability to have posts that are in the database but not published for the public to read. How might you designate published vs unpublished posts in your DB?
+      - User
+      - Post
+      - Comment
 
-  - models:
-    - user: author/not author
-    - posts: published/not published
-    - comments: username/email
-  - Authentication:
-    - are you the owner of this site?
-    - are you logged in so that you may comment?
+   2. Authentication
+
+      - User
+        - Is user logged in? What can they do?
+        - Is user author || owner? What can they access?
 
 2. Set up your express app, and define the models in mongoose.
 
@@ -51,34 +46,36 @@
 
 - email: string, required
 - username: string, required
-- password: string, required
-- author: boolean, default false
+- `hashedPassword`: string, required
+- owner: boolean, default false
   - author has access to the edit/publish front end
   - no-author can only access view/comment front end
 
 ### Posts
 
-- published: boolean, default false
-- author: string, required ?? -> not sure about this
 - title: string, required
 - body: string, required
 - summary: string, required
 - tags: array of string, required, min 1
-- `commentsID` : array of comments
+- `comment-ids` : array of comments, required
+- published: boolean, default false, required
+- publication-date: date,
+  - set to date.now when published = true
 
 ### Comments
 
-- username: string, default: username of the logged in user
+- `user-id`: string, default: id of the logged in user
 - body: string, required, min length: 3
-- time-stamp: Date, default: Date.now
+- comment-date: Date, default: Date.now, required
 
 ## Authentication
 
-- JWT Token
+- `JWT` Token
 
-- Author:
-  - can publish/unpublish/edit/remove posts
+- Owner:
+
+  - has access to owner dashboard
+    - can publish/unpublish/edit/remove posts
   - can remove comments
 
-- Logged in users:
-  - can comment
+- Only logged in users can comment
