@@ -9,7 +9,7 @@
       "type": "string",
       "description": "Random ObjectId assigned by Mongodb"
     },
-    "user-id": {
+    "user_id": {
       "type": "string",
       "description": "ObjectId of the current user"
     },
@@ -17,10 +17,10 @@
       "type": "string",
       "minLength": 3
     },
-    "comment-date": {
+    "comment_date": {
       "type": "string",
       "description": "Date that the comment was made"
     }
   },
-  "required": ["_id", "user", "body", "comment-date"]
+  "required": ["_id", "user", "body", "comment_date"]
 }

@@ -35,7 +35,7 @@
     "type": "boolean",
     "default": false
   },
-  "publication-date": {
+  "publication_date": {
     "type": "string",
     "description": "Date when published; assigned/updated when published becomes true",
   },
@@ -55,11 +55,11 @@
   },
   "then": {
     "properties": {
-      "publication-date": {
+      "publication_date": {
         "default": "{Date.now()}",
         "minLength": 1
       }
     }
   },
-  "required": ["_id", "title", "body", "tags", "published", "comment-ids"]
+  "required": ["_id", "title", "body", "tags", "published", "comment_ids"]
 }
