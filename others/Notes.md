@@ -93,3 +93,6 @@
   `npm i -D @types/async @types/compression @types/luxon @types/mongoose @types/serve-favicon concurrently`
 
 ## Mongoose Models
+
+- The published date changes only when it becomes first published
+  - It doesn't get updated again
