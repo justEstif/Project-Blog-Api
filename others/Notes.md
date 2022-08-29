@@ -79,3 +79,15 @@
   - can remove comments
 
 - Only logged in users can comment
+
+## Packages: back-end
+
+### Dependencies
+
+- script
+  - `npm i async compression dotenv helmet luxon mongoose ejs express-validator serve-favicon`
+
+### Development Dependencies
+
+- script:
+   `npm i -D @types/async @types/compression @types/luxon @types/mongoose @types/serve-favicon concurrently`
