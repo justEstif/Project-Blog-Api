@@ -8,7 +8,8 @@ import endpoints from "./endpoints.config";
 const port = endpoints.PORT || 5000;
 
 // Connect to MongoDB
-mongoose.connect(endpoints.MONGO_URL);
+connect(endpoints.MONGO_URL)
+connection.on('error', console.error.bind(console, 'mongo connection error'))
 
 const app: express.Express = express();
 
