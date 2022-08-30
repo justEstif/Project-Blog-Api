@@ -2,8 +2,7 @@ import express from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
 import path from 'path'
-import { connectDB } from './config/db'
-import endpoints from './endpoints.config'
+import { connectDB, endpoints } from './config'
 
 const port = endpoints.PORT || 5000
 
