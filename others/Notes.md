@@ -95,3 +95,17 @@
 
 - The published date changes only when it becomes first published
   - It doesn't get updated again
+
+## Routes
+
+- /api:
+
+  - /posts:
+     - GET: get all posts
+     - POST: create new post
+
+    - /:id
+       - GET: show/read post
+       - PUT: update/edit post
+       - DELETE: delete post
+       - POST create/add post ??
