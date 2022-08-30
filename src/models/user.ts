@@ -14,6 +14,7 @@ const UserSchema = new Schema<IUser>({
   owner: { type: Boolean, default: false }
 })
 
+// TODO: pre save function for hashing password
 // TODO: Virtuals
 
 const User = model<IUser>('User', UserSchema)

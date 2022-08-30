@@ -74,8 +74,7 @@
 
 - Owner:
 
-  - has access to owner dashboard
-    - can publish/unpublish/edit/remove posts
+  - can publish/unpublish/edit/remove posts
   - can remove comments
 
 - Only logged in users can comment

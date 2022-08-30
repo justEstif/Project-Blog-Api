@@ -17,7 +17,7 @@ const PostSchema = new Schema<IPost>({
   tags: [{ type: String, required: true, minlength: 3 }], // at least one tag req
   published: { type: Boolean, default: false },
   publication_date: { type: Date, default: undefined },
-  comment_ids: [{ type: Schema.Types.ObjectId, ref: 'User' }] // default empty
+  comment_ids: [{ type: Types.ObjectId, ref: 'User' }] // default empty
 })
 
 // Add date when published
