@@ -3,6 +3,7 @@ import compression from 'compression'
 import helmet from 'helmet'
 import path from 'path'
 import { connectDB, endpoints } from './config'
+import { post_routes } from './routes/'
 
 const port = endpoints.PORT || 5000
 
@@ -26,6 +27,9 @@ app.use(express.urlencoded({ extended: false }))
 // view engine setup
 app.set('views', path.join(__dirname, '..', 'views'))
 app.set('view engine', 'ejs')
+
+// Routes
+app.use('/posts', post_routes)
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`)
