@@ -1,15 +1,13 @@
 import express from 'express'
-import { connect, connection } from 'mongoose'
 import compression from 'compression'
 import helmet from 'helmet'
 import path from 'path'
+import { connectDB } from './config/db'
 import endpoints from './endpoints.config'
 
 const port = endpoints.PORT || 5000
 
-// Connect to MongoDB
-connect(endpoints.MONGO_URL)
-connection.on('error', console.error.bind(console, 'mongo connection error'))
+connectDB() // Connect to MongoDB
 
 const app: express.Express = express()
 
