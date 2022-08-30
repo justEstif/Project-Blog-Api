@@ -1,4 +1,4 @@
-import endpoints from '../endpoints.config'
+import endpoints from './endpoints'
 import { connect } from 'mongoose'
 
 const connectDB = async () => {
