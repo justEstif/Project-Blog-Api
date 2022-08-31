@@ -6,8 +6,8 @@ interface IPost {
   summary: string
   tags: string[]
   published: boolean
-  publication_date: Date | undefined
-  comment_ids: Types.ObjectId[]
+  publicationDate: Date | undefined
+  commentIds: Types.ObjectId[]
 }
 
 const PostSchema = new Schema<IPost>({
