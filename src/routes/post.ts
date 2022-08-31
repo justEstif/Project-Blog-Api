@@ -1,13 +1,8 @@
 import { Router } from 'express'
-import {
-  get_posts,
-  set_posts,
-  deletePost,
-  update_post
-} from '../controllers/post'
+import { getPosts, setPosts, deletePost, updatePost } from '../controllers/post'
 
 const router = Router()
-router.route('/').get(get_posts).post(set_posts)
-router.route('/:id').put(update_post).delete(deletePost)
+router.route('/').get(getPosts).post(setPosts)
+router.route('/:id').put(updatePost).delete(deletePost)
 
 export default router
