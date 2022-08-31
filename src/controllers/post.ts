@@ -155,7 +155,33 @@ export const updatePost = [
 // @desc Delete a post
 // @route DELETE /api/posts/:id
 // @access Private
-export const deletePost: RequestHandler = (req, res) => {
-  // TODO: Handle post delete
-  res.status(200).json({ message: `Delete: delete post ${req.params.id}` })
-}
+export const deletePost = [
+  param('id').customSanitizer((value) => new Types.ObjectId(value)),
+  (req: Request, res: Response) => {
+    const errors = validationResult(req)
+    switch (!errors.isEmpty()) {
+      case true:
+        res.status(401).json({
+          message: 'Failed to delete post',
+          errors: errors,
+          id: req.params.id
+        })
+        return
+      default:
+        Post.findByIdAndRemove(req.params.id).exec((err) => {
+          if (err) {
+            res.status(400).json({
+              message: 'Failed to delete post',
+              errors: errors,
+              id: req.params.id
+            })
+          } else {
+            res.status(200).json({
+              message: 'Post delete',
+              id: req.params.id
+            })
+          }
+        })
+    }
+  }
+]
