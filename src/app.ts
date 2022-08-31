@@ -29,7 +29,7 @@ app.set('views', path.join(__dirname, '..', 'views'))
 app.set('view engine', 'ejs')
 
 // Routes
-app.use('/posts', post_routes)
+app.use('/api/posts', post_routes)
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`)
