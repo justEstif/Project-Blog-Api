@@ -8,8 +8,8 @@ interface IUser {
 }
 
 const UserSchema = new Schema<IUser>({
-  email: { type: String, required: true },
-  username: { type: String, required: true },
+  email: { type: String, unique: true, required: true },
+  username: { type: String, unique: true, required: true },
   hashedPassword: { type: String, required: true },
   owner: { type: Boolean, default: false }
 })
