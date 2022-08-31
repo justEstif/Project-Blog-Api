@@ -1,11 +1,12 @@
 import async_handler from 'express-async-handler'
+import { Post } from 'src/models'
 
 // @desc Get all posts
 // @route GET /api/posts
 // @access Private
 export const get_posts = async_handler(async (_, res) => {
-  // TODO: Handle post get
-  res.status(200).json({ message: `GET: get posts` })
+  const posts = Post.find().sort({ publication_date: 1 })
+  res.status(200).json(posts)
 })
 
 // @desc Set a post
