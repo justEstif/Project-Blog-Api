@@ -35,12 +35,13 @@ const PostSchema = new Schema<IPost>({
         message: 'At least one tag must be passed.'
       },
       {
-        validator: (array: string[]) => array.every((tag) => tag.length >= 3),
+        validator: (tagArray: string[]) =>
+          tagArray.every((tag) => tag.length >= 3),
         message: 'Every tag must be at least 3 characters.'
       },
       {
-        validator: (array: string[]) =>
-          array.every((tag) => typeof tag === 'string'),
+        validator: (tagArray: string[]) =>
+          tagArray.every((tag) => typeof tag === 'string'),
         message: 'Every tag must be a valid string'
       }
     ]
