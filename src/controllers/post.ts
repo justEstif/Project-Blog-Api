@@ -6,10 +6,17 @@ import { Post } from '../models/'
 // @desc Return posts in desc order by publication_date
 // @route GET /api/posts
 // @access Private
-export const getPosts = asyncHandler(async (_, res) => {
-  const posts = Post.find().sort({ publication_date: 1 })
-  res.status(200).json(posts)
-})
+export const getPosts: RequestHandler = (_, res) => {
+  Post.find()
+    .sort({ publication_date: 1 })
+    .exec((err, posts) => {
+      if (err) {
+        res.status(400).json({ message: 'Failed to get posts', error: err })
+      } else {
+        res.status(200).json({ posts: posts })
+      }
+    })
+}
 
 // @desc Set a post
 // @route POST /api/posts
