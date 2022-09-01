@@ -74,8 +74,8 @@ export const setPosts = [
               post: post
             })
           } else {
-            res.status(200).json({
-              message: 'Post save to db',
+            res.status(201).json({
+              message: 'Post saved to db',
               post: post
             })
           }
