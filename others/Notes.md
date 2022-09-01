@@ -120,8 +120,6 @@
 
     - POST: sign up user
 
-    - /login
+    - /sign-in
 
       - POST: sign in user
-
-    - /me: ??
