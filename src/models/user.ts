@@ -3,14 +3,14 @@ import { Schema, model } from 'mongoose'
 interface IUser {
   email: string
   username: string
-  hashedPassword: string
+  password: string
   owner: boolean
 }
 
 const UserSchema = new Schema<IUser>({
   email: { type: String, unique: true, required: true },
   username: { type: String, unique: true, required: true },
-  hashedPassword: { type: String, required: true },
+  password: { type: String, required: true },
   owner: { type: Boolean, default: false }
 })
 
