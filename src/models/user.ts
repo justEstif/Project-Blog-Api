@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, Model } from 'mongoose'
 import bcryptjs from 'bcryptjs'
 
 interface IUser {
@@ -8,19 +8,22 @@ interface IUser {
   owner: boolean
 }
 
+interface IUserMethods {
+  comparePassword(
+    password: string,
+    cb: (arg1: null | Error, arg2?: boolean) => void
+  ): boolean
+}
+
+type UserModel = Model<IUser, {}, IUserMethods>
 const UserSchema = new Schema<IUser>({
   email: { type: String, unique: true, required: true },
-  username: {
-    type: String,
-    unique: true,
-    minlength: [3, 'Username must be at least 3 characters long.'],
-    required: true
-  },
+  username: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   owner: { type: Boolean, default: false }
 })
 
-// Hash password when registering
+// TODO: pre save function for hashing password
 UserSchema.pre('save', function (next) {
   const user = this
   if (user.isModified('password') || user.isNew) {
@@ -37,7 +40,9 @@ UserSchema.pre('save', function (next) {
         })
       }
     })
-  } else return next()
+  } else {
+    return next()
+  }
 })
 
 UserSchema.methods.comparePassword = function (
@@ -54,6 +59,6 @@ UserSchema.methods.comparePassword = function (
 }
 // TODO: Virtuals
 
-const User = model<IUser>('User', UserSchema)
+const User = model<IUser, UserModel>('User', UserSchema)
 export { IUser }
 export default User
