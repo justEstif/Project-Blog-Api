@@ -3,7 +3,7 @@ import compression from 'compression'
 import helmet from 'helmet'
 import path from 'path'
 import { connectDB, endpoints } from './config'
-import { post_routes } from './routes/'
+import { post_routes, user_routes } from './routes/'
 
 const port = endpoints.PORT || 5000
 
@@ -30,6 +30,7 @@ app.set('view engine', 'ejs')
 
 // Routes
 app.use('/api/posts', post_routes)
+app.use('/api/users', user_routes)
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`)
