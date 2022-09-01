@@ -2,7 +2,7 @@ import express from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
 import path from 'path'
-import { connectDB, endpoints } from './config'
+import { connectDB, endpoints, passportLocalStrategy } from './config'
 import { post_routes, user_routes } from './routes/'
 
 const port = endpoints.PORT || 5000
@@ -27,6 +27,9 @@ app.use(express.urlencoded({ extended: false }))
 // view engine setup
 app.set('views', path.join(__dirname, '..', 'views'))
 app.set('view engine', 'ejs')
+
+// Passport Middleware
+passportLocalStrategy()
 
 // Routes
 app.use('/api/posts', post_routes)
