@@ -26,26 +26,13 @@ const PostSchema = new Schema<IPost>({
     minlength: [5, 'The summary must be at least 5 characters long.'],
     required: true
   },
-  tags: {
-    type: [String],
-    required: true,
-    validate: [
-      {
-        validator: (tagArray: string[]) => tagArray.length >= 0 || !tagArray,
-        message: 'At least one tag must be passed.'
-      },
-      {
-        validator: (tagArray: string[]) =>
-          tagArray.every((tag) => tag.length >= 3),
-        message: 'Every tag must be at least 3 characters.'
-      },
-      {
-        validator: (tagArray: string[]) =>
-          tagArray.every((tag) => typeof tag === 'string'),
-        message: 'Every tag must be a valid string'
-      }
-    ]
-  }, // at least one tag req
+  tags: [
+    {
+      type: String,
+      required: true,
+      minLength: [5, 'The summary must be at least 5 characters long']
+    }
+  ], // at least one tag req
   published: { type: Boolean, default: false },
   publicationDate: { type: Date, default: undefined },
   commentIds: [{ type: Types.ObjectId, ref: 'User' }] // default empty
