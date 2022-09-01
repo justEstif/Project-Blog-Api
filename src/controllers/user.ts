@@ -1,11 +1,13 @@
-import { Request, Response, RequestHandler } from 'express'
+import { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
+import jwt from 'jsonwebtoken'
 import { User } from '../models'
 import customValidator from '../helpers/customValidators'
+import { endpoints } from '../config'
+import { Types } from 'mongoose'
+import passport from 'passport'
 
 // @desc Sign up user
-// @route POST /api/users
-// @access Public
 export const signUpUser = [
   body('email')
     .trim()
@@ -78,6 +80,54 @@ export const signUpUser = [
 // @desc Sign in user
 // @route POST /api/users/sign-in
 // @access Public
-export const signInUser: RequestHandler = (_, res) => {
-  res.status(200).json({ message: 'User Sign In(test)' })
+export const signInUser = [
+  body('email')
+    .trim()
+    .escape()
+    .exists()
+    .withMessage('Email is required')
+    .normalizeEmail()
+    .isEmail()
+    .withMessage('Invalid Email'),
+  body('password').trim().escape().exists().withMessage('Password is required'),
+
+  (req: Request, res: Response) => {
+    const errors = validationResult(req)
+    switch (!errors.isEmpty()) {
+      case true:
+        res.json({
+          message: 'Sign in error '
+        })
+        return
+      default:
+        passport.authenticate('local', { session: false }, (err, user) => {
+          if (err || !user) {
+            return res.status(401).json({
+              message: 'Incorrect email or password',
+            })
+          }
+          req.login(user, { session: false }, (err) => {
+            if (err) {
+              return res.status(500).json({
+                message: 'Server Error',
+                error: err
+              })
+            }
+            return res.status(200).json({
+              _id: user.id,
+              email: user.email,
+              token: generateToken(user._id)
+            })
+          })
+          // NOTE Unknown
+          return
+        })(req, res)
+    }
+  }
+]
+// Generate  JWT
+const generateToken = (id: Types.ObjectId) => {
+  return jwt.sign({ id }, endpoints.JWT_SECRET, {
+    expiresIn: '30d'
+  })
 }
