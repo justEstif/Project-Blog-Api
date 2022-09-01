@@ -5,7 +5,7 @@ import { Post } from '../models/'
 
 // @desc Return posts in desc order by publication_date
 // @route GET /api/posts
-// @access Private
+// @access Public
 export const getPosts: RequestHandler = (_, res) => {
   Post.find()
     .sort({ publication_date: 1 })
@@ -88,6 +88,8 @@ export const setPosts = [
 // @route PUT /api/posts/:id
 // @access Private
 export const updatePost = [
+  // TODO: BUG Check that the owner is updating the post.
+  // NOTE: Make sure you get the current post first
   body('title', 'Title must not be empty.')
     .trim()
     .escape()
@@ -156,6 +158,7 @@ export const updatePost = [
 // @route DELETE /api/posts/:id
 // @access Private
 export const deletePost = [
+  // TODO: BUG: Check that the owner is the one deleting the post
   param('id').customSanitizer((value) => new Types.ObjectId(value)),
   (req: Request, res: Response) => {
     const errors = validationResult(req)
