@@ -101,11 +101,27 @@
 - /api:
 
   - /posts:
-     - GET: get all posts
-     - POST: create new post
+
+    - GET: get all posts
+    - POST: create new post
 
     - /:id
-       - GET: show/read post
-       - PUT: update/edit post
-       - DELETE: delete post
-       - POST create/add post ??
+
+      - GET: show/read post
+      - PUT: update/edit post
+      - DELETE: delete post
+      - POST create/add post ??
+
+    - QUESTION: Could I make this route dependent of the user?
+      - if user -> take to posts/
+      - if owner -> take to posts/admin
+
+  - /users:
+
+    - POST: sign up user
+
+    - /login
+
+      - POST: sign in user
+
+    - /me: ??
