@@ -1,11 +1,9 @@
 import { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
-import jwt from 'jsonwebtoken'
+import passport from 'passport'
 import { User } from '../models'
 import customValidator from '../helpers/customValidators'
-import { endpoints } from '../config'
-import { Types } from 'mongoose'
-import passport from 'passport'
+import { generateToken } from '../helpers/jwt'
 
 // @desc Sign up user
 export const signUpUser = [
@@ -69,7 +67,8 @@ export const signUpUser = [
           } else {
             res.status(201).json({
               message: 'Sign up successful',
-              user: user
+              user: user,
+              token: generateToken(user._id)
             })
           }
         })
@@ -103,7 +102,7 @@ export const signInUser = [
         passport.authenticate('local', { session: false }, (err, user) => {
           if (err || !user) {
             return res.status(401).json({
-              message: 'Incorrect email or password',
+              message: 'Incorrect email or password'
             })
           }
           req.login(user, { session: false }, (err) => {
@@ -125,9 +124,3 @@ export const signInUser = [
     }
   }
 ]
-// Generate  JWT
-const generateToken = (id: Types.ObjectId) => {
-  return jwt.sign({ id }, endpoints.JWT_SECRET, {
-    expiresIn: '30d'
-  })
-}
