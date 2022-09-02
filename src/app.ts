@@ -4,6 +4,7 @@ import helmet from 'helmet'
 import path from 'path'
 import { connectDB, endpoints, passportLocalStrategy } from './config'
 import { post_routes, user_routes } from './routes/'
+import { errrorHandler } from './middleware'
 
 const port = endpoints.PORT || 5000
 
@@ -34,6 +35,8 @@ passportLocalStrategy()
 // Routes
 app.use('/api/posts', post_routes)
 app.use('/api/users', user_routes)
+
+app.use(errrorHandler) // error handler middleware
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`)
