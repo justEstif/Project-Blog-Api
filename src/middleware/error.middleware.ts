@@ -14,7 +14,7 @@ function errorMiddleware(
   response.status(status).json({
     status,
     message,
-    ...(validateEnv.NODE_ENV === 'production' && { stack })
+    ...(endpoints.NODE_ENV !== 'production' && { stack })
   })
 }
 
