@@ -1,43 +1,48 @@
-import express from 'express'
+import express, { Application, json, urlencoded } from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
-import path from 'path'
-import { connectDB, endpoints, passportLocalStrategy } from './config'
-import { post_routes, user_routes } from './routes/'
-import { errrorHandler } from './middleware'
+import { endpoints } from './config'
+import IController from './interface/controller.interface'
 
-const port = endpoints.PORT || 5000
+class App {
+  public app: Application
+  public port: number
 
-connectDB() // Connect to MongoDB
+  constructor(controllers: IController[]) {
+    this.app = express()
+    this.port = endpoints.PORT || 5000
+    this.initializeMiddlewares()
+    this.initializeControllers(controllers)
+  }
 
-const app: express.Express = express()
+  private initializeMiddlewares() {
+    // body parser
+    this.app.use(json())
+    this.app.use(urlencoded({ extended: false }))
+    // compress all paths
+    this.app.use(compression())
+    // Secure http headers
+    this.app.use(
+      helmet({
+        contentSecurityPolicy: false,
+        crossOriginEmbedderPolicy: false
+      })
+    )
+  }
 
-app.use(compression()) // compress all paths
+  private initializeControllers(controllers: IController[]) {
+    controllers.forEach((controller) => {
+      this.app.use('/', controller.router)
+    })
+  }
 
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-    crossOriginEmbedderPolicy: false
-  })
-)
+  public listen() {
+    this.app.listen(this.port, () => {
+      console.log(
+        `⚡️[server]: Server is running at https://localhost:${this.port}`
+      )
+    })
+  }
+}
 
-//Body Parser Middleware
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-
-// view engine setup
-app.set('views', path.join(__dirname, '..', 'views'))
-app.set('view engine', 'ejs')
-
-// Passport Middleware
-passportLocalStrategy()
-
-// Routes
-app.use('/api/posts', post_routes)
-app.use('/api/users', user_routes)
-
-app.use(errrorHandler) // error handler middleware
-
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at https://localhost:${port}`)
-})
+export default App
