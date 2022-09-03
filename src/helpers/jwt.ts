@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
 import { Types } from 'mongoose'
-import { endpoints } from '../config'
+import validateEnv from 'src/utils/validateEnv'
 
 // Generate  JWT Token
 export const generateToken = (id: Types.ObjectId) => {
-  const token = jwt.sign({ id }, endpoints.JWT_SECRET, {
+  const token = jwt.sign({ id }, validateEnv.JWT_SECRET, {
     expiresIn: '30d'
   })
   return token
