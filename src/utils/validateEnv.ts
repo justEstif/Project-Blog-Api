@@ -6,7 +6,8 @@ const validateEnv = cleanEnv(process.env, {
   MONGO_PATH: str(),
   MONGO_USER: str(),
   JWT_SECRET: str(),
-  PORT: port({ default: 3000 })
+  PORT: port({ default: 3000 }),
+  NODE_ENV: str()
 })
 
 export default validateEnv
