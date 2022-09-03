@@ -58,8 +58,7 @@ class PostController implements IController {
 
   private createPost(request: Request, response: Response, next: NextFunction) {
     const postData: IPost = request.body
-    const post = new PostModel(postData)
-    post.save((error) => {
+    PostModel.create(postData, (error, post) => {
       if (error) {
         next(new HttpException(404, 'Failed to create post'))
       } else {
@@ -94,7 +93,7 @@ class PostController implements IController {
       } else {
         response.status(200).json({
           Message: 'Post deleted',
-          ID: id
+          Post: id
         })
       }
     })
