@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { Types } from 'mongoose'
-import validateEnv from 'src/utils/validateEnv'
+import validateEnv from '../utils/validateEnv'
 
 // Generate  JWT Token
 export const generateToken = (id: Types.ObjectId) => {

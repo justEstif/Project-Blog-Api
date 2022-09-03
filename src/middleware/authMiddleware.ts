@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 import jwt from 'jsonwebtoken'
-import validateEnv from 'src/utils/validateEnv'
+import validateEnv from '../utils/validateEnv'
 import { User } from '../models'
 
 const authHandler: RequestHandler = async (req, res, next) => {
