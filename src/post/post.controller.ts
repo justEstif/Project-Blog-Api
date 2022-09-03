@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express'
 import IPost from './post.interface'
 import IController from '../interface/controller.interface'
 import PostModel from './post.model'
+import { Types } from 'mongoose'
 
 class PostController implements IController {
   public path = '/api/posts'
@@ -22,39 +23,92 @@ class PostController implements IController {
 
   private getPosts(_: Request, response: Response) {
     PostModel.find().then((posts) => response.send(posts))
+    PostModel.find()
+      .sort({ publication_date: 1 })
+      .exec((error, posts) => {
+        if (error) {
+          response.status(400).json({
+            Message: 'Failed to get posts',
+            Error: error
+          })
+        } else {
+          response.status(200).json({
+            Message: 'Post updated',
+            Posts: posts
+          })
+        }
+      })
   }
 
   private getPostById(request: Request, response: Response) {
     // TODO: change the id to ObjectID
-    const id = request.params.id
-    PostModel.findById(id).then((post) => {
-      response.send(post)
+    const id = new Types.ObjectId(request.params.id)
+    PostModel.findById(id).exec((error, post) => {
+      if (error) {
+        response.status(400).json({
+          Message: 'Failed to get post',
+          Error: error
+        })
+      } else {
+        response.status(200).json({
+          Message: 'Post updated',
+          Post: post
+        })
+      }
     })
   }
 
   private createPost(request: Request, response: Response) {
     const postData: IPost = request.body
-    const createdPost = new PostModel(postData)
-    createdPost.save().then((savedPost) => {
-      response.send(savedPost)
+    const post = new PostModel(postData)
+    post.save((error) => {
+      if (error) {
+        response.status(400).json({
+          Message: 'Failed to save post',
+          Error: error,
+          Post: post
+        })
+      } else {
+        response.status(200).json({
+          Message: 'Post saved',
+          Post: post
+        })
+      }
     })
   }
 
   private updatePost(request: Request, response: Response) {
-    const id = request.params.id
-    const postData: IPost = request.body
-    PostModel.findByIdAndUpdate(id, postData, { new: true }).then((post) => {
-      response.send(post)
+    const id = new Types.ObjectId(request.params.id)
+    const post: IPost = request.body
+    PostModel.findByIdAndUpdate(id, post, { new: true }).exec((error) => {
+      if (error) {
+        response.status(400).json({
+          Message: 'Failed to save post',
+          Error: error,
+          Post: post
+        })
+      } else {
+        response.status(200).json({
+          Message: 'Post updated',
+          Post: post
+        })
+      }
     })
   }
 
   private deletePost(request: Request, response: Response) {
-    const id = request.params.id
-    PostModel.findByIdAndDelete(id).then((successResponse) => {
-      if (successResponse) {
-        response.send(200)
+    const id = new Types.ObjectId(request.params.id)
+    PostModel.findByIdAndRemove(id).exec((error) => {
+      if (error) {
+        response.status(400).json({
+          Message: 'Failed to delete post',
+          Error: error
+        })
       } else {
-        response.send(404)
+        response.status(200).json({
+          Message: 'Post deleted',
+          ID: id
+        })
       }
     })
   }
