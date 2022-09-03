@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import HttpException from '../exceptions/HttpException'
-import validateEnv from '../utils/validateEnv'
+import endpoints from '../utils/endpoints'
 
 function errorMiddleware(
   error: HttpException,

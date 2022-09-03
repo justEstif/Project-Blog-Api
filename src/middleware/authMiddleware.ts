@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 import jwt from 'jsonwebtoken'
-import validateEnv from '../utils/validateEnv'
+import endpoints from 'src/utils/endpoints'
 import { User } from '../models'
 
 const authHandler: RequestHandler = async (req, res, next) => {
@@ -15,7 +15,7 @@ const authHandler: RequestHandler = async (req, res, next) => {
         id: string
       }
       // verify token
-      const decoded = jwt.verify(token, validateEnv.JWT_SECRET) as JwtPayload
+      const decoded = jwt.verify(token, endpoints.JWT_SECRET) as JwtPayload
       const user = await User.findById(decoded.id).select('-password')
       if (user) {
         req.user = user

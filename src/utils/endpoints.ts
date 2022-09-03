@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { cleanEnv, str, port } from 'envalid'
 
-const validateEnv = cleanEnv(process.env, {
+const endpoints = cleanEnv(process.env, {
   MONGO_PASSWORD: str(),
   MONGO_PATH: str(),
   MONGO_USER: str(),
@@ -10,4 +10,4 @@ const validateEnv = cleanEnv(process.env, {
   NODE_ENV: str()
 })
 
-export default validateEnv
+export default endpoints
