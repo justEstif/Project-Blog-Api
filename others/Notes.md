@@ -91,6 +91,17 @@
 - script:
   `npm i -D @types/async @types/compression @types/luxon @types/mongoose @types/serve-favicon concurrently`
 
+### Middleware
+
+- Helmet
+
+```js
+helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false
+})
+```
+
 ## Mongoose Models
 
 - The published date changes only when it becomes first published
