@@ -1,7 +1,8 @@
 import express, { Application, json, urlencoded } from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
-import { endpoints } from './config'
+import { connect } from 'mongoose'
+import validateEnv from './utils/validateEnv'
 import IController from './interface/controller.interface'
 
 class App {
@@ -10,7 +11,8 @@ class App {
 
   constructor(controllers: IController[]) {
     this.app = express()
-    this.port = endpoints.PORT || 5000
+    this.port = validateEnv.PORT
+    this.connectToDB()
     this.initializeMiddlewares()
     this.initializeControllers(controllers)
   }
@@ -34,6 +36,18 @@ class App {
     controllers.forEach((controller) => {
       this.app.use('/', controller.router)
     })
+  }
+
+  private async connectToDB() {
+    try {
+      await connect(
+        `mongodb+srv://${validateEnv.MONGO_USER}:${validateEnv.MONGO_PASSWORD}${validateEnv.MONGO_PATH}`
+      )
+      console.log(`MongoDB Connected`)
+    } catch (err) {
+      console.log(err)
+      process.exit(1)
+    }
   }
 
   public listen() {
