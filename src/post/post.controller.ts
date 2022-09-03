@@ -1,8 +1,10 @@
-import { Request, Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 import IPost from './post.interface'
 import IController from '../interface/controller.interface'
 import PostModel from './post.model'
 import { Types } from 'mongoose'
+import HttpException from '../exceptions/HttpException'
+import PostNotFoundException from '../exceptions/PostNotFoundException'
 
 class PostController implements IController {
   public path = '/api/posts'
@@ -21,53 +23,45 @@ class PostController implements IController {
     this.router.delete(this.path_id, this.deletePost)
   }
 
-  private getPosts(_: Request, response: Response) {
-    PostModel.find().then((posts) => response.send(posts))
+  private getPosts(_: Request, response: Response, next: NextFunction) {
     PostModel.find()
       .sort({ publication_date: 1 })
       .exec((error, posts) => {
         if (error) {
-          response.status(400).json({
-            Message: 'Failed to get posts',
-            Error: error
-          })
+          next(new HttpException(404, 'Failed to get posts'))
         } else {
           response.status(200).json({
-            Message: 'Post updated',
+            Message: 'Posts received',
             Posts: posts
           })
         }
       })
   }
 
-  private getPostById(request: Request, response: Response) {
-    // TODO: change the id to ObjectID
+  private getPostById(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
     const id = new Types.ObjectId(request.params.id)
     PostModel.findById(id).exec((error, post) => {
       if (error) {
-        response.status(400).json({
-          Message: 'Failed to get post',
-          Error: error
-        })
+        next(new PostNotFoundException(id))
       } else {
         response.status(200).json({
-          Message: 'Post updated',
+          Message: 'Post received',
           Post: post
         })
       }
     })
   }
 
-  private createPost(request: Request, response: Response) {
+  private createPost(request: Request, response: Response, next: NextFunction) {
     const postData: IPost = request.body
     const post = new PostModel(postData)
     post.save((error) => {
       if (error) {
-        response.status(400).json({
-          Message: 'Failed to save post',
-          Error: error,
-          Post: post
-        })
+        next(new HttpException(404, 'Failed to create post'))
       } else {
         response.status(200).json({
           Message: 'Post saved',
@@ -77,16 +71,12 @@ class PostController implements IController {
     })
   }
 
-  private updatePost(request: Request, response: Response) {
+  private updatePost(request: Request, response: Response, next: NextFunction) {
     const id = new Types.ObjectId(request.params.id)
     const post: IPost = request.body
     PostModel.findByIdAndUpdate(id, post, { new: true }).exec((error) => {
       if (error) {
-        response.status(400).json({
-          Message: 'Failed to save post',
-          Error: error,
-          Post: post
-        })
+        next(new PostNotFoundException(id))
       } else {
         response.status(200).json({
           Message: 'Post updated',
@@ -96,14 +86,11 @@ class PostController implements IController {
     })
   }
 
-  private deletePost(request: Request, response: Response) {
+  private deletePost(request: Request, response: Response, next: NextFunction) {
     const id = new Types.ObjectId(request.params.id)
     PostModel.findByIdAndRemove(id).exec((error) => {
       if (error) {
-        response.status(400).json({
-          Message: 'Failed to delete post',
-          Error: error
-        })
+        next(new PostNotFoundException(id))
       } else {
         response.status(200).json({
           Message: 'Post deleted',
