@@ -5,6 +5,8 @@ import PostModel from './post.model'
 import { Types } from 'mongoose'
 import HttpException from '../exceptions/HttpException'
 import PostNotFoundException from '../exceptions/PostNotFoundException'
+import validationMiddleware from '../middleware/validation.middleware'
+import CreatePostDto from './post.dto'
 
 class PostController implements IController {
   public path = '/api/posts'
@@ -17,9 +19,18 @@ class PostController implements IController {
 
   public intializeRoutes() {
     this.router.get(this.path, this.getPosts)
-    this.router.post(this.path, this.createPost)
+    this.router.post(
+      this.path,
+      validationMiddleware(CreatePostDto),
+      this.createPost
+    )
     this.router.get(this.path_id, this.getPostById)
-    this.router.patch(this.path_id, this.updatePost)
+    // TODO: PATCH vs PUT
+    this.router.patch(
+      this.path_id,
+      validationMiddleware(CreatePostDto, true),
+      this.updatePost
+    )
     this.router.delete(this.path_id, this.deletePost)
   }
 
