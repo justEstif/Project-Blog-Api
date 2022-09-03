@@ -20,23 +20,15 @@ class App {
   }
 
   private initializeMiddlewares() {
-    // body parser
-    this.app.use(json())
+    this.app.use(json()) // body parser
     this.app.use(urlencoded({ extended: false }))
-    // compress all paths
-    this.app.use(compression())
-    // Secure http headers
-    this.app.use(
-      helmet({
-        contentSecurityPolicy: false,
-        crossOriginEmbedderPolicy: false
-      })
-    )
+    this.app.use(compression()) // compress
+    this.app.use(helmet()) // helmet
   }
 
   private initializeControllers(controllers: IController[]) {
     controllers.forEach((controller) => {
-      this.app.use('/', controller.router)
+      this.app.use(controller.router)
     })
   }
 
@@ -51,7 +43,7 @@ class App {
       )
       console.log(`MongoDB Connected`)
     } catch (err) {
-      console.log(err)
+      console.log(`MongoDB error: ${err}`)
       process.exit(1)
     }
   }
