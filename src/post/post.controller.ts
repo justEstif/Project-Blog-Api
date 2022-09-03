@@ -25,10 +25,9 @@ class PostController implements IController {
       this.createPost
     )
     this.router.get(this.path_id, this.getPostById)
-    // TODO: PATCH vs PUT
-    this.router.patch(
+    this.router.put(
       this.path_id,
-      validationMiddleware(CreatePostDto, true),
+      validationMiddleware(CreatePostDto),
       this.updatePost
     )
     this.router.delete(this.path_id, this.deletePost)
