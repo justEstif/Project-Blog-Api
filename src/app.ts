@@ -4,6 +4,7 @@ import helmet from 'helmet'
 import { connect } from 'mongoose'
 import validateEnv from './utils/validateEnv'
 import IController from './interface/controller.interface'
+import errorMiddleware from './middleware/error.middleware'
 
 class App {
   public app: Application
@@ -15,6 +16,7 @@ class App {
     this.connectToDB()
     this.initializeMiddlewares()
     this.initializeControllers(controllers)
+    this.initializeErrorHandling()
   }
 
   private initializeMiddlewares() {
@@ -36,6 +38,10 @@ class App {
     controllers.forEach((controller) => {
       this.app.use('/', controller.router)
     })
+  }
+
+  private initializeErrorHandling() {
+    this.app.use(errorMiddleware)
   }
 
   private async connectToDB() {
