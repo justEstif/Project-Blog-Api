@@ -134,3 +134,10 @@ helmet({
     - /sign-in
 
       - POST: sign in user
+
+- Protected routes:
+  - DELETE post
+  - POST post
+  - PUT post
+
+<!-- TODO: Create comments models, interface, controller -->
