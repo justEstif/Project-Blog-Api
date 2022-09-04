@@ -6,33 +6,33 @@ import {
 } from 'class-validator'
 
 class CreatePostDto {
-  @IsString({
-    message: 'Title must be a string value'
-  })
   @IsNotEmpty({
     message: 'Title must not be empty.'
+  })
+  @IsString({
+    message: 'Title must be a string value'
   })
   @MinLength(3, {
     message: 'Title must be at least 3 characters.'
   })
   title: string
 
-  @IsString({
-    message: 'Body must be a string value'
-  })
   @IsNotEmpty({
     message: 'Body must not be empty.'
+  })
+  @IsString({
+    message: 'Body must be a string value'
   })
   @MinLength(10, {
     message: 'Body must be at least 10 characters.'
   })
   body: string
 
-  @IsString({
-    message: 'Summary must be a string value'
-  })
   @IsNotEmpty({
     message: 'Summary must not be empty.'
+  })
+  @IsString({
+    message: 'Summary must be a string value'
   })
   @MinLength(5, {
     message: 'Summary must be at least 5 characters.'
