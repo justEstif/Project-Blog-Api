@@ -1,18 +1,19 @@
+import { Request, Response, NextFunction, Router } from 'express'
 import bcryptjs from 'bcryptjs'
-import * as express from 'express'
 import UserWithThatEmailAlreadyExistsException from '../exceptions/UserWithThatEmailAlreadyExistsException'
 import WrongCredentialsException from '../exceptions/WrongCredentialsException'
-import IController from '../interface/controller.interface'
 import validationMiddleware from '../middleware/validation.middleware'
-import UserModel from './../users/user.model'
+import IController from '../interface/controller.interface'
 import CreateUserDto from '../users/user.dto'
+import UserModel from '../users/user.model'
 import LogInDto from './logIn.dto'
 
 class AuthenticationController implements IController {
   public path = '/api'
-  public path_register = '/api/register'
-  public path_login = '/api/login'
-  public router = express.Router()
+  public path_register = `${this.path}/register`
+  public path_login = `${this.path}/login`
+  public router = Router()
+  public userModel = UserModel
 
   constructor() {
     this.initializeRoutes()
@@ -31,40 +32,47 @@ class AuthenticationController implements IController {
     )
   }
 
-  private registration = async (
-    request: express.Request,
-    response: express.Response,
-    next: express.NextFunction
-  ) => {
+  private async registration(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
     const userData: CreateUserDto = request.body
-    if (await UserModel.findOne({ email: userData.email })) {
+    // TODO: Move change user exist to the user.dto
+    if (await this.userModel.findOne({ email: userData.email })) {
       next(new UserWithThatEmailAlreadyExistsException(userData.email))
     } else {
       bcryptjs.hash(userData.password, 10, async (_, hashedPassword) => {
-        const user = await UserModel.create({
+        const user = await this.userModel.create({
           ...userData,
-          password: hashedPassword
+          password: hashedPassword // adding hashed pw to db
         })
-        user.password = undefined
-        response.send(user)
+        user.password = undefined // clearing user pw from response
+        response.status(201).json({
+          Message: 'Registration successful',
+          User: user
+        })
       })
     }
   }
 
-  private loggingIn = async (
-    request: express.Request,
-    response: express.Response,
-    next: express.NextFunction
-  ) => {
+  private async loggingIn(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
     const logInData: LogInDto = request.body
-    const user = await UserModel.findOne({ email: logInData.email })
+    const user = await this.userModel.findOne({ email: logInData.email })
     if (user && user.password) {
       bcryptjs.compare(logInData.password, user.password, function (error) {
         if (error) {
           next(new WrongCredentialsException())
         } else {
-          user.password = undefined
-          response.send(user)
+          user.password = undefined // clearing user pw from response
+          response.status(200).json({
+            Message: 'Login successful',
+            User: user
+          })
         }
       })
     } else {

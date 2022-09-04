@@ -10,8 +10,9 @@ import CreatePostDto from './post.dto'
 
 class PostController implements IController {
   public path = '/api/posts'
-  public path_id = '/api/posts/:id'
+  public path_id = `${this.path}/:id`
   public router = Router()
+  public postModel = PostModel
 
   constructor() {
     this.intializeRoutes()
@@ -34,7 +35,7 @@ class PostController implements IController {
   }
 
   private getPosts(_: Request, response: Response, next: NextFunction) {
-    PostModel.find()
+    this.postModel.find()
       .sort({ publication_date: 1 })
       .exec((error, posts) => {
         if (error) {
@@ -54,7 +55,7 @@ class PostController implements IController {
     next: NextFunction
   ) {
     const id = new Types.ObjectId(request.params.id)
-    PostModel.findById(id).exec((error, post) => {
+    this.postModel.findById(id).exec((error, post) => {
       if (error) {
         next(new PostNotFoundException(id))
       } else {
@@ -68,7 +69,7 @@ class PostController implements IController {
 
   private createPost(request: Request, response: Response, next: NextFunction) {
     const postData: IPost = request.body
-    PostModel.create(postData, (error, post) => {
+    this.postModel.create(postData, (error, post) => {
       if (error) {
         next(new HttpException(404, 'Failed to create post'))
       } else {
@@ -83,7 +84,7 @@ class PostController implements IController {
   private updatePost(request: Request, response: Response, next: NextFunction) {
     const id = new Types.ObjectId(request.params.id)
     const post: IPost = request.body
-    PostModel.findByIdAndUpdate(id, post, { new: true }).exec((error) => {
+    this.postModel.findByIdAndUpdate(id, post, { new: true }).exec((error) => {
       if (error) {
         next(new PostNotFoundException(id))
       } else {
@@ -97,7 +98,7 @@ class PostController implements IController {
 
   private deletePost(request: Request, response: Response, next: NextFunction) {
     const id = new Types.ObjectId(request.params.id)
-    PostModel.findByIdAndRemove(id).exec((error) => {
+    this.postModel.findByIdAndRemove(id).exec((error) => {
       if (error) {
         next(new PostNotFoundException(id))
       } else {
