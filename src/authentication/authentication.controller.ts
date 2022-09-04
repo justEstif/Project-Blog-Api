@@ -4,10 +4,10 @@ import jwt from 'jsonwebtoken'
 import UserWithThatEmailAlreadyExistsException from '../exceptions/UserWithThatEmailAlreadyExistsException'
 import WrongCredentialsException from '../exceptions/WrongCredentialsException'
 import validationMiddleware from '../middleware/validation.middleware'
-import IController from '../interface/controller.interface'
-import CreateUserDto from '../users/user.dto'
-import UserModel from '../users/user.model'
+import UserModel from '../users/user.model' // model
+import CreateUserDto from '../users/user.dto' // dtos
 import LogInDto from './logIn.dto'
+import IController from '../interface/controller.interface' // interfaces
 import TokenData from '../interface/tokenData.interface'
 import endpoints from '../utils/endpoints'
 import DataStoredInToken from '../interface/dataStoredInToken'
@@ -74,7 +74,7 @@ class AuthenticationController implements IController {
     const logInData: LogInDto = request.body
     const user = await this.userModel.findOne({ email: logInData.email })
     if (user && user.password) {
-      const self = this
+      const self = this // TODO: use bind here
       bcryptjs.compare(logInData.password, user.password, function (error) {
         if (error) {
           next(new WrongCredentialsException())
@@ -87,7 +87,7 @@ class AuthenticationController implements IController {
             .json({
               Message: 'Login successful',
               User: user,
-              Token: tokenData
+              Token: tokenData // QUESTION: is this required
             })
         }
       })
