@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction, Router } from 'express'
 import bcryptjs from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import UserWithThatEmailAlreadyExistsException from '../exceptions/UserWithThatEmailAlreadyExistsException'
 import WrongCredentialsException from '../exceptions/WrongCredentialsException'
 import validationMiddleware from '../middleware/validation.middleware'
@@ -7,6 +8,10 @@ import IController from '../interface/controller.interface'
 import CreateUserDto from '../users/user.dto'
 import UserModel from '../users/user.model'
 import LogInDto from './logIn.dto'
+import TokenData from '../interface/tokenData.interface'
+import endpoints from '../utils/endpoints'
+import DataStoredInToken from '../interface/dataStoredInToken'
+import IUser from '../users/user.interface'
 
 class AuthenticationController implements IController {
   public path = '/api'
@@ -48,10 +53,15 @@ class AuthenticationController implements IController {
           password: hashedPassword // adding hashed pw to db
         })
         user.password = undefined // clearing user pw from response
-        response.status(201).json({
-          Message: 'Registration successful',
-          User: user
-        })
+        const tokenData = this.createToken(user)
+        response
+          .status(201)
+          .setHeader('Set-Cookie', [this.createCookie(tokenData)])
+          .json({
+            Message: 'Registration successful',
+            User: user,
+            Token: tokenData // QUESTION: is this required
+          })
       })
     }
   }
@@ -64,19 +74,41 @@ class AuthenticationController implements IController {
     const logInData: LogInDto = request.body
     const user = await this.userModel.findOne({ email: logInData.email })
     if (user && user.password) {
+      const self = this
       bcryptjs.compare(logInData.password, user.password, function (error) {
         if (error) {
           next(new WrongCredentialsException())
         } else {
           user.password = undefined // clearing user pw from response
-          response.status(200).json({
-            Message: 'Login successful',
-            User: user
-          })
+          const tokenData = self.createToken(user)
+          response
+            .status(200)
+            .setHeader('Set-Cookie', [self.createCookie(tokenData)])
+            .json({
+              Message: 'Login successful',
+              User: user,
+              Token: tokenData
+            })
         }
       })
     } else {
       next(new WrongCredentialsException())
+    }
+  }
+
+  private createCookie(tokenData: TokenData) {
+    return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`
+  }
+
+  private createToken(user: IUser): TokenData {
+    const expiresIn = 24 * 60 * 60 // a day
+    const secret = endpoints.JWT_SECRET
+    const dataStoredInToken: DataStoredInToken = {
+      _id: user._id
+    }
+    return {
+      expiresIn,
+      token: jwt.sign(dataStoredInToken, secret, { expiresIn })
     }
   }
 }
