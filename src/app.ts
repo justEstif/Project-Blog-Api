@@ -2,7 +2,7 @@ import express, { Application, json, urlencoded } from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
 import { connect } from 'mongoose'
-import validateEnv from './utils/validateEnv'
+import endpoints from './utils/endpoints'
 import IController from './interface/controller.interface'
 import errorMiddleware from './middleware/error.middleware'
 
@@ -12,11 +12,11 @@ class App {
 
   constructor(controllers: IController[]) {
     this.app = express()
-    this.port = validateEnv.PORT
+    this.port = endpoints.PORT
     this.connectToDB()
     this.initializeMiddlewares()
     this.initializeControllers(controllers)
-    this.initializeErrorHandling()
+    this.initializeErrorHandling() // initialize last
   }
 
   private initializeMiddlewares() {
@@ -39,7 +39,7 @@ class App {
   private async connectToDB() {
     try {
       await connect(
-        `mongodb+srv://${validateEnv.MONGO_USER}:${validateEnv.MONGO_PASSWORD}${validateEnv.MONGO_PATH}`
+        `mongodb+srv://${endpoints.MONGO_USER}:${endpoints.MONGO_PASSWORD}${endpoints.MONGO_PATH}`
       )
       console.log(`MongoDB Connected`)
     } catch (err) {
