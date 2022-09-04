@@ -2,6 +2,7 @@ import express, { Application, json, urlencoded } from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
 import { connect } from 'mongoose'
+import cookieParser from 'cookie-parser'
 import endpoints from './utils/endpoints'
 import IController from './interface/controller.interface'
 import errorMiddleware from './middleware/error.middleware'
@@ -24,6 +25,7 @@ class App {
     this.app.use(urlencoded({ extended: false }))
     this.app.use(compression()) // compress
     this.app.use(helmet()) // helmet
+    this.app.use(cookieParser()) // cookies
   }
 
   private initializeControllers(controllers: IController[]) {
