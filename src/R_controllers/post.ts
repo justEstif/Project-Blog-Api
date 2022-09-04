@@ -1,13 +1,13 @@
 import { Types } from 'mongoose'
 import { Request, Response, RequestHandler } from 'express'
 import { body, validationResult, param } from 'express-validator'
-import { Post } from '../models/'
+import PostModel from '../post/post.model'
 
 // @desc Return posts in desc order by publication_date
 // @route GET /api/posts
 // @access Public
 export const getPosts: RequestHandler = (_, res) => {
-  Post.find()
+  PostModel.find()
     .sort({ publication_date: 1 })
     .exec((err, posts) => {
       if (err) {
@@ -50,7 +50,7 @@ export const setPosts = [
     .withMessage('Every tag must be at least 3 characters long'),
 
   (req: Request, res: Response) => {
-    const post = new Post({
+    const post = new PostModel({
       title: req.body.title,
       body: req.body.body,
       summary: req.body.summary,
@@ -118,7 +118,7 @@ export const updatePost = [
   param('id').customSanitizer((value) => new Types.ObjectId(value)),
 
   (req: Request, res: Response) => {
-    const post = new Post({
+    const post = new PostModel({
       title: req.body.title,
       body: req.body.body,
       summary: req.body.summary,
@@ -136,20 +136,25 @@ export const updatePost = [
         })
         return
       default:
-        Post.findByIdAndUpdate(req.params.id, post, { new: true }, (err) => {
-          if (err) {
-            res.status(400).json({
-              message: 'Error when saving post',
-              errors: err,
-              post: post
-            })
-          } else {
-            res.status(200).json({
-              message: 'Post updated',
-              post: post
-            })
+        PostModel.findByIdAndUpdate(
+          req.params.id,
+          post,
+          { new: true },
+          (err) => {
+            if (err) {
+              res.status(400).json({
+                message: 'Error when saving post',
+                errors: err,
+                post: post
+              })
+            } else {
+              res.status(200).json({
+                message: 'Post updated',
+                post: post
+              })
+            }
           }
-        })
+        )
     }
   }
 ]
@@ -171,7 +176,7 @@ export const deletePost = [
         })
         return
       default:
-        Post.findByIdAndRemove(req.params.id).exec((err) => {
+        PostModel.findByIdAndRemove(req.params.id).exec((err) => {
           if (err) {
             res.status(400).json({
               message: 'Failed to delete post',
