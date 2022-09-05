@@ -1,43 +1,62 @@
-import express from 'express'
-import compression from 'compression'
+import express, { Application, json, urlencoded } from 'express'
 import helmet from 'helmet'
-import path from 'path'
-import { connectDB, endpoints, passportLocalStrategy } from './config'
-import { post_routes, user_routes } from './routes/'
-import { errrorHandler } from './middleware'
+import compression from 'compression'
+import { connect } from 'mongoose'
+import cookieParser from 'cookie-parser'
+import endpoints from './utils/endpoints'
+import IController from './interface/controller.interface'
+import errorMiddleware from './middleware/error.middleware'
 
-const port = endpoints.PORT || 5000
+class App {
+  public app: Application
+  public port: number
 
-connectDB() // Connect to MongoDB
+  constructor(controllers: IController[]) {
+    this.app = express()
+    this.port = endpoints.PORT
+    this.connectToDB()
+    this.initializeMiddlewares()
+    this.initializeControllers(controllers)
+    this.initializeErrorHandling() // initialize last
+  }
 
-const app: express.Express = express()
+  private initializeMiddlewares() {
+    this.app.use(json()) // body parser
+    this.app.use(urlencoded({ extended: false }))
+    this.app.use(compression()) // compress
+    this.app.use(helmet()) // helmet
+    this.app.use(cookieParser()) // cookies
+  }
 
-app.use(compression()) // compress all paths
+  private initializeControllers(controllers: IController[]) {
+    controllers.forEach((controller) => {
+      this.app.use(controller.router)
+    })
+  }
 
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-    crossOriginEmbedderPolicy: false
-  })
-)
+  private initializeErrorHandling() {
+    this.app.use(errorMiddleware)
+  }
 
-//Body Parser Middleware
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+  private async connectToDB() {
+    try {
+      await connect(
+        `mongodb+srv://${endpoints.MONGO_USER}:${endpoints.MONGO_PASSWORD}${endpoints.MONGO_PATH}`
+      )
+      console.log(`MongoDB Connected`)
+    } catch (err) {
+      console.log(`MongoDB error: ${err}`)
+      process.exit(1)
+    }
+  }
 
-// view engine setup
-app.set('views', path.join(__dirname, '..', 'views'))
-app.set('view engine', 'ejs')
+  public listen() {
+    this.app.listen(this.port, () => {
+      console.log(
+        `⚡️[server]: Server is running at https://localhost:${this.port}`
+      )
+    })
+  }
+}
 
-// Passport Middleware
-passportLocalStrategy()
-
-// Routes
-app.use('/api/posts', post_routes)
-app.use('/api/users', user_routes)
-
-app.use(errrorHandler) // error handler middleware
-
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at https://localhost:${port}`)
-})
+export default App

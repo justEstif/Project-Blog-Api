@@ -1,10 +1,5 @@
-import { Types, Schema, model } from 'mongoose'
-
-interface IComment {
-  body: string
-  commentDate: Date
-  userId: Types.ObjectId
-}
+import IComment from './comment.interface'
+import { Schema, model } from 'mongoose'
 
 const CommentSchema = new Schema<IComment>({
   body: { type: String, required: true },
@@ -12,7 +7,5 @@ const CommentSchema = new Schema<IComment>({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 })
 
-// TODO: Virtuals
 const Comment = model<IComment>('Comment', CommentSchema)
-export { IComment }
 export default Comment

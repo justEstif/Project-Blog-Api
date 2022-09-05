@@ -1,36 +1,23 @@
 import { Types, Schema, model } from 'mongoose'
-
-interface IPost {
-  title: string
-  body: string
-  summary: string
-  tags: string[]
-  published: boolean
-  publicationDate: Date | undefined
-  commentIds: Types.ObjectId[]
-}
+import IPost from './post.interface'
 
 const PostSchema = new Schema<IPost>({
   title: {
     type: String,
-    minlength: [3, 'The title must be at least 3 characters long.'],
     required: true
   },
   body: {
     type: String,
-    minlength: [10, 'The body must be at least 10 characters long.'],
     required: true
   },
   summary: {
     type: String,
-    minlength: [5, 'The summary must be at least 5 characters long.'],
     required: true
   },
   tags: [
     {
       type: String,
-      required: true,
-      minLength: [5, 'The summary must be at least 5 characters long']
+      required: true
     }
   ], // at least one tag req
   published: { type: Boolean, default: false },
@@ -49,6 +36,5 @@ PostSchema.pre('save', function (next) {
 })
 
 // TODO: Virtuals
-const Post = model<IPost>('Post', PostSchema)
-export { IPost }
-export default Post
+const PostModel = model<IPost>('Post', PostSchema)
+export default PostModel

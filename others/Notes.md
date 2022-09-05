@@ -91,6 +91,17 @@
 - script:
   `npm i -D @types/async @types/compression @types/luxon @types/mongoose @types/serve-favicon concurrently`
 
+### Middleware
+
+- Helmet
+
+```js
+helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false
+})
+```
+
 ## Mongoose Models
 
 - The published date changes only when it becomes first published
@@ -123,3 +134,10 @@
     - /sign-in
 
       - POST: sign in user
+
+- Protected routes:
+  - DELETE post
+  - POST post
+  - PUT post
+
+<!-- TODO: Create comments models, interface, controller -->
