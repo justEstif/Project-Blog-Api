@@ -34,8 +34,12 @@ class PostController implements IController {
     this.router.delete(this.path_id, this.deletePost)
   }
 
+  // @desc Return posts in desc order by publication_date
+  // @route GET /api/posts
+  // @access Public
   private getPosts(_: Request, response: Response, next: NextFunction) {
-    this.postModel.find()
+    this.postModel
+      .find()
       .sort({ publication_date: 1 })
       .exec((error, posts) => {
         if (error) {
@@ -49,6 +53,9 @@ class PostController implements IController {
       })
   }
 
+  // @desc Return post from the id
+  // @route GET /api/posts:id
+  // @access Public
   private getPostById(
     request: Request,
     response: Response,
@@ -67,6 +74,9 @@ class PostController implements IController {
     })
   }
 
+// @desc Set a post
+// @route POST /api/posts
+// @access Private
   private createPost(request: Request, response: Response, next: NextFunction) {
     const postData: IPost = request.body
     this.postModel.create(postData, (error, post) => {
@@ -81,6 +91,9 @@ class PostController implements IController {
     })
   }
 
+// @desc Update a post
+// @route PUT /api/posts/:id
+// @access Private
   private updatePost(request: Request, response: Response, next: NextFunction) {
     const id = new Types.ObjectId(request.params.id)
     const post: IPost = request.body
@@ -96,6 +109,9 @@ class PostController implements IController {
     })
   }
 
+// @desc Delete a post
+// @route DELETE /api/posts/:id
+// @access Private
   private deletePost(request: Request, response: Response, next: NextFunction) {
     const id = new Types.ObjectId(request.params.id)
     this.postModel.findByIdAndRemove(id).exec((error) => {
