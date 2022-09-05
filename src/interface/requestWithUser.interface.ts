@@ -1,5 +1,5 @@
 import { Request } from 'express'
-import IUser from '../users/user.interface'
+import IUser from '../user/user.interface'
 
 interface RequestWithUser extends Request {
   user: IUser

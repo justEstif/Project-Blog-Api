@@ -4,14 +4,14 @@ import jwt from 'jsonwebtoken'
 import UserWithThatEmailAlreadyExistsException from '../exceptions/UserWithThatEmailAlreadyExistsException'
 import WrongCredentialsException from '../exceptions/WrongCredentialsException'
 import validationMiddleware from '../middleware/validation.middleware'
-import UserModel from '../users/user.model' // model
-import CreateUserDto from '../users/user.dto' // dtos
+import UserModel from '../user/user.model' // model
+import CreateUserDto from '../user/user.dto' // dtos
 import LogInDto from './logIn.dto'
 import IController from '../interface/controller.interface' // interfaces
 import TokenData from '../interface/tokenData.interface'
 import endpoints from '../utils/endpoints'
 import DataStoredInToken from '../interface/dataStoredInToken'
-import IUser from '../users/user.interface'
+import IUser from '../user/user.interface'
 
 class AuthenticationController implements IController {
   public path = '/api'
