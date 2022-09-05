@@ -1,6 +1,6 @@
 import express, { Application, json, urlencoded } from 'express'
-import compression from 'compression'
 import helmet from 'helmet'
+import compression from 'compression'
 import { connect } from 'mongoose'
 import cookieParser from 'cookie-parser'
 import endpoints from './utils/endpoints'

@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction, Router } from 'express'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import UserWithThatEmailAlreadyExistsException from '../exceptions/UserWithThatEmailAlreadyExistsException'
-import WrongCredentialsException from '../exceptions/WrongCredentialsException'
+import UserWithThatEmailAlreadyExistsException from '../exception/UserWithThatEmailAlreadyExistsException'
+import WrongCredentialsException from '../exception/WrongCredentialsException'
 import validationMiddleware from '../middleware/validation.middleware'
 import UserModel from '../user/user.model' // model
 import CreateUserDto from '../user/user.dto' // dtos
@@ -104,7 +104,7 @@ class AuthenticationController implements IController {
     const expiresIn = 24 * 60 * 60 // a day
     const secret = endpoints.JWT_SECRET
     const dataStoredInToken: DataStoredInToken = {
-      _id: user._id
+      _id: user._id // only stores the current users id
     }
     return {
       expiresIn,

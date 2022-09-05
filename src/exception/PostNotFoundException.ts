@@ -1,5 +1,5 @@
 import { Types } from 'mongoose'
-import HttpException from './HttpException'
+import HttpException from '../exception/HttpException'
 
 class PostNotFoundException extends HttpException {
   constructor(id: Types.ObjectId) {
