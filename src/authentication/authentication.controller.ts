@@ -18,6 +18,7 @@ import TokenData from '../interface/tokenData.interface'
 import endpoints from '../utils/endpoints'
 import DataStoredInToken from '../interface/dataStoredInToken'
 import IUser from '../user/user.interface'
+import HttpException from '../exception/HttpException'
 
 class AuthenticationController implements IController {
   public path = '/api'
@@ -51,32 +52,33 @@ class AuthenticationController implements IController {
   ) {
     const userData: CreateUserDto = request.body
 
-    const user = await UserModel.findOne({
+    UserModel.findOne({
       $or: [{ email: userData.email }, { username: userData.username }]
-    })
-
-    if (user && user.email === userData.email) {
-      next(new UserAlreadyExistsException('email', userData.email))
-    } else if (user && user.username === userData.username) {
-      next(new UserAlreadyExistsException('username', userData.username))
-    } else {
-      bcryptjs.hash(userData.password, 10, async (_, hashedPassword) => {
-        const user = await UserModel.create({
-          ...userData,
-          password: hashedPassword // adding hashed pw to db
-        })
-        user.password = undefined // clearing user pw from response
-        const tokenData = this.createToken(user)
-        response
-          .status(201)
-          .setHeader('Set-Cookie', [this.createCookie(tokenData)])
-          .json({
-            Message: 'Registration successful',
-            User: user,
-            Token: tokenData // QUESTION: is this required
+    }).exec((error, user) => {
+      if (error) {
+        next(new HttpException(404, 'Failed to  register user'))
+      } else if (user && user.email === userData.email) {
+        next(new UserAlreadyExistsException('email', userData.email))
+      } else if (user && user.username === userData.username) {
+        next(new UserAlreadyExistsException('username', userData.username))
+      } else {
+        bcryptjs.hash(userData.password, 10, async (_, hashedPassword) => {
+          const user = await UserModel.create({
+            ...userData,
+            password: hashedPassword // adding hashed pw to db
           })
-      })
-    }
+          user.password = undefined // clearing user pw from response
+          const tokenData = this.createToken(user)
+          response
+            .status(201)
+            .setHeader('Set-Cookie', [this.createCookie(tokenData)])
+            .json({
+              Message: 'Registration successful',
+              User: user
+            })
+        })
+      }
+    })
   }
 
   private async loggingIn(
@@ -85,32 +87,34 @@ class AuthenticationController implements IController {
     next: NextFunction
   ) {
     const logInData: LogInDto = request.body
-    const user = await UserModel.findOne({ email: logInData.email })
-    if (user && user.password) {
-      const self = this // TODO: use bind here
-      bcryptjs.compare(logInData.password, user.password, function (error) {
-        if (error) {
-          next(new WrongCredentialsException())
-        } else {
-          user.password = undefined // clearing user pw from response
-          const tokenData = self.createToken(user)
-          response
-            .status(200)
-            .setHeader('Set-Cookie', [self.createCookie(tokenData)])
-            .json({
-              Message: 'Login successful',
-              User: user,
-              Token: tokenData // QUESTION: is this required
-            })
-        }
-      })
-    } else {
-      next(new WrongCredentialsException())
-    }
+    UserModel.findOne({ email: logInData.email }).exec((error, user) => {
+      if (error) {
+        next(new HttpException(404, 'Failed to login user'))
+      } else if (user && user.password) {
+        const self = this
+        bcryptjs.compare(logInData.password, user.password, function (error) {
+          if (error) {
+            next(new WrongCredentialsException())
+          } else {
+            user.password = undefined // clearing user pw from response
+            const tokenData = self.createToken(user)
+            response
+              .status(200)
+              .setHeader('Set-Cookie', [self.createCookie(tokenData)])
+              .json({
+                Message: 'Login successful',
+                User: user
+              })
+          }
+        })
+      } else {
+        next(new WrongCredentialsException())
+      }
+    })
   }
 
   private loggingOut: RequestHandler = (_, response) => {
-    response.setHeader('Set-Cookie', ['Authorization=;Max-age=0'])
+    response.setHeader('Set-Cookie', ['Authorization=;Max-age=0']) // clear cookie
     response.send(200)
   }
 
