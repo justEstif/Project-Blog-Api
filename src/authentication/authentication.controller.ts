@@ -7,7 +7,7 @@ import {
 } from 'express'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import UserWithThatEmailAlreadyExistsException from '../exception/UserWithThatEmailAlreadyExistsException'
+import UserAlreadyExistsException from '../exception/UserAlreadyExistsException'
 import WrongCredentialsException from '../exception/WrongCredentialsException'
 import validationMiddleware from '../middleware/validation.middleware'
 import UserModel from '../user/user.model' // model
@@ -25,7 +25,6 @@ class AuthenticationController implements IController {
   public path_login = `${this.path}/login`
   public path_logout = `${this.path}/logout`
   public router = Router()
-  public userModel = UserModel
 
   constructor() {
     this.initializeRoutes()
@@ -51,12 +50,18 @@ class AuthenticationController implements IController {
     next: NextFunction
   ) {
     const userData: CreateUserDto = request.body
-    // TODO: Move change user exist to the user.dto
-    if (await this.userModel.findOne({ email: userData.email })) {
-      next(new UserWithThatEmailAlreadyExistsException(userData.email))
+
+    const user = await UserModel.findOne({
+      $or: [{ email: userData.email }, { username: userData.username }]
+    })
+
+    if (user && user.email === userData.email) {
+      next(new UserAlreadyExistsException('email', userData.email))
+    } else if (user && user.username === userData.username) {
+      next(new UserAlreadyExistsException('username', userData.username))
     } else {
       bcryptjs.hash(userData.password, 10, async (_, hashedPassword) => {
-        const user = await this.userModel.create({
+        const user = await UserModel.create({
           ...userData,
           password: hashedPassword // adding hashed pw to db
         })
@@ -80,7 +85,7 @@ class AuthenticationController implements IController {
     next: NextFunction
   ) {
     const logInData: LogInDto = request.body
-    const user = await this.userModel.findOne({ email: logInData.email })
+    const user = await UserModel.findOne({ email: logInData.email })
     if (user && user.password) {
       const self = this // TODO: use bind here
       bcryptjs.compare(logInData.password, user.password, function (error) {
