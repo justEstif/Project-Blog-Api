@@ -44,6 +44,7 @@ class AuthenticationService {
       if (matchingPassword) {
         const tokenData = this.createToken(user)
         const cookie = this.createCookie(tokenData)
+        user.password = undefined // clearing user pw from response
         return { user, cookie }
       } else {
         throw new WrongCredentialsException()
@@ -57,11 +58,11 @@ class AuthenticationService {
     return 'Authorization=;Max-age=0'
   }
 
-  public createCookie(tokenData: TokenData) {
+  private createCookie(tokenData: TokenData) {
     return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`
   }
 
-  public createToken(user: IUser): TokenData {
+  private createToken(user: IUser): TokenData {
     const expiresIn = 24 * 60 * 60 // a day
     const secret = endpoints.JWT_SECRET
     const dataStoredInToken: DataStoredInToken = {
