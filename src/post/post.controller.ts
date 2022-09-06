@@ -7,9 +7,11 @@ import HttpException from '../exception/HttpException'
 import PostNotFoundException from '../exception/PostNotFoundException'
 import validationMiddleware from '../middleware/validation.middleware'
 import CreatePostDto from './post.dto'
+import authMiddleware from 'src/middleware/auth.middleware'
 
 class PostController implements IController {
   public path = '/api/posts'
+  public path_all = `${this.path}/*`
   public path_id = `${this.path}/:id`
   public router = Router()
   public postModel = PostModel
@@ -20,18 +22,29 @@ class PostController implements IController {
 
   public intializeRoutes() {
     this.router.get(this.path, this.getPosts)
+    this.router.get(this.path_id, this.getPostById)
     this.router.post(
       this.path,
       validationMiddleware(CreatePostDto),
       this.createPost
     )
-    this.router.get(this.path_id, this.getPostById)
     this.router.put(
       this.path_id,
       validationMiddleware(CreatePostDto),
       this.updatePost
     )
     this.router.delete(this.path_id, this.deletePost)
+
+    this.router
+      .all(this.path_all, authMiddleware)
+      .put(this.path_id, validationMiddleware(CreatePostDto), this.updatePost)
+      .delete(this.path_id, this.deletePost)
+      .post(
+        this.path,
+        authMiddleware,
+        validationMiddleware(CreatePostDto),
+        this.createPost
+      )
   }
 
   // @desc Return posts in desc order by publication_date
@@ -74,9 +87,9 @@ class PostController implements IController {
     })
   }
 
-// @desc Set a post
-// @route POST /api/posts
-// @access Private
+  // @desc Set a post
+  // @route POST /api/posts
+  // @access Private
   private createPost(request: Request, response: Response, next: NextFunction) {
     const postData: IPost = request.body
     this.postModel.create(postData, (error, post) => {
@@ -91,9 +104,9 @@ class PostController implements IController {
     })
   }
 
-// @desc Update a post
-// @route PUT /api/posts/:id
-// @access Private
+  // @desc Update a post
+  // @route PUT /api/posts/:id
+  // @access Private
   private updatePost(request: Request, response: Response, next: NextFunction) {
     const id = new Types.ObjectId(request.params.id)
     const post: IPost = request.body
@@ -109,9 +122,9 @@ class PostController implements IController {
     })
   }
 
-// @desc Delete a post
-// @route DELETE /api/posts/:id
-// @access Private
+  // @desc Delete a post
+  // @route DELETE /api/posts/:id
+  // @access Private
   private deletePost(request: Request, response: Response, next: NextFunction) {
     const id = new Types.ObjectId(request.params.id)
     this.postModel.findByIdAndRemove(id).exec((error) => {
