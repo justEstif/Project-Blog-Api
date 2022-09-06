@@ -6,6 +6,7 @@ import DataStoredInToken from '../interface/dataStoredInToken'
 import asyncHander from 'express-async-handler'
 import User from '../user/user.model'
 
+// checks that a user is logged in
 const authMiddleware = asyncHander(async (request, _, next) => {
   const cookies = request.cookies
   if (cookies && cookies.Authorization) {
