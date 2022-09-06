@@ -1,4 +1,10 @@
-import { Request, Response, NextFunction, Router } from 'express'
+import {
+  Request,
+  Response,
+  NextFunction,
+  Router,
+  RequestHandler
+} from 'express'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import UserWithThatEmailAlreadyExistsException from '../exception/UserWithThatEmailAlreadyExistsException'
@@ -17,6 +23,7 @@ class AuthenticationController implements IController {
   public path = '/api'
   public path_register = `${this.path}/register`
   public path_login = `${this.path}/login`
+  public path_logout = `${this.path}/logout`
   public router = Router()
   public userModel = UserModel
 
@@ -35,6 +42,7 @@ class AuthenticationController implements IController {
       validationMiddleware(LogInDto),
       this.loggingIn
     )
+    this.router.post(this.path_logout, this.loggingOut)
   }
 
   private async registration(
@@ -94,6 +102,11 @@ class AuthenticationController implements IController {
     } else {
       next(new WrongCredentialsException())
     }
+  }
+
+  private loggingOut: RequestHandler = (_, response) => {
+    response.setHeader('Set-Cookie', ['Authorization=;Max-age=0'])
+    response.send(200)
   }
 
   private createCookie(tokenData: TokenData) {
