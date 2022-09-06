@@ -140,4 +140,8 @@ helmet({
   - POST post
   - PUT post
 
-<!-- TODO: Create comments models, interface, controller -->
+- Add validator that checks that username is unique
+- Add validator that checks email is unique
+
+- For the routes that use the auth middleware
+  - we check if the user is the owner??

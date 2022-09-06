@@ -4,6 +4,7 @@ import { validate, ValidationError } from 'class-validator'
 import { RequestHandler } from 'express'
 import HttpException from '../exception/HttpException'
 
+// checks that the request has all the required fields
 function validationMiddleware(type: any): RequestHandler {
   return (req, _, next) => {
     validate(plainToInstance(type, req.body)).then(
