@@ -50,7 +50,6 @@ class PostController implements IController {
       )
   }
 
-  // TODO: Don't get posts that aren't published if not owner
   // @desc Return posts in desc order by publication_date
   // @route GET /api/posts
   // @access Public
@@ -69,7 +68,6 @@ class PostController implements IController {
     }
   )
 
-  // TODO: Don't get posts that isn't published if not owner
   // @desc Return post from the id
   // @route GET /api/posts:id
   // @access Public
