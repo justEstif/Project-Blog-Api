@@ -1,12 +1,14 @@
 import { Types } from 'mongoose'
 import CommentDto from '../comment/comment.dto'
-import CommentModel from '../comment/comment.model'
 import HttpException from '../exception/HttpException'
 import PostNotFoundException from '../exception/PostNotFoundException'
 import IPost from './post.interface'
 import PostModel from './post.model'
+import CommentService from '../comment/comment.service'
 
 class PostService {
+  public commentService = new CommentService()
+
   public getPosts = async (owner: boolean) => {
     const searchCriteria = owner ? [true, false] : [true]
     const posts = await PostModel.find({
@@ -30,7 +32,7 @@ class PostService {
     })
 
     if (post) {
-      const comments = this.getComments(id)
+      const comments = await this.commentService.getComments(id)
       return { post, comments }
     } else {
       throw new PostNotFoundException(postId)
@@ -75,30 +77,15 @@ class PostService {
     userId: string,
     postId: string
   ) => {
-    const user = new Types.ObjectId(userId)
-    const post = new Types.ObjectId(postId)
-    const newComment = {
-      ...commentData,
-      user,
-      postId: post
-    }
-    const comment = await CommentModel.create(newComment)
+    const comment = await this.commentService.createComment(
+      commentData,
+      userId,
+      postId
+    )
     if (comment) {
       return comment
     } else {
       throw new HttpException(404, 'Failed to create comment')
-    }
-  }
-
-  public getComments = async (postId: string) => {
-    const post = new Types.ObjectId(postId)
-    const comments = await CommentModel.find({ postId: post })
-      .sort({ commentDate: 1 })
-      .populate('user', 'username')
-    if (comments) {
-      return comments
-    } else {
-      throw new HttpException(404, 'Failed to get comments')
     }
   }
 }
