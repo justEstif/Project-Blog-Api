@@ -57,7 +57,7 @@ class PostController implements IController {
     async (request: Request, response: Response, next: NextFunction) => {
       try {
         const owner = request.user ? request.user.owner : false
-        const posts = this.postService.getPosts(owner)
+        const posts = await this.postService.getPosts(owner)
         response.status(200).json({
           message: 'Posts received',
           posts: posts
@@ -76,7 +76,7 @@ class PostController implements IController {
       try {
         const owner = request.user ? request.user.owner : false
         const id = request.params.id
-        const post = this.postService.getPostByID(id, owner)
+        const post = await this.postService.getPostByID(id, owner)
         response.status(200).json({
           message: 'Posts received',
           post: post
@@ -94,7 +94,7 @@ class PostController implements IController {
     async (request: Request, response: Response, next: NextFunction) => {
       const postData: IPost = request.body
       try {
-        const post = this.postService.createPost(postData)
+        const post = await this.postService.createPost(postData)
         response.status(200).json({
           message: 'Post saved',
           post: post
@@ -113,7 +113,7 @@ class PostController implements IController {
       const postData: IPost = request.body
       const id = request.params.id
       try {
-        const post = this.postService.updatePost(id, postData)
+        const post = await this.postService.updatePost(id, postData)
         response.status(200).json({
           message: 'Post updated',
           post: post
@@ -131,7 +131,7 @@ class PostController implements IController {
     async (request: Request, response: Response, next: NextFunction) => {
       const id = request.params.id
       try {
-        const postId = this.postService.deletePost(id)
+        const postId = await this.postService.deletePost(id)
         response.status(200).json({
           message: 'Post deleted',
           post: postId
@@ -152,7 +152,7 @@ class PostController implements IController {
       const postId = request.params.id // current post id
 
       try {
-        const comment = this.postService.createComment(
+        const comment = await this.postService.createComment(
           commentData,
           userId,
           postId
