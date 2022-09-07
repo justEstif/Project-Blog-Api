@@ -8,5 +8,5 @@ const CommentSchema = new Schema<IComment>({
   postId: { type: Schema.Types.ObjectId, ref: 'Post', required: true }
 })
 
-const Comment = model<IComment>('Comment', CommentSchema)
-export default Comment
+const CommentModel = model<IComment>('Comment', CommentSchema)
+export default CommentModel
