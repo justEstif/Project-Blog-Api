@@ -4,7 +4,7 @@ import AuthenticationTokenMissingException from '../exception/AuthenticationToke
 import WrongAuthenticationTokenException from '../exception/WrongAuthenticationTokenMissingException'
 import DataStoredInToken from '../interface/dataStoredInToken'
 import asyncHander from 'express-async-handler'
-import User from '../user/user.model'
+import UserModel from '../user/user.model'
 
 // checks that a user is logged in
 const authMiddleware = asyncHander(async (request, _, next) => {
@@ -17,7 +17,7 @@ const authMiddleware = asyncHander(async (request, _, next) => {
         cookies.Authorization,
         secret
       ) as DataStoredInToken
-      const user = await User.findById(id)
+      const user = await UserModel.findById(id)
       if (user) {
         request.user = user
         next()

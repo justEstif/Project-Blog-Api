@@ -6,13 +6,13 @@ import DataStoredInToken from '../interface/dataStoredInToken'
 import TokenData from '../interface/tokenData.interface'
 import CreateUserDto from '../user/user.dto'
 import IUser from '../user/user.interface'
-import User from '../user/user.model'
+import UserModel from '../user/user.model'
 import endpoints from '../utils/endpoints'
 import LogInDto from './logIn.dto'
 
 class AuthenticationService {
   public register = async (userData: CreateUserDto) => {
-    const matchingUserData = await User.findOne({
+    const matchingUserData = await UserModel.findOne({
       $or: [{ email: userData.email }, { username: userData.username }]
     })
     if (matchingUserData) {
@@ -23,7 +23,7 @@ class AuthenticationService {
       }
     } else {
       const hashedPassword = await bcrypt.hash(userData.password, 10)
-      const user = await User.create({
+      const user = await UserModel.create({
         ...userData,
         password: hashedPassword // adding hashed pw to db
       })
@@ -35,7 +35,7 @@ class AuthenticationService {
   }
 
   public logIn = async (logInData: LogInDto) => {
-    const user = await User.findOne({ email: logInData.email })
+    const user = await UserModel.findOne({ email: logInData.email })
     if (user) {
       const matchingPassword = await bcrypt.compare(
         logInData.password,

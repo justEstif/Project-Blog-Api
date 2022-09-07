@@ -8,5 +8,5 @@ const UserSchema = new Schema<IUser>({
   owner: { type: Boolean, default: false }
 })
 
-const User = model<IUser>('User', UserSchema)
-export default User
+const UserModel = model<IUser>('User', UserSchema)
+export default UserModel
