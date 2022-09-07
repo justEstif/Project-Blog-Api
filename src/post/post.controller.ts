@@ -23,8 +23,8 @@ class PostController implements IController {
 
   public intializeRoutes() {
     // public routes
-    this.router.get(this.path, this.getPosts)
-    this.router.get(this.path_id, this.getPostById)
+    this.router.get(this.path, authMiddleware, this.getPosts)
+    this.router.get(this.path_id, authMiddleware, this.getPostById)
     // private routes -> only owner
     this.router
       .put(
