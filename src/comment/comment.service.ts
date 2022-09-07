@@ -5,7 +5,6 @@ import CommentDto from './comment.dto'
 import CommentModel from './comment.model'
 
 class CommentService {
-  // TODO: Move to comment.controller
   public createComment = async (
     commentData: CommentDto,
     userId: string,
@@ -26,11 +25,7 @@ class CommentService {
       postId: post
     }
     const comment = await CommentModel.create(newComment)
-    if (comment) {
-      return comment
-    } else {
-      throw new HttpException(404, 'Failed to create comment')
-    }
+    return comment
   }
 
   public getComments = async (postId: string) => {
@@ -42,11 +37,7 @@ class CommentService {
     const comments = await CommentModel.find({ postId: post })
       .sort({ commentDate: 1 })
       .populate('user', 'username')
-    if (comments) {
-      return comments
-    } else {
-      throw new HttpException(404, 'Failed to get comments')
-    }
+    return comments
   }
 }
 
