@@ -11,10 +11,10 @@ class PostService {
   public commentService = new CommentService()
 
   public getPosts = async (owner: boolean) => {
-    const searchCriteria = owner ? [true, false] : [true]
-    const posts = await PostModel.find({
-      published: { $in: searchCriteria }
-    }).sort({ publicationDate: 1 })
+    const searchCriteria = owner ? {} : { published: true }
+    const posts = await PostModel.find(searchCriteria).sort({
+      publicationDate: 1
+    })
 
     if (posts) {
       return posts
@@ -24,17 +24,17 @@ class PostService {
   }
 
   public getPostByID = async (id: string, owner: boolean) => {
-    const searchCriteria = owner ? [true, false] : [true]
+    const searchCriteria = owner ? {} : { published: true }
     if (!isValidObjectId(id)) {
       throw new InValidIdException(id)
     }
     const postId = new Types.ObjectId(id)
     const post = await PostModel.find({
       _id: postId,
-      published: { $in: searchCriteria }
+      searchCriteria
     })
     if (post) {
-      const comments = await this.commentService.getComments(id)
+      const comments = await this.getComments(id)
       return { post, comments }
     } else {
       throw new PostNotFoundException(id)
@@ -79,7 +79,6 @@ class PostService {
     }
   }
 
-  // TODO: Move to comment.controller
   public createComment = async (
     commentData: CommentDto,
     userId: string,
@@ -94,6 +93,15 @@ class PostService {
       return comment
     } else {
       throw new HttpException(404, 'Failed to create comment')
+    }
+  }
+
+  public getComments = async (postId: string) => {
+    const comments = await this.commentService.getComments(postId)
+    if (comments) {
+      return comments
+    } else {
+      throw new HttpException(404, 'Failed to get comments')
     }
   }
 }
