@@ -1,4 +1,4 @@
-import { Types, Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose'
 import IPost from './post.interface'
 
 const PostSchema = new Schema<IPost>({
@@ -21,8 +21,7 @@ const PostSchema = new Schema<IPost>({
     }
   ], // at least one tag req
   published: { type: Boolean, default: false },
-  publicationDate: { type: Date, default: undefined },
-  commentIds: [{ type: Types.ObjectId, ref: 'User' }] // default empty
+  publicationDate: { type: Date, default: undefined }
 })
 
 // Add date when published

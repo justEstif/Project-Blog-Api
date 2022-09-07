@@ -3,7 +3,8 @@ import { Types } from 'mongoose'
 interface IComment {
   body: string
   commentDate: Date
-  userId: Types.ObjectId
+  user: Types.ObjectId
+  postId: Types.ObjectId
 }
 
 export default IComment

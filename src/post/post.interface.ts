@@ -1,5 +1,3 @@
-import { Types } from 'mongoose'
-
 interface IPost {
   title: string
   body: string
@@ -7,7 +5,6 @@ interface IPost {
   tags: string[]
   published: boolean
   publicationDate: Date | undefined
-  commentIds: Types.ObjectId[]
 }
 
 export default IPost
