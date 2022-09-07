@@ -1,10 +1,11 @@
-import { Types } from 'mongoose'
+import { isValidObjectId, Types } from 'mongoose'
 import CommentDto from '../comment/comment.dto'
 import HttpException from '../exception/HttpException'
 import PostNotFoundException from '../exception/PostNotFoundException'
 import IPost from './post.interface'
 import PostModel from './post.model'
 import CommentService from '../comment/comment.service'
+import InValidIdException from '../exception/InValidIdException'
 
 class PostService {
   public commentService = new CommentService()
@@ -23,23 +24,27 @@ class PostService {
   }
 
   public getPostByID = async (id: string, owner: boolean) => {
-    const postId = new Types.ObjectId(id)
     const searchCriteria = owner ? [true, false] : [true]
-
+    if (!isValidObjectId(id)) {
+      throw new InValidIdException(id)
+    }
+    const postId = new Types.ObjectId(id)
     const post = await PostModel.find({
       _id: postId,
       published: { $in: searchCriteria }
     })
-
     if (post) {
       const comments = await this.commentService.getComments(id)
       return { post, comments }
     } else {
-      throw new PostNotFoundException(postId)
+      throw new PostNotFoundException(id)
     }
   }
 
   public updatePost = async (id: string, postData: IPost) => {
+    if (!isValidObjectId(id)) {
+      throw new InValidIdException(id)
+    }
     const postId = new Types.ObjectId(id)
     const post = await PostModel.findByIdAndUpdate(postId, postData, {
       new: true
@@ -61,6 +66,9 @@ class PostService {
   }
 
   public deletePost = async (id: string) => {
+    if (!isValidObjectId(id)) {
+      throw new InValidIdException(id)
+    }
     const postId = new Types.ObjectId(id)
     const post = await PostModel.findByIdAndRemove(postId)
 
