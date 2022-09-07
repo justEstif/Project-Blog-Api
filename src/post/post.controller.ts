@@ -1,16 +1,13 @@
 import { NextFunction, Request, Response, Router } from 'express'
 import IPost from './post.interface'
 import IController from '../interface/controller.interface'
-import PostModel from './post.model'
-import { Types } from 'mongoose'
-import HttpException from '../exception/HttpException'
-import PostNotFoundException from '../exception/PostNotFoundException'
 import validationMiddleware from '../middleware/validation.middleware'
 import CreatePostDto from './post.dto'
 import authMiddleware from '../middleware/auth.middleware'
 import ownerMiddleware from '../middleware/owner.middleware'
 import CommentDto from '../comment/comment.dto'
-import Comment from '../comment/comment.model'
+import PostService from './post.service'
+import asyncHandler from 'express-async-handler'
 
 class PostController implements IController {
   public path = '/api/posts'
@@ -18,6 +15,7 @@ class PostController implements IController {
   public path_id = `${this.path}/:id`
   public path_id_comment = `${this.path}/:id/comment`
   public router = Router()
+  public postService = new PostService()
 
   constructor() {
     this.intializeRoutes()
@@ -56,134 +54,120 @@ class PostController implements IController {
   // @desc Return posts in desc order by publication_date
   // @route GET /api/posts
   // @access Public
-  private getPosts(_: Request, response: Response, next: NextFunction) {
-    // if owner -> get all
-    // else get published only
-    PostModel.find()
-      .sort({ publicationDate: 1 })
-      .exec((error, posts) => {
-        if (error) {
-          next(new HttpException(404, 'Failed to get posts'))
-        } else {
-          response.status(200).json({
-            message: 'Posts received',
-            posts: posts
-          })
-        }
-      })
-  }
+  private getPosts = asyncHandler(
+    async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const owner = request.user ? request.user.owner : false
+        const posts = this.postService.getPosts(owner)
+        response.status(200).json({
+          message: 'Posts received',
+          posts: posts
+        })
+      } catch (error) {
+        next(error)
+      }
+    }
+  )
 
   // TODO: Don't get posts that isn't published if not owner
   // @desc Return post from the id
   // @route GET /api/posts:id
   // @access Public
-  private getPostById(
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ) {
-    const id = new Types.ObjectId(request.params.id)
-    // if post is published and user is owner show
-    // else don't
-    PostModel.findById(id).exec((error, post) => {
-      if (error) {
-        next(new PostNotFoundException(id))
-      } else {
-        Comment.find({ postId: id }) // TODO: Move this function somewhere else
-          .sort({ commentDate: 1 })
-          .populate('user', 'username') // NOTE: Get the username only
-          .exec((error, comments) => {
-            if (error) {
-              next(new PostNotFoundException(id))
-            } else {
-              response.status(200).json({
-                message: 'Post received',
-                post: post,
-                comments: comments
-              })
-            }
-          })
+  private getPostById = asyncHandler(
+    async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const owner = request.user ? request.user.owner : false
+        const id = request.params.id
+        const post = this.postService.getPostByID(id, owner)
+        response.status(200).json({
+          message: 'Posts received',
+          post: post
+        })
+      } catch (error) {
+        next(error)
       }
-    })
-  }
+    }
+  )
 
-  // @desc Set a post
+  // @desc Create a post
   // @route POST /api/posts
   // @access Private
-  private createPost(request: Request, response: Response, next: NextFunction) {
-    const postData: IPost = request.body
-    PostModel.create(postData, (error, post) => {
-      if (error) {
-        next(new HttpException(404, 'Failed to create post'))
-      } else {
+  private createPost = asyncHandler(
+    async (request: Request, response: Response, next: NextFunction) => {
+      const postData: IPost = request.body
+      try {
+        const post = this.postService.createPost(postData)
         response.status(200).json({
           message: 'Post saved',
           post: post
         })
+      } catch (error) {
+        next(error)
       }
-    })
-  }
+    }
+  )
 
   // @desc Update a post
   // @route PUT /api/posts/:id
   // @access Private
-  private updatePost(request: Request, response: Response, next: NextFunction) {
-    const id = new Types.ObjectId(request.params.id)
-    const post: IPost = request.body
-    PostModel.findByIdAndUpdate(id, post, { new: true }).exec((error) => {
-      if (error) {
-        next(new PostNotFoundException(id))
-      } else {
+  private updatePost = asyncHandler(
+    async (request: Request, response: Response, next: NextFunction) => {
+      const postData: IPost = request.body
+      const id = request.params.id
+      try {
+        const post = this.postService.updatePost(id, postData)
         response.status(200).json({
           message: 'Post updated',
           post: post
         })
+      } catch (error) {
+        next(error)
       }
-    })
-  }
+    }
+  )
 
   // @desc Delete a post
   // @route DELETE /api/posts/:id
   // @access Private
-  private deletePost(request: Request, response: Response, next: NextFunction) {
-    const id = new Types.ObjectId(request.params.id)
-    PostModel.findByIdAndRemove(id).exec((error) => {
-      if (error) {
-        next(new PostNotFoundException(id))
-      } else {
+  private deletePost = asyncHandler(
+    async (request: Request, response: Response, next: NextFunction) => {
+      const id = request.params.id
+      try {
+        const postId = this.postService.deletePost(id)
         response.status(200).json({
           message: 'Post deleted',
-          post: id
+          post: postId
         })
+      } catch (error) {
+        next(error)
       }
-    })
-  }
+    }
+  )
 
   // @desc Create a comment
   // @route POST /api/posts/:id/comment
   // @access Private
-  private createComment(
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ) {
-    const commentData: CommentDto = request.body
-    const newComment = {
-      ...commentData,
-      user: request.user._id, // current user id
-      postId: request.params.id // current post id
-    }
-    Comment.create(newComment, (error, comment) => {
-      if (error) {
-        next(new HttpException(404, 'Failed to create comment'))
-      } else {
+  private createComment = asyncHandler(
+    async (request: Request, response: Response, next: NextFunction) => {
+      const commentData: CommentDto = request.body
+      const userId = request.user._id // current user id
+      const postId = request.params.id // current post id
+
+      try {
+        const comment = this.postService.createComment(
+          commentData,
+          userId,
+          postId
+        )
         response.status(200).json({
           message: 'Comment saved',
           comment: comment
         })
+      } catch (error) {
+        next(error)
       }
-    })
-  }
+    }
+  )
 }
 
 export default PostController
