@@ -46,8 +46,8 @@ class AuthenticationController implements IController {
           userData
         )
         response.status(201).setHeader('Set-Cookie', [cookie]).json({
-          Message: 'Registration successful',
-          User: user
+          message: 'Registration successful',
+          user: user
         })
       } catch (error) {
         next(error)
@@ -63,8 +63,8 @@ class AuthenticationController implements IController {
           logInData
         )
         response.status(200).setHeader('Set-Cookie', [cookie]).json({
-          Message: 'Login successful',
-          User: user
+          message: 'Login successful',
+          user: user
         })
       } catch (error) {
         next(error)
@@ -74,12 +74,9 @@ class AuthenticationController implements IController {
 
   private loggingOut: RequestHandler = (_, response) => {
     const cookie = this.authenticationService.logOut()
-    response
-      .status(200)
-      .setHeader('Set-Cookie', [`${cookie}`])
-      .json({
-        Message: 'Logout successful'
-      })
+    response.status(200).setHeader('Set-Cookie', [cookie]).json({
+      message: 'Logout successful'
+    })
   }
 }
 
