@@ -19,7 +19,7 @@ const authMiddleware = asyncHander(async (request, _, next) => {
       ) as DataStoredInToken
       const user = await UserModel.findById(id)
       if (user) {
-        request.user = user
+        request.user = user // access the user in this route
         next()
       } else {
         next(new WrongAuthenticationTokenException())

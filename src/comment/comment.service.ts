@@ -1,6 +1,5 @@
 import { isValidObjectId, Types } from 'mongoose'
 import InValidIdException from '../exception/InValidIdException'
-import HttpException from '../exception/HttpException'
 import CommentDto from './comment.dto'
 import CommentModel from './comment.model'
 
@@ -35,8 +34,8 @@ class CommentService {
 
     const post = new Types.ObjectId(postId)
     const comments = await CommentModel.find({ postId: post })
-      .sort({ commentDate: 1 })
-      .populate('user', 'username')
+      .sort({ commentDate: 1 }) // sort comments by data
+      .populate('user', 'username') // only get the username
     return comments
   }
 }
