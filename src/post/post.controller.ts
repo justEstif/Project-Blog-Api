@@ -8,10 +8,10 @@ import ownerMiddleware from '../middleware/owner.middleware'
 import CommentDto from '../comment/comment.dto'
 import PostService from './post.service'
 import asyncHandler from 'express-async-handler'
+import WrongAuthenticationTokenException from '../exception/WrongAuthenticationTokenMissingException'
 
 class PostController implements IController {
   public path = '/api/posts'
-  public path_all = `${this.path}/*`
   public path_id = `${this.path}/:id`
   public path_id_comment = `${this.path}/:id/comment`
   public router = Router()
@@ -148,21 +148,25 @@ class PostController implements IController {
   private createComment = asyncHandler(
     async (request: Request, response: Response, next: NextFunction) => {
       const commentData: CommentDto = request.body
-      const userId = request.user._id // current user id
-      const postId = request.params.id // current post id
+      if (request.user) {
+        const userId = request.user._id // current user id
+        const postId = request.params.id // current post id
 
-      try {
-        const comment = await this.postService.createComment(
-          commentData,
-          userId,
-          postId
-        )
-        response.status(200).json({
-          message: 'Comment saved',
-          comment: comment
-        })
-      } catch (error) {
-        next(error)
+        try {
+          const comment = await this.postService.createComment(
+            commentData,
+            userId,
+            postId
+          )
+          response.status(200).json({
+            message: 'Comment saved',
+            comment: comment
+          })
+        } catch (error) {
+          next(error)
+        }
+      } else {
+        next(new WrongAuthenticationTokenException())
       }
     }
   )
