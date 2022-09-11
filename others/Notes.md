@@ -46,7 +46,7 @@
 
 - email: string, required
 - username: string, required
-- `hashedPassword`: string, required
+- password: string, required -> the hashed password
 - owner: boolean, default false
   - author has access to the edit/publish front end
   - no-author can only access view/comment front end
@@ -57,16 +57,16 @@
 - body: string, required
 - summary: string, required
 - tags: array of string, required, min 1
-- `comment-ids` : array of comments, required
 - published: boolean, default false, required
 - publication-date: date,
   - set to date.now when published = true
 
 ### Comments
 
-- `user-id`: string, default: id of the logged in user
+- user: string, default: id of the logged in user
 - body: string, required, min length: 3
-- comment-date: Date, default: Date.now, required
+- commentDate: Date, default: Date.now, required
+- postId
 
 ## Authentication
 
@@ -84,23 +84,21 @@
 ### Dependencies
 
 - script
-  - `npm i async compression dotenv helmet luxon mongoose ejs express-validator serve-favicon`
+  - `npm i compression dotenv helmet mongoose serve-favicon`
 
 ### Development Dependencies
 
 - script:
-  `npm i -D @types/async @types/compression @types/luxon @types/mongoose @types/serve-favicon concurrently`
+  `npm i -D @types/compression @types/mongoose @types/serve-favicon concurrently`
 
 ### Middleware
 
 - Helmet
 
-```js
-helmet({
-  contentSecurityPolicy: false,
-  crossOriginEmbedderPolicy: false
-})
-```
+      helmet({
+        contentSecurityPolicy: false,
+        crossOriginEmbedderPolicy: false
+      })
 
 ## Mongoose Models
 
@@ -121,27 +119,30 @@ helmet({
       - GET: show/read post
       - PUT: update/edit post
       - DELETE: delete post
-      - POST create/add post ??
 
     - QUESTION: Could I make this route dependent of the user?
-      - if user -> take to posts/
-      - if owner -> take to posts/admin
+      - use middleware to check if logged in user is the owner
 
-  - /users:
+  - /register:
 
     - POST: sign up user
 
-    - /sign-in
+  - /login
 
-      - POST: sign in user
+    - POST: sign in user -> set the cookie
+
+  - /logout
+
+    - POST: sign out user -> clear cookie
 
 - Protected routes:
-  - DELETE post
-  - POST post
-  - PUT post
 
-- Add validator that checks that username is unique
-- Add validator that checks email is unique
+  - Only logged in user
 
-- For the routes that use the auth middleware
-  - we check if the user is the owner??
+    - POST comment
+
+  - Only owner
+
+    - DELETE post
+    - POST post
+    - PUT post

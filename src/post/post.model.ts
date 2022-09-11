@@ -34,6 +34,5 @@ PostSchema.pre('save', function (next) {
   next()
 })
 
-// TODO: Virtuals
 const PostModel = model<IPost>('Post', PostSchema)
 export default PostModel
