@@ -11,6 +11,8 @@ import LogInDto from './logIn.dto'
 import IController from '../interface/controller.interface' // interfaces
 import AuthenticationService from './authentication.service'
 import asyncHandler from 'express-async-handler'
+import authMiddleware from '../middleware/auth.middleware'
+import UserAlreadyLoggedInException from 'src/exception/UserAlreadyLoggedIn'
 
 class AuthenticationController implements IController {
   public path = '/api'
@@ -27,20 +29,26 @@ class AuthenticationController implements IController {
   private initializeRoutes() {
     this.router.post(
       this.path_register,
+      authMiddleware,
       validationMiddleware(CreateUserDto),
       this.registration
     )
     this.router.post(
       this.path_login,
+      authMiddleware,
       validationMiddleware(LogInDto),
       this.loggingIn
     )
     this.router.post(this.path_logout, this.loggingOut)
   }
 
+  // @desc Register a user
+  // @route POST /api/register
+  // @access public
   private registration = asyncHandler(
     async (request: Request, response: Response, next: NextFunction) => {
       const userData: CreateUserDto = request.body
+      if (request.user) next(new UserAlreadyLoggedInException())
       try {
         const { cookie, user } = await this.authenticationService.register(
           userData
@@ -55,9 +63,13 @@ class AuthenticationController implements IController {
     }
   )
 
+  // @desc Login a user
+  // @route POST /api/login
+  // @access public
   private loggingIn = asyncHandler(
     async (request: Request, response: Response, next: NextFunction) => {
       const logInData: LogInDto = request.body
+      if (request.user) next(new UserAlreadyLoggedInException())
       try {
         const { cookie, user } = await this.authenticationService.logIn(
           logInData
@@ -72,6 +84,9 @@ class AuthenticationController implements IController {
     }
   )
 
+  // @desc Logout a user
+  // @route POST /api/logout
+  // @access public
   private loggingOut: RequestHandler = (_, response) => {
     const cookie = this.authenticationService.logOut()
     response.status(200).setHeader('Set-Cookie', [cookie]).json({
