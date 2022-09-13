@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser'
 import endpoints from './utils/endpoints'
 import IController from './interface/controller.interface'
 import errorMiddleware from './middleware/error.middleware'
+import localStrategy from './authentication/passport'
+import passport from 'passport'
 
 class App {
   public app: Application
@@ -26,7 +28,9 @@ class App {
     this.app.use(compression()) // compress
     this.app.use(helmet()) // helmet
     this.app.use(cookieParser()) // cookies
+    passport.use(localStrategy) // passport
   }
+
 
   private initializeControllers(controllers: IController[]) {
     controllers.forEach((controller) => {
