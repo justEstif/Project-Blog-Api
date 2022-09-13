@@ -146,3 +146,46 @@
     - DELETE post
     - POST post
     - PUT post
+
+## Controllers
+
+### Post
+
+- `getPosts`
+  - GET `/api/posts/`
+  - get all posts
+    - if owner -> unpublished + published
+    - else only published posts
+- `getPostsById`
+  - GET `/api/posts/:id`
+  - get the post and comment
+    - if not owner -> error if unpublished
+- `createPost`
+  - POST `/api/posts`
+  - create post with valid request body
+- `updatePost`
+  - PUT `/api/posts/:id`
+  - update post with valid request body
+- `deletePost`
+  - DELETE `/api/posts/:id`
+  - if owner, delete post
+- `createComment`
+  - POST `/api/posts/:id/comment`
+  - if user if logged in, create a comment
+  - else send auth exception
+
+
+### User
+
+
+### Authentication
+
+- `registration`
+  - POST `/api/register`
+  - register user if no user(else error)
+- `loggingIn`
+  - POST `/api/login`
+  - log user in if no user(else error)
+- `loggingOut`
+  - POST `/api/logout`
+  - clear cookie
