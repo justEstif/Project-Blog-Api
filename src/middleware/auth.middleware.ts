@@ -1,35 +1,18 @@
-import jwt from 'jsonwebtoken'
-import endpoints from '../utils/endpoints'
-import AuthenticationTokenMissingException from '../exception/AuthenticationTokenMissingException'
-import WrongAuthenticationTokenException from '../exception/WrongAuthenticationTokenMissingException'
-import DataStoredInToken from '../interface/dataStoredInToken'
-import asyncHander from 'express-async-handler'
-import UserModel from '../user/user.model'
+import { RequestHandler } from 'express'
+import passport from 'passport'
 
-// checks that a user is logged in
-const authMiddleware = asyncHander(async (request, _, next) => {
-  const cookies = request.cookies
-  if (cookies && cookies.Authorization) {
-    const secret = endpoints.JWT_SECRET
-
-    try {
-      const { _id: id } = jwt.verify(
-        cookies.Authorization,
-        secret
-      ) as DataStoredInToken
-      const user = await UserModel.findById(id)
-      if (user) {
-        request.user = user // access the user in this route
-        next()
-      } else {
-        next(new WrongAuthenticationTokenException())
-      }
-    } catch (error) {
-      next(new WrongAuthenticationTokenException())
+const authMiddleware: RequestHandler = (request, response, next) => {
+  passport.authenticate('jwt', { session: false }, (err, user) => {
+    if (err || !user) {
+      // TODO: Add error here
+      response.status(400).json({
+        message: 'Something is not right'
+      })
+    } else {
+      request.user = user // access the user in this route
+      next()
     }
-  } else {
-    next(new AuthenticationTokenMissingException())
-  }
-})
+  })(request, response)
+}
 
 export default authMiddleware
