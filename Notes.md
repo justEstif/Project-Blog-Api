@@ -189,3 +189,7 @@
 - `loggingOut`
   - POST `/api/logout`
   - clear cookie
+
+
+<https://www.youtube.com/watch?v=v0t42xBIYIs>
+<https://www.youtube.com/watch?v=w3vs4a03y3I>
