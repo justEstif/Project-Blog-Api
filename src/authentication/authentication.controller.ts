@@ -12,7 +12,7 @@ import IController from '../interface/controller.interface' // interfaces
 import AuthenticationService from './authentication.service'
 import asyncHandler from 'express-async-handler'
 import authMiddleware from '../middleware/auth.middleware'
-import UserAlreadyLoggedInException from 'src/exception/UserAlreadyLoggedIn'
+import passport from 'passport'
 
 class AuthenticationController implements IController {
   public path = '/api'
@@ -48,14 +48,17 @@ class AuthenticationController implements IController {
   private registration = asyncHandler(
     async (request: Request, response: Response, next: NextFunction) => {
       const userData: CreateUserDto = request.body
-      if (request.user) next(new UserAlreadyLoggedInException())
       try {
-        const { cookie, user } = await this.authenticationService.register(
+        const { user, token } = await this.authenticationService.register(
           userData
         )
-        response.status(201).setHeader('Set-Cookie', [cookie]).json({
-          message: 'Registration successful',
-          user: user
+        request.login(user, { session: false }, (err) => {
+          if (err) {
+            // TODO: Throw error here
+            response.send(err)
+          } else {
+            response.json({ user, token })
+          }
         })
       } catch (error) {
         next(error)
@@ -66,31 +69,41 @@ class AuthenticationController implements IController {
   // @desc Login a user
   // @route POST /api/login
   // @access public
-  private loggingIn = asyncHandler(
-    async (request: Request, response: Response, next: NextFunction) => {
-      const logInData: LogInDto = request.body
-      if (request.user) next(new UserAlreadyLoggedInException())
-      try {
-        const { cookie, user } = await this.authenticationService.logIn(
-          logInData
-        )
-        response.status(200).setHeader('Set-Cookie', [cookie]).json({
-          message: 'Login successful',
+  private loggingIn: RequestHandler = (request, response) => {
+    passport.authenticate('local', { session: false }, (err, user) => {
+      if (err || !user) {
+        // TODO: Throw error here
+        response.status(400).json({
+          message: 'Something is not right',
           user: user
         })
-      } catch (error) {
-        next(error)
+      } else {
+        request.login(user, { session: false }, (err) => {
+          if (err) {
+            // TODO: Throw error here
+            response.send(err)
+          } else {
+            // TODO: create token here
+            const token = this.authenticationService.createToken(user)
+            response.json({ user, token })
+          }
+        })
       }
-    }
-  )
+    })(request, response)
+  }
 
   // @desc Logout a user
   // @route POST /api/logout
   // @access public
-  private loggingOut: RequestHandler = (_, response) => {
-    const cookie = this.authenticationService.logOut()
-    response.status(200).setHeader('Set-Cookie', [cookie]).json({
-      message: 'Logout successful'
+  private loggingOut: RequestHandler = (request, response) => {
+    request.logout(function (err) {
+      if (err) {
+        response.send(err)
+      } else {
+        response.status(200).json({
+          message: 'Logout successful'
+        })
+      }
     })
   }
 }
