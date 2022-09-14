@@ -11,7 +11,6 @@ import LogInDto from './logIn.dto'
 import IController from '../interface/controller.interface' // interfaces
 import AuthenticationService from './authentication.service'
 import asyncHandler from 'express-async-handler'
-import authMiddleware from '../middleware/auth.middleware'
 import passport from 'passport'
 
 class AuthenticationController implements IController {
@@ -29,13 +28,11 @@ class AuthenticationController implements IController {
   private initializeRoutes() {
     this.router.post(
       this.path_register,
-      authMiddleware,
       validationMiddleware(CreateUserDto),
       this.registration
     )
     this.router.post(
       this.path_login,
-      authMiddleware,
       validationMiddleware(LogInDto),
       this.loggingIn
     )
@@ -53,6 +50,7 @@ class AuthenticationController implements IController {
           userData
         )
         request.login(user, { session: false }, (err) => {
+          // login user after signup
           if (err) {
             // TODO: Throw error here
             response.send(err)
