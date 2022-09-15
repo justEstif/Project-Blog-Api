@@ -55,6 +55,7 @@ class AuthenticationController implements IController {
             // TODO: Throw error here
             response.send(err)
           } else {
+            // TODO: Do you actually want the user and token back?
             response.json({ user, token })
           }
         })
@@ -81,8 +82,8 @@ class AuthenticationController implements IController {
             // TODO: Throw error here
             response.send(err)
           } else {
-            // TODO: create token here
             const token = this.authenticationService.createToken(user)
+            // TODO: Do you actually want the user and token back?
             response.json({ user, token })
           }
         })
