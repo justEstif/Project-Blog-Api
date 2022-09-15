@@ -9,8 +9,8 @@ import CommentService from '../comment/comment.service'
 class PostService {
   public commentService = new CommentService()
 
-  public getPosts = async (owner: boolean) => {
-    const searchCriteria = owner ? {} : { published: true }
+  public getPosts = async (filter: boolean) => {
+    const searchCriteria = filter ? {} : { published: true }
     const posts = await PostModel.find(searchCriteria).sort({
       publicationDate: 1
     })
@@ -22,8 +22,8 @@ class PostService {
     }
   }
 
-  public getPostByID = async (id: string, owner: boolean) => {
-    const searchCriteria = owner ? {} : { published: true }
+  public getPostByID = async (id: string, filter: boolean) => {
+    const searchCriteria = filter ? {} : { published: true }
     const postId = new Types.ObjectId(id)
     const post = await PostModel.find({
       _id: postId,
