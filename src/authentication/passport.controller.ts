@@ -16,7 +16,7 @@ const passportController = () => {
         user.get('password', null, { getters: false })
       )
       if (matchingPassword) {
-        return cb(null, false, { message: 'Logged in successfully' })
+        return cb(null, user, { message: 'Logged in successfully' })
       } else {
         return cb(null, false, { message: 'Incorrect email or password' })
       }
@@ -31,6 +31,7 @@ const passportController = () => {
     async (jwtPayload, cb) => {
       try {
         const user = await UserModel.findById(jwtPayload.id)
+        if (user) delete user.password
         return cb(null, user)
       } catch (err) {
         return cb(err)
