@@ -17,6 +17,7 @@ const passportController = () => {
           password,
           user.get('password', null, { getters: false })
         )
+        delete user.password
         if (matchingPassword) {
           return cb(null, user, { message: 'Logged in successfully' })
         } else {
