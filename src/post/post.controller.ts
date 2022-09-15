@@ -5,9 +5,11 @@ import validationMiddleware from '../middleware/validation.middleware'
 import CreatePostDto from './post.dto'
 import authMiddleware from '../middleware/auth.middleware'
 import ownerMiddleware from '../middleware/owner.middleware'
+import checkPostIdMiddleware from '../middleware/checkPostId.middleware'
 import CommentDto from '../comment/comment.dto'
 import PostService from './post.service'
 import asyncHandler from 'express-async-handler'
+import filterPostMiddleware from '../middleware/filterPost.middleware'
 
 class PostController implements IController {
   public path = '/api/posts'
@@ -23,30 +25,40 @@ class PostController implements IController {
 
   public intializeRoutes() {
     // public routes
-    this.router.get(this.path, authMiddleware, this.getPosts)
-    this.router.get(this.path_id, authMiddleware, this.getPostById)
+    this.router.get(this.path, filterPostMiddleware, this.getPosts)
+    this.router.get(
+      this.path_id,
+      filterPostMiddleware,
+      checkPostIdMiddleware,
+      this.getPostById
+    )
+
+    this.router.post(
+      this.path_id_comment,
+      authMiddleware,
+      validationMiddleware(CommentDto),
+      this.createComment
+    )
     // private routes -> only owner
     this.router
       .put(
         this.path_id,
-        authMiddleware,
         ownerMiddleware,
+        checkPostIdMiddleware,
         validationMiddleware(CreatePostDto),
         this.updatePost
       )
-      .delete(this.path_id, authMiddleware, ownerMiddleware, this.deletePost)
+      .delete(
+        this.path_id,
+        ownerMiddleware,
+        checkPostIdMiddleware,
+        this.deletePost
+      )
       .post(
         this.path,
-        authMiddleware,
         ownerMiddleware,
         validationMiddleware(CreatePostDto),
         this.createPost
-      )
-      .post(
-        this.path_id_comment,
-        authMiddleware,
-        validationMiddleware(CommentDto),
-        this.createComment
       )
   }
 
@@ -56,8 +68,7 @@ class PostController implements IController {
   private getPosts = asyncHandler(
     async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const owner = request.user ? request.user.owner : false
-        const posts = await this.postService.getPosts(owner)
+        const posts = await this.postService.getPosts(request.filter ?? true)
         response.status(200).json({
           message: 'Posts received',
           posts: posts
@@ -74,9 +85,11 @@ class PostController implements IController {
   private getPostById = asyncHandler(
     async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const owner = request.user ? request.user.owner : false
         const id = request.params.id
-        const post = await this.postService.getPostByID(id, owner)
+        const post = await this.postService.getPostByID(
+          id,
+          request.filter ?? true
+        )
         response.status(200).json({
           message: 'Posts received',
           post: post
