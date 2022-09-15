@@ -6,22 +6,25 @@ import endpoints from '../utils/endpoints'
 import passport from 'passport'
 
 const passportController = () => {
-  const localStrategy = new LocalStrategy(async (email, password, cb) => {
-    const user = await UserModel.findOne({ email: email })
-    if (!user) {
-      return cb(null, false, { message: 'Incorrect email or password' })
-    } else {
-      const matchingPassword = await bcrypt.compare(
-        password,
-        user.get('password', null, { getters: false })
-      )
-      if (matchingPassword) {
-        return cb(null, user, { message: 'Logged in successfully' })
-      } else {
+  const localStrategy = new LocalStrategy(
+    { usernameField: 'email' },
+    async (username, password, cb) => {
+      const user = await UserModel.findOne({ email: username })
+      if (!user) {
         return cb(null, false, { message: 'Incorrect email or password' })
+      } else {
+        const matchingPassword = await bcrypt.compare(
+          password,
+          user.get('password', null, { getters: false })
+        )
+        if (matchingPassword) {
+          return cb(null, user, { message: 'Logged in successfully' })
+        } else {
+          return cb(null, false, { message: 'Incorrect email or password' })
+        }
       }
     }
-  })
+  )
 
   const jwtStrategy = new JWTStrategy(
     {
