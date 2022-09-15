@@ -7,6 +7,7 @@ import endpoints from './utils/endpoints'
 import IController from './interface/controller.interface'
 import errorMiddleware from './middleware/error.middleware'
 import passportController from './authentication/passport.controller'
+import passport from 'passport'
 
 class App {
   public app: Application
@@ -28,6 +29,7 @@ class App {
     this.app.use(helmet()) // helmet
     this.app.use(cookieParser()) // cookies
     passportController() // setup passport
+    this.app.use(passport.initialize());
   }
 
   private initializeControllers(controllers: IController[]) {
