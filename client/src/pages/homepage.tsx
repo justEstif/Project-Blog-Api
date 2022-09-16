@@ -1,8 +1,11 @@
 // import tw from 'tailwind-styled-components'
+import Header from './header'
 
 const HomePage = () => {
   return (
-      <div>Hello from HomePage</div>
+    <>
+      <Header />
+    </>
   )
 }
 
