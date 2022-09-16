@@ -39,6 +39,7 @@ class PostController implements IController {
       validationMiddleware(CommentDto),
       this.createComment
     )
+
     // private routes -> only owner
     this.router
       .put(
