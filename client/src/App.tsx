@@ -1,18 +1,13 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import tw from 'tailwind-styled-components'
+import HomePage from './pages/homepage'
+import Layout from './components/layout'
 
 interface IPost {
   title: string
   body: string
   _id: string
 }
-
-const Greeting = tw.h1`
-  text-3xl
-  font-bold
-  underline
-`
 
 function App() {
   const [data, setData] = useState<IPost[]>([]) // TODO: add interface
@@ -32,16 +27,9 @@ function App() {
   }, [])
 
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      <Greeting>Hello</Greeting>
-      <h1>Hello</h1>
-      {data.length === 0 ? (
-        <p>loading</p>
-      ) : (
-        data.map((post, i) => <p key={i}>{post.title}</p>)
-      )}
-    </div>
+    <Layout>
+      <HomePage />
+    </Layout>
   )
 }
 
