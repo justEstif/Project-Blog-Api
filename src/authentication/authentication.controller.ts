@@ -12,6 +12,8 @@ import IController from '../interface/controller.interface' // interfaces
 import AuthenticationService from './authentication.service'
 import asyncHandler from 'express-async-handler'
 import passport from 'passport'
+import HttpException from '../exception/HttpException'
+import WrongCredentialsException from 'src/exception/WrongCredentialsException'
 
 class AuthenticationController implements IController {
   public path = '/api'
@@ -50,12 +52,9 @@ class AuthenticationController implements IController {
           userData
         )
         request.login(user, { session: false }, (err) => {
-          // login user after signup
           if (err) {
-            // TODO: Throw error here
-            response.send(err)
+            next(new HttpException(400, 'Error while logging in'))
           } else {
-            // TODO: Do you actually want the user and token back?
             response.json({ user, token })
           }
         })
@@ -68,22 +67,16 @@ class AuthenticationController implements IController {
   // @desc Login a user
   // @route POST /api/login
   // @access public
-  private loggingIn: RequestHandler = (request, response) => {
+  private loggingIn: RequestHandler = (request, response, next) => {
     passport.authenticate('local', { session: false }, (err, user) => {
       if (err || !user) {
-        // TODO: Throw error here
-        response.status(400).json({
-          message: 'Something is not right',
-          user: user
-        })
+        next(new WrongCredentialsException())
       } else {
         request.login(user, { session: false }, (err) => {
           if (err) {
-            // TODO: Throw error here
-            response.send(err)
+            next(new WrongCredentialsException())
           } else {
             const token = this.authenticationService.createToken(user)
-            // TODO: Do you actually want the user and token back?
             response.json({ user, token })
           }
         })
@@ -94,10 +87,10 @@ class AuthenticationController implements IController {
   // @desc Logout a user
   // @route POST /api/logout
   // @access public
-  private loggingOut: RequestHandler = (request, response) => {
+  private loggingOut: RequestHandler = (request, response, next) => {
     request.logout(function (err) {
       if (err) {
-        response.send(err)
+        next(new HttpException(400, 'Error while logging out'))
       } else {
         response.status(200).json({
           message: 'Logout successful'
