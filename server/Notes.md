@@ -174,10 +174,6 @@
   - if user if logged in, create a comment
   - else send auth exception
 
-
-### User
-
-
 ### Authentication
 
 - `registration`
@@ -188,10 +184,4 @@
   - log user in if no user(else error)
 - `loggingOut`
   - POST `/api/logout`
-  - clear cookie
-
-
-<https://www.youtube.com/watch?v=v0t42xBIYIs>
-<https://www.youtube.com/watch?v=w3vs4a03y3I>
-
-There are plenty of configs, and most of them should work great out the box.
+  - logout
