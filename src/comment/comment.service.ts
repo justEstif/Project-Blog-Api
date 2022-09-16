@@ -1,5 +1,4 @@
-import { isValidObjectId, Types } from 'mongoose'
-import InValidIdException from '../exception/InValidIdException'
+import { Types } from 'mongoose'
 import CommentDto from './comment.dto'
 import CommentModel from './comment.model'
 
@@ -9,13 +8,6 @@ class CommentService {
     userId: string,
     postId: string
   ) => {
-    if (!isValidObjectId(userId)) {
-      throw new InValidIdException(userId)
-    }
-
-    if (!isValidObjectId(postId)) {
-      throw new InValidIdException(postId)
-    }
     const user = new Types.ObjectId(userId)
     const post = new Types.ObjectId(postId)
     const newComment = {
@@ -28,10 +20,6 @@ class CommentService {
   }
 
   public getComments = async (postId: string) => {
-    if (!isValidObjectId(postId)) {
-      throw new InValidIdException(postId)
-    }
-
     const post = new Types.ObjectId(postId)
     const comments = await CommentModel.find({ postId: post })
       .sort({ commentDate: 1 }) // sort comments by data
