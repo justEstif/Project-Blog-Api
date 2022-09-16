@@ -25,7 +25,7 @@ class AuthenticationService {
         ...userData,
         password: hashedPassword // adding hashed pw to db
       })
-      user.password = undefined // clearing user pw from response
+      delete user.password // clearing user pw from response
       const token = this.createToken(user)
       return { user, token }
     }
