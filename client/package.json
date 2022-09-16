@@ -10,6 +10,7 @@
     "format:dev": "npx -p prettier@latest -p pretty-quick pretty-quick"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
