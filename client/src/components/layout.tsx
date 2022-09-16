@@ -3,13 +3,13 @@ import tw from 'tailwind-styled-components'
 
 const SSiteLayout = tw.div`
   font-serif
-  bg-blue-100
+  bg-gray-50
 `
 
 const SPageLayout = tw.main`
   container
   mx-auto
-  pt-5
+  pt-8
 `
 
 const Layout = ({ children }: PropsWithChildren) => {
