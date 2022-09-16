@@ -13,7 +13,7 @@ import AuthenticationService from './authentication.service'
 import asyncHandler from 'express-async-handler'
 import passport from 'passport'
 import HttpException from '../exception/HttpException'
-import WrongCredentialsException from 'src/exception/WrongCredentialsException'
+import WrongCredentialsException from '../exception/WrongCredentialsException'
 
 class AuthenticationController implements IController {
   public path = '/api'

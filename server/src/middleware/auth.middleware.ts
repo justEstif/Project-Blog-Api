@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 import passport from 'passport'
-import WrongAuthenticationTokenException from 'src/exception/WrongAuthenticationTokenMissingException'
+import WrongAuthenticationTokenException from '../exception/WrongAuthenticationTokenMissingException'
 
 const authMiddleware: RequestHandler = (request, response, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {

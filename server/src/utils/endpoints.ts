@@ -6,7 +6,7 @@ const endpoints = cleanEnv(process.env, {
   MONGO_PATH: str(),
   MONGO_USER: str(),
   JWT_SECRET: str(),
-  PORT: port({ default: 3000 }),
+  PORT: port({ default: 6600 }),
   NODE_ENV: str()
 })
 
