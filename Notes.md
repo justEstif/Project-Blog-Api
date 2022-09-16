@@ -120,7 +120,7 @@
       - PUT: update/edit post
       - DELETE: delete post
 
-    - QUESTION: Could I make this route dependent of the user?
+    - Done: Could I make this route dependent of the user?
       - use middleware to check if logged in user is the owner
 
   - /register:
@@ -193,3 +193,5 @@
 
 <https://www.youtube.com/watch?v=v0t42xBIYIs>
 <https://www.youtube.com/watch?v=w3vs4a03y3I>
+
+There are plenty of configs, and most of them should work great out the box.
