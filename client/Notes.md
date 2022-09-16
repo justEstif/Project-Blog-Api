@@ -1,11 +1,11 @@
 # Client side
 
-## Using :
+## Using
 
 - React (vite.ts)
 - Axios
 - react form hook
-- tailwindstyledcomponents
+- tailwind + tailwindstyledcomponents(npm package)
 
 ## Project Structure
 
@@ -37,3 +37,20 @@
 ## Global Context:
 
 - current user
+
+## TODO
+
+model: <https://hugotex.vercel.app/>
+
+1. make home page
+
+  - create nav bar
+    - Logo -> link to home page
+
+```js
+{data.length === 0 ? (
+  <p>loading</p>
+) : (
+  data.map((post, i) => <p key={i}>{post.title}</p>)
+)}
+```
