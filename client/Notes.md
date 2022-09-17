@@ -44,8 +44,22 @@ model: <https://hugotex.vercel.app/>
 
 1. make home page
 
-  - create nav bar
-    - Logo -> link to home page
+  - [X]create nav bar
+    - [ ]Logo -> link to home page
+  - [ ] User icon when not logged in
+  - [ ] Logout icon when logged in (with username)
+
+2. Create login page
+  - [ ] react router
+  - [ ] zustand
+  - [ ] form -> react form hook + axios
+  - [ ] keep user in context that is accessible app wide
+
+3. Create post page
+4. Create comment form in post page
+6. Create owner website
+  1. Create owner create, edit post page
+
 
 ```js
 {data.length === 0 ? (
@@ -56,3 +70,5 @@ model: <https://hugotex.vercel.app/>
 ```
 
 highlight js: <https://highlightjs.org/>
+
+
