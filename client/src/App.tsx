@@ -2,15 +2,10 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import HomePage from './pages/homepage'
 import Layout from './components/layout'
-
-interface IPost {
-  title: string
-  body: string
-  _id: string
-}
+import IPost from './interface/IPost'
 
 function App() {
-  const [data, setData] = useState<IPost[]>([]) // TODO: add interface
+  const [posts, setPosts] = useState<IPost[]>([]) // TODO: add interface
   const urlwithProxy = '/api/posts'
 
   useEffect(() => {
@@ -18,7 +13,7 @@ function App() {
       try {
         const response = await axios.get(urlwithProxy)
         const data: IPost[] = response.data
-        setData(() => data)
+        setPosts(() => data)
       } catch (error) {
         console.log(error)
       }
@@ -28,7 +23,7 @@ function App() {
 
   return (
     <Layout>
-      <HomePage />
+      <HomePage postsProp={posts}/>
     </Layout>
   )
 }
