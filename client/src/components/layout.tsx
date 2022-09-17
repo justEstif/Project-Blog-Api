@@ -9,7 +9,7 @@ const SSiteLayout = tw.div`
 const SPageLayout = tw.main`
   container
   mx-auto
-  pt-8
+  pt-10
 `
 
 const Layout = ({ children }: PropsWithChildren) => {

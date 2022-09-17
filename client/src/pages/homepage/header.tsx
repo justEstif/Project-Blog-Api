@@ -1,13 +1,17 @@
+// TODO: Add login, logout, register buttons
 const Header = () => {
   return (
-    <div className="flex flex-col gap-8 tracking-wider leading-5">
-      <p className="text-4xl text-center">Interesting Blog</p>
-      <p className="text-center uppercase text-md">Estifanos Beyene</p>
-      <p className="font-semibold text-center text-md">Abstract</p>
-      <p className="text-center text-md">
-        I'm a full stack developer originally from Ethiopia.
-      </p>
-    </div>
+    <header>
+      <ul className="flex flex-col gap-8 tracking-wider leading-5">
+        <li className="text-5xl text-center">Interesting Blog</li>
+        <li className="text-center uppercase text-md">Estifanos Beyene</li>
+        <li className="text-center text-md">Abstract</li>
+        <li className="text-center text-md">
+          Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint
+          cillum sint consectetur cupidatat.
+        </li>
+      </ul>
+    </header>
   )
 }
 
