@@ -54,3 +54,5 @@ model: <https://hugotex.vercel.app/>
   data.map((post, i) => <p key={i}>{post.title}</p>)
 )}
 ```
+
+highlight js: <https://highlightjs.org/>

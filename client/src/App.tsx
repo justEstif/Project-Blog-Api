@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import HomePage from './pages/homepage'
-import Layout from './components/layout'
+import Layout from './components/Layout'
 import IPost from './interface/IPost'
+import NavBar from './components/NavBar'
 
 function App() {
   const [posts, setPosts] = useState<IPost[]>([]) // TODO: add interface
@@ -23,7 +24,8 @@ function App() {
 
   return (
     <Layout>
-      <HomePage postsProp={posts}/>
+      <NavBar />
+      <HomePage postsProp={posts} />
     </Layout>
   )
 }
