@@ -1,18 +1,10 @@
 // TODO: Add login, logout, register buttons
 import IPost from '../../interface/IPost'
-import Header from './header'
+import Header from './Header'
+import getFormattedDate from '../../utils/getFormattedDate'
 
 interface Props {
   postsProp: IPost[]
-}
-
-function getFormattedDate(date: Date) {
-  let year = date.getFullYear()
-  let day = date.getDate().toString().padStart(2, '0')
-  let month = date.toLocaleString('default', {
-    month: 'short'
-  })
-  return `${month} ${day}, ${year}`
 }
 
 const HomePage = ({ postsProp }: Props) => {
@@ -28,7 +20,7 @@ const HomePage = ({ postsProp }: Props) => {
               <p className="text-3xl text-red-700 underline">{post.title}</p>
             </a>
             {typeof post.publicationDate === 'undefined' ? (
-              <p>Not Yet Published</p>
+              <p className='italic text-blue-500'>Not Yet Published</p>
             ) : (
               <p>{getFormattedDate(post.publicationDate)}</p>
             )}
