@@ -7,8 +7,9 @@ const SSiteLayout = tw.div`
 `
 
 const SPageLayout = tw.main`
-  container
-  mx-auto
+  max-w-xl
+  mx-4
+  md:mx-auto
   pt-10
 `
 
