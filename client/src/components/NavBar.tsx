@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { HomeIcon, UserIcon, LogoutIcon } from './NavBarIcons'
+import { HomeIcon, UserIcon, LogoutIcon, RegisterUserIcon } from './NavBarIcons'
 interface Props {}
 
 // TODO: Add login, logout, register buttons
@@ -16,10 +16,15 @@ function NavBar({}: Props) {
             <HomeIcon />
           </Link>
         </li>
-        {/*If user show logout, else show user icon*/}
+        {/*TODO: If user show logout, else show UserIcon and RegisterUser*/}
         <li>
           <Link to="/login">
             <UserIcon />
+          </Link>
+        </li>
+        <li>
+          <Link to="/register">
+            <RegisterUserIcon />
           </Link>
         </li>
         <li>
