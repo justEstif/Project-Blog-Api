@@ -12,6 +12,7 @@ const HomePage = ({}: Props) => {
   const urlwithProxy = '/api/posts'
 
   useEffect(() => {
+    // TODO: do I need to include the user in the request
     const fetchData = async () => {
       try {
         const response = await axios.get(urlwithProxy)

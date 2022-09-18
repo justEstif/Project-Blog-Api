@@ -9,8 +9,8 @@ interface Props {}
 
 function NavBar({}: Props) {
   return (
-    <nav>
-      <ul className="flex justify-between mb-3">
+    <nav className='mb-7'>
+      <ul className="flex justify-between">
         <li>
           <Link to="/">
             <HomeIcon />

@@ -1,24 +1,20 @@
-import tw from 'tailwind-styled-components'
-import SHeader from "../../components/SHeader"
+// import tw from 'tailwind-styled-components'
+import SHeader from '../../components/SHeader'
+import Form from './Form'
 interface Props {}
 
 const LoginPage = ({}: Props) => {
-  const SHeader = tw.header`
-    flex
-    flex-col
-    gap-8
-    text-center
-    tracking-wider
-    leading-5
-    mb-10
-  `
   return (
-    <SHeader>
-      <p className="text-5xl capitalize">Login</p>
-      <p className="text-md">I am a fullstack developer.</p>
-    </SHeader>
+    <>
+      <SHeader>
+        <p className="text-5xl capitalize">Login</p>
+      </SHeader>
+
+      <div>
+        <Form />
+      </div>
+    </>
   )
 }
 
 export default LoginPage
-
