@@ -1,5 +1,6 @@
-import { PropsWithChildren } from 'react'
+import { Outlet } from 'react-router-dom'
 import tw from 'tailwind-styled-components'
+import NavBar from './NavBar'
 
 const SSiteLayout = tw.div`
   font-serif
@@ -13,10 +14,13 @@ const SPageLayout = tw.main`
   pt-10
 `
 
-const Layout = ({ children }: PropsWithChildren) => {
+const Layout = () => {
   return (
     <SSiteLayout>
-      <SPageLayout>{children}</SPageLayout>
+      <SPageLayout>
+        <NavBar />
+        <Outlet />
+      </SPageLayout>
     </SSiteLayout>
   )
 }

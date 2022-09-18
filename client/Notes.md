@@ -50,7 +50,7 @@ model: <https://hugotex.vercel.app/>
   - [ ] Logout icon when logged in (with username)
 
 2. Create login page
-  - [ ] react router
+  - [ ] react router: <https://www.theodinproject.com/lessons/node-path-javascript-router>
   - [ ] zustand
   - [ ] form -> react form hook + axios
   - [ ] keep user in context that is accessible app wide
