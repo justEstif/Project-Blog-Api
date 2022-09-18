@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { HomeIcon, UserIcon, LogoutIcon } from './NavBarIcons'
 interface Props {}
 
@@ -8,11 +9,25 @@ interface Props {}
 
 function NavBar({}: Props) {
   return (
-    <nav className="flex justify-between mb-3">
-      <HomeIcon />
-      {/*If user show logout, else show user icon*/}
-      <UserIcon />
-      <LogoutIcon />
+    <nav>
+      <ul className="flex justify-between mb-3">
+        <li>
+          <Link to="/">
+            <HomeIcon />
+          </Link>
+        </li>
+        {/*If user show logout, else show user icon*/}
+        <li>
+          <Link to="/login">
+            <UserIcon />
+          </Link>
+        </li>
+        <li>
+          <Link to="/logout">
+            <LogoutIcon />
+          </Link>
+        </li>
+      </ul>
     </nav>
   )
 }
