@@ -4,7 +4,6 @@ import NavBar from './NavBar'
 
 const SSiteLayout = tw.div`
   font-serif
-  bg-gray-50
 `
 
 const SPageLayout = tw.main`
