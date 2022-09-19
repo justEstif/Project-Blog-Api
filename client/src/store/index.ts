@@ -1,18 +1,13 @@
 import create from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
-import IGlobal from './store.interface'
+import IGlobal from '../interface/IGlobal'
+import IUser from '../interface/IUser'
+import { loginUser } from '../services/api.auth'
 
-const useStore = create<IGlobal>()(
-  devtools(
-    persist(
-      (_) => ({
-        authUser: null
-      }),
-      {
-        name: 'user-storage'
-      }
-    )
-  )
-)
+const useStore = create<IGlobal>((set) => ({
+  user: null,
+  loginUser: loginUser,
+  // NOTE: to log out just set the user to null
+  setUser: (user: IUser | null) => set((states) => ({ ...states, user }))
+}))
 
 export default useStore
