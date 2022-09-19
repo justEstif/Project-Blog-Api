@@ -53,7 +53,12 @@ model: <https://hugotex.vercel.app/>
   - [ ] react router: <https://www.theodinproject.com/lessons/node-path-javascript-router>
   - [ ] zustand
   - [ ] form -> react form hook + axios
+    - context login: <https://dev.to/finiam/predictable-react-authentication-with-the-context-api-g10>
+    - create a custom hook `useAuthListener` -> for checking login/logout user and returning user
   - [ ] keep user in context that is accessible app wide
+  <!-- TODO: Move the api related func to services/api.ts -->
+    - requests objects for the url to be sent to the api
+    - create functions that work with the api
 
 3. Create post page
 4. Create comment form in post page
