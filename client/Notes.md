@@ -68,3 +68,40 @@ model: <https://hugotex.vercel.app/>
 highlight js: <https://highlightjs.org/>
 
 
+## User store
+
+- logginUser function
+  - function to get response from api
+    - getResponse(request) => response ??
+  - function to confirm api function ->
+    - <!-- TODO: Fix the backend response if not good  -->
+  - function to change the currentUser store based on the returned value
+- registerUser function
+- logoutUser function
+- currentUser
+  - token
+  - user
+    - username
+    - id
+    - email
+    - owner
+
+what does it mean to log in a user
+  - get the user info
+  - get response from api
+  - get the user and token
+  - set the user and token in the store to that value
+    - ther need to be some initial user and token in the store
+  - return some message of success
+  - redirect to homepage
+    - the homepage checks is there is a token, and if there is sends it with the useAuthListener request
+  - prevent logging or registering
+
+functions
+  - `logInUser`
+    - calls api /api/login
+      - if success
+        - get user and token
+        - sets the user and token
+      - else
+        - shows error message to user

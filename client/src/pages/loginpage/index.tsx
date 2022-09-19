@@ -1,12 +1,11 @@
-// import tw from 'tailwind-styled-components'
 import { useEffect, useState } from 'react'
 import SHeader from '../../components/SHeader'
-import { loggingIn } from '../../services/api.auth'
+import { loginUser } from '../../services/api.auth'
 import Form from './Form'
 import IUserCredentials from '../../interface/IUserCredentials'
-interface Props { }
+interface Props {}
 
-const LoginPage = ({ }: Props) => {
+const LoginPage = ({}: Props) => {
   const [userCredentials, setUserCredentials] = useState<IUserCredentials>({
     email: '',
     password: ''
@@ -14,12 +13,15 @@ const LoginPage = ({ }: Props) => {
 
   useEffect(() => {
     // TODO: Handle the userlogin here
-    const loginUser = async () => {
-      const response = await loggingIn(userCredentials) // returns user, token
-      console.log(response)
+    const handleLogin = async () => {
+      // NOTE: set the user to the data
+      const { user, message } = await loginUser(userCredentials) // returns user, token
+      console.log(user)
+      console.log(message)
     }
-    console.log(userCredentials) // send a post request for jest
-    loginUser()
+    if (!(userCredentials.email === '' || userCredentials.password === '')) {
+      handleLogin()
+    }
   }, [userCredentials])
 
   return (
