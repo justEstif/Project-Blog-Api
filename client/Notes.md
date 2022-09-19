@@ -44,8 +44,8 @@ model: <https://hugotex.vercel.app/>
 
 1. make home page
 
-  - [X]create nav bar
-    - [ ]Logo -> link to home page
+  - [X] create nav bar
+    - [x] Logo -> link to home page
   - [ ] User icon when not logged in
   - [ ] Logout icon when logged in (with username)
 
@@ -59,15 +59,6 @@ model: <https://hugotex.vercel.app/>
 4. Create comment form in post page
 6. Create owner website
   1. Create owner create, edit post page
-
-
-```js
-{data.length === 0 ? (
-  <p>loading</p>
-) : (
-  data.map((post, i) => <p key={i}>{post.title}</p>)
-)}
-```
 
 highlight js: <https://highlightjs.org/>
 
