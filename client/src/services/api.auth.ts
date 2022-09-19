@@ -1,30 +1,48 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import IUserCredentials from '../interface/IUserCredentials'
+import IUser from '../interface/IUser'
 
-interface IAuthUser {
-  token: {
-    token: string
-    expiresIn: number
-  }
-  user: {
-    id: string
-    email: string
-    owner: boolean
-    username: string
-  }
-}
+// TODO: Move these function or import them into zustand store
+// TODO: Log in, Log out, Register
 
-export const loggingIn = async ({ email, password }: IUserCredentials) => {
-  const urlwithProxy = '/api/login'
-  try {
-    const response = await axios.post(urlwithProxy, {
-      email,
-      password
-    })
-    const data: IAuthUser = response.data
-    // TODO: useStore(setAuthUser(data))
-    return data
-  } catch (error) {
-    throw error
+export const loginUser = async (userCredentials: IUserCredentials) => {
+  interface ILoginResponse {
+    message: string
+    user: IUser | null
   }
+
+  const getUrlResponse = async (userCredentials: IUserCredentials) => {
+    try {
+      const response = await axios.post('/api/login', { ...userCredentials })
+      return response.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleUrlResponse = async (): Promise<ILoginResponse> => {
+    try {
+      const data = await getUrlResponse(userCredentials) // NOTE: returns user, token
+      // TODO:set the user here
+      return {
+        user: {
+          ...data.user,
+          ...data.token
+        },
+        message: 'Logged in'
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const message: string = error.response?.data
+        return {
+          user: null,
+          message
+        }
+      } else {
+        return { user: null, message: 'Error not instanceof Axios' }
+      }
+    }
+  }
+
+  return await handleUrlResponse()
 }
