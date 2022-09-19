@@ -77,6 +77,7 @@ class AuthenticationController implements IController {
             next(new WrongCredentialsException())
           } else {
             const token = this.authenticationService.createToken(user)
+            user.password = undefined // clearing user pw from response
             response.json({ user, token })
           }
         })
