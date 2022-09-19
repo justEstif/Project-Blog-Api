@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import SHeader from '../../components/SHeader'
 import { loggingIn } from '../../services/api.auth'
 import Form from './Form'
-import { IUserCredentials } from './loginpage.interface'
+import IUserCredentials from '../../interface/IUserCredentials'
 interface Props { }
 
 const LoginPage = ({ }: Props) => {

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import tw from 'tailwind-styled-components'
-import { IUserCredentials } from './loginpage.interface'
+import IUserCredentials from '../../interface/IUserCredentials'
 import { Dispatch, SetStateAction } from 'react'
 
 interface Props {

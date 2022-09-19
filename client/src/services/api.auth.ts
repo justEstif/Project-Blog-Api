@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { IUserCredentials } from '../pages/loginpage/loginpage.interface'
+import IUserCredentials from '../interface/IUserCredentials'
 
 interface IAuthUser {
   token: {
@@ -22,6 +22,7 @@ export const loggingIn = async ({ email, password }: IUserCredentials) => {
       password
     })
     const data: IAuthUser = response.data
+    // TODO: useStore(setAuthUser(data))
     return data
   } catch (error) {
     throw error
