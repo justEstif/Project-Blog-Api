@@ -1,24 +1,22 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import IPost from '../../interface/IPost'
 import Header from './Header'
 import Post from './Post'
 import { nanoid } from 'nanoid'
+import { getPosts } from '../../services/api'
 
-interface Props {}
+interface Props { }
 
-const HomePage = ({}: Props) => {
+const HomePage = ({ }: Props) => {
   const [posts, setPosts] = useState<IPost[]>([]) // TODO: add interface
-  const urlwithProxy = '/api/posts'
 
   useEffect(() => {
-    // TODO: do I need to include the user in the request
     const fetchData = async () => {
       try {
-        const response = await axios.get(urlwithProxy)
-        const data: IPost[] = response.data
+        const data = await getPosts()
         setPosts(() => data)
       } catch (error) {
+        // TODO: Better error handling
         console.log(error)
       }
     }
