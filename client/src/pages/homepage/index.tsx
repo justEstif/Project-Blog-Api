@@ -6,16 +6,15 @@ import { nanoid } from 'nanoid'
 import { getPosts } from '../../services/api'
 import useStore from '../../store'
 
-interface Props { }
+interface Props {}
 
-const HomePage = ({ }: Props) => {
+const HomePage = ({}: Props) => {
   const [posts, setPosts] = useState<IPost[]>([]) // TODO: add interface
   const store = useStore((state) => state)
 
   useEffect(() => {
     const fetchData = async () => {
-    const token = store.user?.token.token || ''
-    console.log(`Token: ${token}`)
+      const token = store.user?.token.token || ''
       try {
         const data = await getPosts(token)
         setPosts(() => data)
@@ -27,6 +26,7 @@ const HomePage = ({ }: Props) => {
     fetchData()
   }, [])
 
+  // TODO: Add a posts container and style the page
   return (
     <section>
       <Header />
