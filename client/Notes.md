@@ -85,6 +85,8 @@ highlight js: <https://highlightjs.org/>
     - id
     - email
     - owner
+<!-- TODO: LOGOUT PAGE -->
+<!-- TODO: Add bearer header to axios -->
 
 what does it mean to log in a user
   - get the user info

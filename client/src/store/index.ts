@@ -9,6 +9,11 @@ const useStore = create<IGlobal>((set) => ({
     set((state) => ({
       ...state,
       user: user
+    })),
+  logoutUser: () =>
+    set((state) => ({
+      ...state,
+      user: null
     }))
 }))
 
