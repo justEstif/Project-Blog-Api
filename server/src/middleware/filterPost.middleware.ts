@@ -4,7 +4,7 @@ import passport from 'passport'
 const filterPostMiddleware: RequestHandler = (request, response, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
     if (err || !user) {
-      request.filter = false
+      request.filter = true
       next()
     } else {
       if (user.owner) {
