@@ -16,14 +16,14 @@ export const loginUser = async (userCredentials: IUserCredentials) => {
       const response = await axios.post('/api/login', { ...userCredentials })
       return response.data
     } catch (error) {
-      console.log(error)
+      // TODO: The error needs to be handled here and the way user is added to store needs to be fixed
+      throw error
     }
   }
 
   const handleUrlResponse = async (): Promise<ILoginResponse> => {
     try {
-      const data = await getUrlResponse(userCredentials) // NOTE: returns user, token
-      // TODO:set the user here
+      const data = await getUrlResponse(userCredentials)
       return {
         user: {
           ...data.user,
@@ -32,17 +32,14 @@ export const loginUser = async (userCredentials: IUserCredentials) => {
         message: 'Logged in'
       }
     } catch (error) {
-      if (error instanceof AxiosError) {
-        const message: string = error.response?.data
-        return {
-          user: null,
-          message
-        }
-      } else {
-        return { user: null, message: 'Error not instanceof Axios' }
+      const err = error as { response: { data: { message: string } } }
+      const data = err.response?.data
+      const { message } = data as { message: string }
+      return {
+        user: null,
+        message: message ?? 'Error not instanceof Axios'
       }
     }
   }
-
   return await handleUrlResponse()
 }
