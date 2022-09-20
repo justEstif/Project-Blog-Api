@@ -69,7 +69,7 @@ class PostController implements IController {
   private getPosts = asyncHandler(
     async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const posts = await this.postService.getPosts(request.filter ?? true)
+        const posts = await this.postService.getPosts(!!request.filter)
         response.status(200).json(posts)
       } catch (error) {
         next(error)
@@ -84,10 +84,7 @@ class PostController implements IController {
     async (request: Request, response: Response, next: NextFunction) => {
       try {
         const id = request.params.id
-        const post = await this.postService.getPostByID(
-          id,
-          request.filter ?? true
-        )
+        const post = await this.postService.getPostByID(id, !!request.filter)
         response.status(200).json(post)
       } catch (error) {
         next(error)
