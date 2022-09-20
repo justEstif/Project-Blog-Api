@@ -20,7 +20,7 @@ const LoginPage = ({}: Props) => {
     const handleLogin = async () => {
       // NOTE: set the user to the data
       const { user } = await loginUser(userCredentials) // returns user, token
-      store.setUser(user)
+      store.setUser(user) // NOTE: set the user store to the login result
     }
     if (!(userCredentials.email === '' || userCredentials.password === '')) {
       handleLogin()
