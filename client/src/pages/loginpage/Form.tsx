@@ -6,9 +6,10 @@ import { Dispatch, SetStateAction } from 'react'
 
 interface Props {
   setUserCredentials: Dispatch<SetStateAction<IUserCredentials>>
+  message: string
 }
 
-const Form = ({ setUserCredentials }: Props) => {
+const Form = ({ setUserCredentials, message }: Props) => {
   const { register, handleSubmit } = useForm<IUserCredentials>()
   const SInput = tw.input`
     max-w-xs
@@ -83,6 +84,8 @@ const Form = ({ setUserCredentials }: Props) => {
           </div>
           <SButton type="submit">Login</SButton>
         </div>
+        {/*  TODO: style error message */}
+        {message ?? <div>{message}</div>}
       </form>
     </div>
   )
