@@ -2,7 +2,7 @@ import IUser from '../interface/IUser'
 
 interface IGlobal {
   user: IUser | null
-  setUser: (user: IUser | null) => void
+  loginUser: (user: IUser) => void
 }
 
 export default IGlobal

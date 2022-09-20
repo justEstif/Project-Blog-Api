@@ -1,44 +1,37 @@
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import IUserCredentials from '../interface/IUserCredentials'
 import IUser from '../interface/IUser'
 
-// TODO: Move these function or import them into zustand store
 // TODO: Log in, Log out, Register
+// [X] Login
+// [ ] Logout
+// [ ] Register
 
+interface ICustomError {
+  response: { data: { message: string } }
+}
 export const loginUser = async (userCredentials: IUserCredentials) => {
-  interface ILoginResponse {
-    message: string
-    user: IUser | null
-  }
-
   const getUrlResponse = async (userCredentials: IUserCredentials) => {
     try {
-      const response = await axios.post('/api/login', { ...userCredentials })
-      return response.data
+      const { data } = await axios.post('/api/login', { ...userCredentials })
+      return data
     } catch (error) {
-      // TODO: The error needs to be handled here and the way user is added to store needs to be fixed
+      // TODO: The error needs to be handled here
+      // TODO: the way user is added to store needs to be fixed
       throw error
     }
   }
 
-  const handleUrlResponse = async (): Promise<ILoginResponse> => {
+  const handleUrlResponse = async (): Promise<IUser | string> => {
     try {
-      const data = await getUrlResponse(userCredentials)
-      return {
-        user: {
-          ...data.user,
-          ...data.token
-        },
-        message: 'Logged in'
-      }
+      return await getUrlResponse(userCredentials)
     } catch (error) {
-      const err = error as { response: { data: { message: string } } }
-      const data = err.response?.data
-      const { message } = data as { message: string }
-      return {
-        user: null,
-        message: message ?? 'Error not instanceof Axios'
-      }
+      const {
+        response: {
+          data: { message }
+        }
+      } = error as ICustomError
+      return message || 'Error not instanceof Axios'
     }
   }
   return await handleUrlResponse()

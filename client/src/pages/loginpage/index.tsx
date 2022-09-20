@@ -17,9 +17,12 @@ const LoginPage = ({}: Props) => {
 
   useEffect(() => {
     const handleLogin = async () => {
-      const { user, message } = await loginUser(userCredentials)
-      store.setUser(user)
-      setMessage(message)
+      const response = await loginUser(userCredentials)
+      if (typeof response === 'string') {
+        setMessage(message)
+      } else {
+        store.loginUser(response)
+      }
     }
     if (!(userCredentials.email === '' || userCredentials.password === '')) {
       handleLogin()

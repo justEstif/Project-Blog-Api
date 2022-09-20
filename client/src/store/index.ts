@@ -5,7 +5,7 @@ import IUser from '../interface/IUser'
 const useStore = create<IGlobal>((set) => ({
   user: null,
   // NOTE: set user status on login and logout
-  setUser: (user: IUser | null) =>
+  loginUser: (user: IUser) =>
     set((state) => ({
       ...state,
       user: user
