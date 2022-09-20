@@ -36,3 +36,26 @@ export const loginUser = async (userCredentials: IUserCredentials) => {
   }
   return await handleUrlResponse()
 }
+
+export const logoutUser = async () => {
+  // @route POST /api/logout
+  const getUrlResponse = async () => {
+    try {
+      // TODO: send the post with token
+      const { data } = await axios.post('/api/logout')
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const handleUrlResponse = async () => {
+    try {
+      return await getUrlResponse()
+    } catch (error) {
+      console.log(error)
+      return error
+    }
+  }
+  await handleUrlResponse()
+}
