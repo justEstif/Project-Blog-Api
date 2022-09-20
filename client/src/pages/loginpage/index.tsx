@@ -15,12 +15,9 @@ const LoginPage = ({}: Props) => {
   })
 
   useEffect(() => {
-    // TODO: Handle the userlogin here
-
     const handleLogin = async () => {
-      // NOTE: set the user to the data
-      const { user } = await loginUser(userCredentials) // returns user, token
-      store.setUser(user) // NOTE: set the user store to the login result
+      const { user } = await loginUser(userCredentials)
+      store.setUser(user)
     }
     if (!(userCredentials.email === '' || userCredentials.password === '')) {
       handleLogin()
