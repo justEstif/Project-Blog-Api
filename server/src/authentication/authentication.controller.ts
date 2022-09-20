@@ -38,7 +38,7 @@ class AuthenticationController implements IController {
       validationMiddleware(LogInDto),
       this.loggingIn
     )
-    this.router.post(this.path_logout, this.loggingOut)
+    this.router.get(this.path_logout, this.loggingOut)
   }
 
   // @desc Register a user
@@ -86,7 +86,7 @@ class AuthenticationController implements IController {
   }
 
   // @desc Logout a user
-  // @route POST /api/logout
+  // @route GET /api/logout
   // @access public
   private loggingOut: RequestHandler = (request, response, next) => {
     request.logout(function (err) {

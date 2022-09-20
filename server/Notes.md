@@ -183,5 +183,5 @@
   - POST `/api/login`
   - log user in if no user(else error)
 - `loggingOut`
-  - POST `/api/logout`
+  - GET `/api/logout`
   - logout
