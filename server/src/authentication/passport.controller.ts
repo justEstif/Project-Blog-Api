@@ -34,7 +34,7 @@ const passportController = () => {
     },
     async (jwtPayload, cb) => {
       try {
-        const user = await UserModel.findById(jwtPayload.id)
+        const user = await UserModel.findById(jwtPayload._id)
         if (user) user.password = undefined
         return cb(null, user)
       } catch (err) {
