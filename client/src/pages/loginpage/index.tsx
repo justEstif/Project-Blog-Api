@@ -9,6 +9,7 @@ interface Props {}
 
 const LoginPage = ({}: Props) => {
   const store = useStore((state) => state)
+  const [message, setMessage] = useState('')
   const [userCredentials, setUserCredentials] = useState<IUserCredentials>({
     email: '',
     password: ''
@@ -16,8 +17,9 @@ const LoginPage = ({}: Props) => {
 
   useEffect(() => {
     const handleLogin = async () => {
-      const { user } = await loginUser(userCredentials)
+      const { user, message } = await loginUser(userCredentials)
       store.setUser(user)
+      setMessage(message)
     }
     if (!(userCredentials.email === '' || userCredentials.password === '')) {
       handleLogin()
@@ -30,7 +32,7 @@ const LoginPage = ({}: Props) => {
         <p className="text-5xl capitalize">Login</p>
       </SHeader>
 
-      <Form setUserCredentials={setUserCredentials} />
+      <Form setUserCredentials={setUserCredentials} message={message} />
     </>
   )
 }
