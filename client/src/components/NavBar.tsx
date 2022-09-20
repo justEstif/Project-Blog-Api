@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { HomeIcon, UserIcon, LogoutIcon, RegisterUserIcon } from './NavBarIcons'
 import useStore from '../store'
+import { useEffect } from 'react'
 
 interface Props {}
 
@@ -9,8 +10,10 @@ interface Props {}
 // if user show  logout svg
 // else user icon
 
+// TODO: some kind of logout handler
 function NavBar({}: Props) {
   const store = useStore((state) => state)
+
   return (
     <nav className="mb-7">
       <ul className="flex justify-between">
@@ -19,15 +22,12 @@ function NavBar({}: Props) {
             <HomeIcon />
           </Link>
         </li>
-        {/*TODO: If user show logout, else show UserIcon and RegisterUser*/}
         {store.user ? (
           <li>
-            <Link to="/logout">
-              <LogoutIcon />
-            </Link>
+            <LogoutIcon />
           </li>
         ) : (
-          <div className='flex gap-3'>
+          <div className="flex gap-3">
             <li>
               <Link to="/login">
                 <UserIcon />

@@ -10,6 +10,7 @@ import IUser from '../interface/IUser'
 interface ICustomError {
   response: { data: { message: string } }
 }
+
 export const loginUser = async (userCredentials: IUserCredentials) => {
   const getUrlResponse = async (userCredentials: IUserCredentials) => {
     try {
@@ -28,7 +29,7 @@ export const loginUser = async (userCredentials: IUserCredentials) => {
     } catch (error) {
       const {
         response: {
-          data: { message }
+          data: { message } // extract error message
         }
       } = error as ICustomError
       return message || 'Error not instanceof Axios'
@@ -37,12 +38,17 @@ export const loginUser = async (userCredentials: IUserCredentials) => {
   return await handleUrlResponse()
 }
 
-export const logoutUser = async () => {
+export const logoutUser = async (token: string) => {
   // @route POST /api/logout
   const getUrlResponse = async () => {
     try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
       // TODO: send the post with token
-      const { data } = await axios.post('/api/logout')
+      const { data } = await axios.get('/api/logout', config)
       return data
     } catch (error) {
       throw error
@@ -53,6 +59,7 @@ export const logoutUser = async () => {
     try {
       return await getUrlResponse()
     } catch (error) {
+      // TODO: Better error handling
       console.log(error)
       return error
     }
