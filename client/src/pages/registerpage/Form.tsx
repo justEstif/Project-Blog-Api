@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import tw from 'tailwind-styled-components'
-import IUserCredentials from '../../interface/IUserCredentials'
 import { Dispatch, SetStateAction } from 'react'
+import IRegister from '../../interface/IRegister'
 
 interface Props {
-  setUserCredentials: Dispatch<SetStateAction<IUserCredentials>>
+  setRegister: Dispatch<SetStateAction<IRegister>>
   message: string
 }
 
-const Form = ({ setUserCredentials, message }: Props) => {
-  const { register, handleSubmit } = useForm<IUserCredentials>()
+const Form = ({ setRegister, message }: Props) => {
+  const { register, handleSubmit } = useForm<IRegister>()
   const SInput = tw.input`
     max-w-xs
     appearance-none
@@ -44,7 +44,7 @@ const Form = ({ setUserCredentials, message }: Props) => {
     <div className="flex flex-col justify-center content-center">
       <form
         className="flex flex-col gap-6 mx-auto max-w-md"
-        onSubmit={handleSubmit((data) => setUserCredentials(data))}
+        onSubmit={handleSubmit((data) => setRegister(data))}
       >
         <div className="flex flex-col gap-3">
           <label htmlFor="email" className="font-mono font-bold text-gray-500">
@@ -56,6 +56,18 @@ const Form = ({ setUserCredentials, message }: Props) => {
             type="email"
             placeholder="Enter email..."
             {...register('email')}
+          />
+        </div>
+        <div className="flex flex-col gap-3">
+          <label htmlFor="username" className="font-mono font-bold text-gray-500">
+            Username
+          </label>
+          <SInput
+            autoComplete="off"
+            id="username"
+            type="text"
+            placeholder="Enter username..."
+            {...register('username')}
           />
         </div>
         <div className="flex flex-col gap-3">
@@ -76,9 +88,9 @@ const Form = ({ setUserCredentials, message }: Props) => {
         <div className="flex flex-col gap-6">
           <div className="flex justify-center">
             <button>
-              New to blog?
+              Already a user?
               <span className="italic border-b-2 border-red-800">
-                <Link to="/register"> Register User</Link>
+                <Link to="/login"> Login User</Link>
               </span>
             </button>
           </div>
