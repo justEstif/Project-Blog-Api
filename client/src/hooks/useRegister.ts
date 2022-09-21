@@ -18,7 +18,7 @@ const useRegiser = () => {
       if (typeof response === 'string') {
         setMessage(message)
       } else {
-        store.registerUser(response)
+        store.loginUser(response)
       }
     }
     register.email !== '' &&
