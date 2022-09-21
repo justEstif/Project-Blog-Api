@@ -94,7 +94,7 @@ const Form = ({ setRegister, message }: Props) => {
               </span>
             </button>
           </div>
-          <SButton type="submit">Login</SButton>
+          <SButton type="submit">Register</SButton>
         </div>
         {/*  TODO: style error message */}
         {message ?? <div>{message}</div>}

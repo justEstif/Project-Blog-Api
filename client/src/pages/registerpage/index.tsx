@@ -1,16 +1,16 @@
-interface IProps { }
-import { useState } from 'react'
+interface IProps {}
 import SHeader from '../../components/SHeader'
 import Form from './Form'
-const RegisterPage = ({ }: IProps) => {
-  // TODO: create custom hook for useRegisterUser
+import useRegiser from '../../hooks/useRegister'
+
+const RegisterPage = ({}: IProps) => {
+  const { message, setRegister } = useRegiser()
   return (
     <>
       <SHeader>
         <p className="text-5xl capitalize">Register</p>
       </SHeader>
-      <div>this is the login page</div>
-      <Form setRegister=/>
+      <Form setRegister={setRegister} message={message} />
     </>
   )
 }
