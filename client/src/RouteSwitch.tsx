@@ -1,13 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import useStore from './store'
 import LoginPage from './pages/loginpage'
 import HomePage from './pages/homepage'
 import Layout from './components/Layout'
-import useStore from './store'
+import RegisterPage from './pages/registerpage'
 
-interface Props {}
+interface Props { }
 
 // TODO: Move routes to a constant/Page.Routes.ts
-const RouteSwitch = ({}: Props) => {
+const RouteSwitch = ({ }: Props) => {
   const store = useStore((state) => state)
 
   return (
@@ -19,6 +20,12 @@ const RouteSwitch = ({}: Props) => {
           <Route
             path="login"
             element={store.user ? <Navigate replace to="/" /> : <LoginPage />}
+          />
+          <Route
+            path="register"
+            element={
+              store.user ? <Navigate replace to="/" /> : <RegisterPage />
+            }
           />
         </Route>
       </Routes>
