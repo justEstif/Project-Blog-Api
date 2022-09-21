@@ -22,6 +22,9 @@ export const getPost = async (
   postID: string,
   token: string
 ): Promise<IPost> => {
+  interface IGetPostResponse {
+    post: IPost[]
+  }
   const urlwithProxy = `/api/posts/${postID}`
   try {
     const config = {
@@ -30,8 +33,8 @@ export const getPost = async (
       }
     }
     const response = await axios.get(urlwithProxy, config)
-    const data: IPost = response.data
-    return data
+    const data: IGetPostResponse = response.data
+    return data.post[0]
   } catch (error) {
     throw error
   }
