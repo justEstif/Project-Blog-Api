@@ -10,12 +10,10 @@ const PostPage = () => {
   return (
     <>
       <SHeader>
-        {typeof post === 'undefined' ? (
-          <p> Loading</p>
-        ) : (
-          <p className="text-5xl capitalize">{post?.title}</p>
-        )}
+        <p className="text-5xl capitalize">{post?.title}</p>
       </SHeader>
+      <p>{post?.publicationDate?.toString() ?? "Not Published"}</p>
+      <p>{post?.body}</p>
     </>
   )
 }
