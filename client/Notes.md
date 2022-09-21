@@ -99,6 +99,13 @@ what does it mean to log in a user
     - the homepage checks is there is a token, and if there is sends it with the useAuthListener request
   - prevent logging or registering
 
+<!-- TODO: create a register user function in the store or use the login user  -->
+<!-- TODO: create a register user function in the api.auth -->
+what does it mean to register a user?
+- get the user input for email, username, password
+- call the api and send a post request with that information
+- if there is a response, login user, set the token to that value, and redirect to the home page
+
 functions
   - `logInUser`
     - calls api /api/login
