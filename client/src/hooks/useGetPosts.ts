@@ -6,10 +6,10 @@ import useStore from '../store'
 const useGetPosts = () => {
   const [posts, setPosts] = useState<IPost[]>([])
   const store = useStore((state) => state)
+  const token = store.user?.token.token || ''
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const token = store.user?.token.token || ''
       try {
         const data = await getPosts(token)
         setPosts(() => data)
@@ -19,7 +19,7 @@ const useGetPosts = () => {
       }
     }
     fetchPosts()
-  }, [])
+  }, [token])
 
   return posts
 }
