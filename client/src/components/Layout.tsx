@@ -9,8 +9,8 @@ const SSiteLayout = tw.div`
 const SPageLayout = tw.main`
   max-w-2xl
   mx-4
+  my-10
   md:mx-auto
-  pt-10
 `
 
 const Layout = () => {
