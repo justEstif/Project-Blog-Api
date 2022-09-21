@@ -13,6 +13,9 @@ interface Props {}
 // TODO: some kind of logout handler
 function NavBar({}: Props) {
   const store = useStore((state) => state)
+  const handleLogout = () => {
+    store.logoutUser()
+  }
 
   return (
     <nav className="mb-7">
@@ -23,9 +26,9 @@ function NavBar({}: Props) {
           </Link>
         </li>
         {store.user ? (
-          <li>
+          <button onClick={handleLogout}>
             <LogoutIcon />
-          </li>
+          </button>
         ) : (
           <div className="flex gap-3">
             <li>
