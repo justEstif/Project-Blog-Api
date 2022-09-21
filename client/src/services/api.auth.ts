@@ -3,10 +3,11 @@ import ILogin from '../interface/ILogin'
 import IRegister from '../interface/IRegister'
 import IUser from '../interface/IUser'
 
+// TODO: Extract the getUrlResponse func make it com
 // TODO: Log in, Log out, Register
 // [X] Login
-// [ ] Logout
-// [ ] Register
+// [X] Logout
+// [X] Register
 
 interface ICustomError {
   response: { data: { message: string } }
