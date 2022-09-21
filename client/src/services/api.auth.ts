@@ -1,5 +1,6 @@
 import axios from 'axios'
 import ILogin from '../interface/ILogin'
+import IRegister from '../interface/IRegister'
 import IUser from '../interface/IUser'
 
 // TODO: Log in, Log out, Register
@@ -12,9 +13,9 @@ interface ICustomError {
 }
 
 export const loginUser = async (login: ILogin) => {
-  const getUrlResponse = async (userCredentials: ILogin) => {
+  const getUrlResponse = async (login: ILogin) => {
     try {
-      const { data } = await axios.post('/api/login', { ...userCredentials })
+      const { data } = await axios.post('/api/login', { ...login })
       return data
     } catch (error) {
       // TODO: The error needs to be handled here
@@ -65,4 +66,31 @@ export const logoutUser = async (token: string) => {
     }
   }
   await handleUrlResponse()
+}
+
+export const registerUser = async (register: IRegister) => {
+  const getUrlResponse = async (register: IRegister) => {
+    try {
+      const { data } = await axios.post('/api/register', { ...register })
+      return data
+    } catch (error) {
+      // TODO: The error needs to be handled here
+      // TODO: the way user is added to store needs to be fixed
+      throw error
+    }
+  }
+
+  const handleUrlResponse = async (): Promise<IUser | string> => {
+    try {
+      return await getUrlResponse(register)
+    } catch (error) {
+      const {
+        response: {
+          data: { message } // extract error message
+        }
+      } = error as ICustomError
+      return message || 'Error not instanceof Axios'
+    }
+  }
+  return await handleUrlResponse()
 }
