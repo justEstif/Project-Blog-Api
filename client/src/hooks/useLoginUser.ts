@@ -20,9 +20,9 @@ const useLoginUser = () => {
         store.loginUser(response)
       }
     }
-    if (!(userCredentials.email === '' || userCredentials.password === '')) {
+    userCredentials.email !== '' &&
+      userCredentials.password !== '' &&
       handleLogin()
-    }
   }, [userCredentials])
 
   return {
