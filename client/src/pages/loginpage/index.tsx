@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react'
 import SHeader from '../../components/SHeader'
-import { loginUser } from '../../services/api.auth'
 import Form from './Form'
-import IUserCredentials from '../../interface/IUserCredentials'
-import useStore from '../../store'
 import useLoginUser from '../../hooks/useLoginUser'
 
-interface Props { }
+interface IProps { }
 
-const LoginPage = ({ }: Props) => {
+const LoginPage = ({ }: IProps) => {
   const { message, setUserCredentials } = useLoginUser()
 
   return (
