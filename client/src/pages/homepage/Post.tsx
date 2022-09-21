@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { nanoid } from 'nanoid'
 import IPost from '../../interface/IPost'
 import getFormattedDate from '../../utils/getFormattedDate'
@@ -7,26 +8,34 @@ interface Props {
 }
 
 const Post = ({ post }: Props) => {
-  const urlwithProxy = `/api/posts/${post._id}`
+  const postUrl = `posts/${post.title}`
+  const postID = post._id
+
   return (
-    <div className="flex flex-col gap-3">
-      <a href={urlwithProxy}>
-        <p className="text-3xl text-red-700 underline">{post.title}</p>
-      </a>
+    <div className="flex flex-col gap-3 my-8">
+      <p className="text-3xl text-red-700 underline">
+        <Link to={postUrl} state={postID}>
+          {post.title}
+        </Link>
+      </p>
+
       {typeof post.publicationDate === 'undefined' ? (
         <p className="italic text-blue-500">Not Yet Published</p>
       ) : (
         <p>{getFormattedDate(post.publicationDate)}</p>
       )}
       {post.tags.map((tag) => (
-        <p key={nanoid()} className="text-red-700 underline text-md">
-          {tag}
+        <p key={nanoid()} className="text-red-700 text-md">
+          #{tag}{' '}
         </p>
       ))}
       <p>{post.summary}</p>
-      <a href={urlwithProxy}>
-        <p className="text-red-700 underline text-md">Read More</p>
-      </a>
+
+      <p className="text-red-700 underline text-md">
+        <Link to={postUrl} state={postID}>
+          Read more
+        </Link>
+      </p>
     </div>
   )
 }
