@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Post = ({ post }: Props) => {
-  const postUrl = `posts/${post.title}`
+  const postUrl = `posts/${post.title.replaceAll(' ', '_').toLowerCase()}`
   const postID = post._id
 
   return (
