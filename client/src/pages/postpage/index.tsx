@@ -1,7 +1,10 @@
 import { useLocation } from 'react-router-dom'
+import useGetPost from '../../hooks/useGetPost'
 
 const PostPage = () => {
   const postID = useLocation().state
+  const post = useGetPost(postID)
+  console.log(post)
 
   // useEffect(() => {
   //   const fetchPosts = async () => {
