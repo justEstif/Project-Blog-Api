@@ -1,34 +1,34 @@
 import { useState, useEffect } from 'react'
 import useStore from '../store'
-import IUserCredentials from '../interface/IUserCredentials'
+import ILogin from '../interface/ILogin'
 import { loginUser } from '../services/api.auth'
 
-const useLoginUser = () => {
+const useLogin = () => {
   const store = useStore((state) => state)
   const [message, setMessage] = useState('')
-  const [userCredentials, setUserCredentials] = useState<IUserCredentials>({
+  const [login, setLogin] = useState<ILogin>({
     email: '',
     password: ''
   })
 
   useEffect(() => {
     const handleLogin = async () => {
-      const response = await loginUser(userCredentials)
+      const response = await loginUser(login)
       if (typeof response === 'string') {
         setMessage(message)
       } else {
         store.loginUser(response)
       }
     }
-    userCredentials.email !== '' &&
-      userCredentials.password !== '' &&
+    login.email !== '' &&
+      login.password !== '' &&
       handleLogin()
-  }, [userCredentials])
+  }, [login])
 
   return {
-    setUserCredentials,
+    setLogin,
     message
   }
 }
 
-export default useLoginUser
+export default useLogin

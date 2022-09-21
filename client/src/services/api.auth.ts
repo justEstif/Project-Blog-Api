@@ -1,5 +1,5 @@
 import axios from 'axios'
-import IUserCredentials from '../interface/IUserCredentials'
+import ILogin from '../interface/ILogin'
 import IUser from '../interface/IUser'
 
 // TODO: Log in, Log out, Register
@@ -11,8 +11,8 @@ interface ICustomError {
   response: { data: { message: string } }
 }
 
-export const loginUser = async (userCredentials: IUserCredentials) => {
-  const getUrlResponse = async (userCredentials: IUserCredentials) => {
+export const loginUser = async (login: ILogin) => {
+  const getUrlResponse = async (userCredentials: ILogin) => {
     try {
       const { data } = await axios.post('/api/login', { ...userCredentials })
       return data
@@ -25,7 +25,7 @@ export const loginUser = async (userCredentials: IUserCredentials) => {
 
   const handleUrlResponse = async (): Promise<IUser | string> => {
     try {
-      return await getUrlResponse(userCredentials)
+      return await getUrlResponse(login)
     } catch (error) {
       const {
         response: {

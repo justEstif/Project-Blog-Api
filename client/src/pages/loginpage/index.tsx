@@ -1,11 +1,11 @@
 import SHeader from '../../components/SHeader'
 import Form from './Form'
-import useLoginUser from '../../hooks/useLoginUser'
+import useLogin from '../../hooks/useLogin'
 
 interface IProps { }
 
 const LoginPage = ({ }: IProps) => {
-  const { message, setUserCredentials } = useLoginUser()
+  const { message, setLogin } = useLogin()
 
   return (
     <>
@@ -13,7 +13,7 @@ const LoginPage = ({ }: IProps) => {
         <p className="text-5xl capitalize">Login</p>
       </SHeader>
 
-      <Form setUserCredentials={setUserCredentials} message={message} />
+      <Form setLogin={setLogin} message={message} />
     </>
   )
 }

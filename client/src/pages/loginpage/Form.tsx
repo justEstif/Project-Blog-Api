@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import tw from 'tailwind-styled-components'
-import IUserCredentials from '../../interface/IUserCredentials'
+import ILogin from '../../interface/ILogin'
 import { Dispatch, SetStateAction } from 'react'
 
 interface Props {
-  setUserCredentials: Dispatch<SetStateAction<IUserCredentials>>
+  setLogin: Dispatch<SetStateAction<ILogin>>
   message: string
 }
 
-const Form = ({ setUserCredentials, message }: Props) => {
-  const { register, handleSubmit } = useForm<IUserCredentials>()
+const Form = ({ setLogin, message }: Props) => {
+  const { register, handleSubmit } = useForm<ILogin>()
   const SInput = tw.input`
     max-w-xs
     appearance-none
@@ -44,7 +44,7 @@ const Form = ({ setUserCredentials, message }: Props) => {
     <div className="flex flex-col justify-center content-center">
       <form
         className="flex flex-col gap-6 mx-auto max-w-md"
-        onSubmit={handleSubmit((data) => setUserCredentials(data))}
+        onSubmit={handleSubmit((data) => setLogin(data))}
       >
         <div className="flex flex-col gap-3">
           <label htmlFor="email" className="font-mono font-bold text-gray-500">
