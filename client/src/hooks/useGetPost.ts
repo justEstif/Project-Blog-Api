@@ -18,7 +18,7 @@ const useGetPost = (postID: string) => {
       }
     }
     fetchPost()
-  }, [])
+  }, [token])
 
   return post
 }
