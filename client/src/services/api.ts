@@ -17,3 +17,22 @@ export const getPosts = async (token: string): Promise<IPost[] | []> => {
     throw error
   }
 }
+
+export const getPost = async (
+  postID: string,
+  token: string
+): Promise<IPost> => {
+  const urlwithProxy = `/api/posts/${postID}`
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+    const response = await axios.get(urlwithProxy, config)
+    const data: IPost = response.data
+    return data
+  } catch (error) {
+    throw error
+  }
+}
