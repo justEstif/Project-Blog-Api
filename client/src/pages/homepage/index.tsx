@@ -12,7 +12,8 @@ const HomePage = ({}: Props) => {
     <section>
       <Header />
       {posts.length === 0 ? (
-        <p>loading</p>
+        // TODO :add React framer when loading posts
+        <p>Loading posts ... </p>
       ) : (
         posts.map((post) => <Post key={nanoid()} post={post} />)
       )}

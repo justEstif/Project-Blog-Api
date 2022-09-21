@@ -85,8 +85,8 @@ highlight js: <https://highlightjs.org/>
     - id
     - email
     - owner
-<!-- TODO: LOGOUT PAGE -->
-<!-- TODO: Add bearer header to axios -->
+<!-- DONE: LOGOUT -->
+<!-- DONE: Add bearer header to axios -->
 
 what does it mean to log in a user
   - get the user info
@@ -99,8 +99,8 @@ what does it mean to log in a user
     - the homepage checks is there is a token, and if there is sends it with the useAuthListener request
   - prevent logging or registering
 
-<!-- TODO: create a register user function in the store or use the login user  -->
-<!-- TODO: create a register user function in the api.auth -->
+<!-- DONE: create a register user function in the store or use the login user  -->
+<!-- DONE: create a register user function in the api.auth -->
 what does it mean to register a user?
 - get the user input for email, username, password
 - call the api and send a post request with that information
@@ -114,3 +114,9 @@ functions
         - sets the user and token
       - else
         - shows error message to user
+
+  - Handle the way a post is shown
+    - show comments
+    - allow create comments and update comments on post
+
+  - Owner create, update, delete posts

@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { HomeIcon, UserIcon, LogoutIcon, RegisterUserIcon } from './NavBarIcons'
 import useStore from '../store'
-import { useEffect } from 'react'
 
 interface Props {}
 
