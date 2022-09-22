@@ -4,14 +4,12 @@ import tw from 'tailwind-styled-components'
 import ILogin from '../../interface/ILogin'
 import { Dispatch, SetStateAction } from 'react'
 
-interface Props {
+interface IProps {
   setLogin: Dispatch<SetStateAction<ILogin>>
   message: string
 }
 
-const Form = ({ setLogin, message }: Props) => {
-  const { register, handleSubmit } = useForm<ILogin>()
-  const SInput = tw.input`
+const SInput = tw.input`
     max-w-xs
     appearance-none
     bg-gray-200
@@ -27,7 +25,7 @@ const Form = ({ setLogin, message }: Props) => {
     focus:border-purple-500
   `
 
-  const SButton = tw.button`
+const SButton = tw.button`
     shadow
     bg-purple-500
     hover:bg-purple-400
@@ -40,6 +38,8 @@ const Form = ({ setLogin, message }: Props) => {
     rounded
   `
 
+const Form = ({ setLogin, message }: IProps) => {
+  const { register, handleSubmit } = useForm<ILogin>()
   return (
     <div className="flex flex-col justify-center content-center">
       <form
