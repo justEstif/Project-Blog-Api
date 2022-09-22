@@ -8,3 +8,4 @@
 
 - MongoDB
 - ExpressJS (TS)
+- React (Vite-TS)
