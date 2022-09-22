@@ -1,7 +1,7 @@
 import axios from 'axios'
 import ILogin from '../interface/ILogin'
 import IRegister from '../interface/IRegister'
-import IUser from '../interface/IUser'
+import IAuthUser from '../interface/IAuthUser'
 
 // TODO: Extract the getUrlResponse func make it com
 // TODO: Log in, Log out, Register
@@ -25,7 +25,7 @@ export const loginUser = async (login: ILogin) => {
     }
   }
 
-  const handleUrlResponse = async (): Promise<IUser | string> => {
+  const handleUrlResponse = async (): Promise<IAuthUser | string> => {
     try {
       return await getUrlResponse(login)
     } catch (error) {
@@ -81,7 +81,7 @@ export const registerUser = async (register: IRegister) => {
     }
   }
 
-  const handleUrlResponse = async (): Promise<IUser | string> => {
+  const handleUrlResponse = async (): Promise<IAuthUser | string> => {
     try {
       return await getUrlResponse(register)
     } catch (error) {

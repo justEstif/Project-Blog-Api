@@ -1,13 +1,13 @@
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
 import IGlobal from '../interface/IGlobal'
-import IUser from '../interface/IUser'
+import IAuthUser from '../interface/IAuthUser'
 
 const useStore = create<IGlobal>()(
   persist(
     (set) => ({
       user: null,
-      loginUser: (user: IUser) =>
+      loginUser: (user: IAuthUser) =>
         set((state) => ({
           ...state,
           user: user
