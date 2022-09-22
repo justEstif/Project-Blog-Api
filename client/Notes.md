@@ -125,3 +125,26 @@ Done: show the post title and body
 Show comments in order
 Add form for writing comments
 Only allow logged in user to write commments
+
+user logins in
+  - token and user store in store
+  - opens post
+    - post: scrolls
+      - sees comments form
+      - write comments
+      - submit
+        - call api
+        - save the comment
+    commentData: CommentDto,
+    userId: string,
+    postId: string
+
+form:
+  - body: get the input
+
+  on submit:
+    - from the location get the post id
+    - call the createComment with the post id and the user id in store
+    - on comments update the page ??
+
+  - api url: POST /api/posts/:id/comment

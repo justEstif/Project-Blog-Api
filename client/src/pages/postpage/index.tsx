@@ -2,7 +2,6 @@ import { nanoid } from 'nanoid'
 import SHeader from '../../components/SHeader'
 import { useLocation } from 'react-router-dom'
 import useGetPost from '../../hooks/useGetPost'
-import getFormattedDate from '../../utils/getFormattedDate'
 import tw from 'tailwind-styled-components'
 import Comments from './Comments'
 
