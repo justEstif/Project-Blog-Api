@@ -1,4 +1,5 @@
 import axios from 'axios'
+import IComment from '../interface/IComment'
 import IPost from '../interface/IPost'
 
 // DONE: Check if there is an active user -> user token
@@ -18,12 +19,11 @@ export const getPosts = async (token: string): Promise<IPost[] | []> => {
   }
 }
 
-export const getPost = async (
-  postID: string,
-  token: string
-): Promise<IPost> => {
+// TODO: add return type
+export const getPost = async (postID: string, token: string) => {
   interface IGetPostResponse {
     post: IPost[]
+    comments: IComment[]
   }
   const urlwithProxy = `/api/posts/${postID}`
   try {
@@ -34,7 +34,10 @@ export const getPost = async (
     }
     const response = await axios.get(urlwithProxy, config)
     const data: IGetPostResponse = response.data
-    return data.post[0]
+    return {
+      post: data.post[0],
+      comment: data.comments
+    }
   } catch (error) {
     throw error
   }

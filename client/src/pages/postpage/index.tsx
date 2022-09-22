@@ -5,7 +5,7 @@ import useGetPost from '../../hooks/useGetPost'
 
 const PostPage = () => {
   const postID = useLocation().state
-  const post = useGetPost(postID) // the post info
+  const { post, comment } = useGetPost(postID)
 
   return (
     <>
