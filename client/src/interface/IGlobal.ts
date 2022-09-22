@@ -1,8 +1,8 @@
-import IUser from '../interface/IUser'
+import IAuthUser from './IAuthUser'
 
 interface IGlobal {
-  user: IUser | null
-  loginUser: (user: IUser) => void
+  user: IAuthUser | null
+  loginUser: (user: IAuthUser) => void
   logoutUser: () => void
 }
 

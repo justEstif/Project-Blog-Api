@@ -6,7 +6,7 @@ import useStore from '../store'
 
 const useGetPost = (postID: string) => {
   const [post, setPost] = useState<IPost>()
-  const [comment, setComment] = useState<IComment[]>()
+  const [comments, setComments] = useState<IComment[]>()
   const store = useStore((state) => state)
   const token = store.user?.token.token || ''
 
@@ -15,7 +15,7 @@ const useGetPost = (postID: string) => {
       try {
         const data = await getPost(postID, token)
         setPost(() => data.post)
-        setComment(() => data.comment)
+        setComments(() => data.comment)
       } catch (error) {
         console.log(error)
       }
@@ -23,7 +23,7 @@ const useGetPost = (postID: string) => {
     fetchPost()
   }, [token])
 
-  return { post, comment }
+  return { post, comments }
 }
 
 export default useGetPost
