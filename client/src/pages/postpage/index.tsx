@@ -6,26 +6,23 @@ import useGetPost from '../../hooks/useGetPost'
 const PostPage = () => {
   const postID = useLocation().state
   const { post, comment } = useGetPost(postID)
+  const postPubDate = post?.publicationDate?.toString() ?? 'Not Published'
+  const tags = post?.tags.map((tag) => (
+    <p key={nanoid()} className="text-red-700 text-md">
+      #{tag}{' '}
+    </p>
+  ))
+
 
   return (
     <>
       <SHeader>
         <p className="text-5xl capitalize">{post?.title}</p>
-        <p className="uppercase text-md">
-          {post?.publicationDate?.toString() ?? 'Not Published'}
-        </p>
-
-        <div className="capitalize text-md">
-          {post?.tags.map((tag) => (
-            <p key={nanoid()} className="text-red-700 text-md">
-              #{tag}{' '}
-            </p>
-          ))}
-        </div>
+        <p className="uppercase text-md">{postPubDate}</p>
+        {tags}
       </SHeader>
-      <div className="py-5 mx-auto w-full max-w-sm border-b-2">
-        <p>{post?.body}</p>
-      </div>
+      <div className="py-5 mx-auto max-w-sm border-b-2">{post?.body}</div>
+
       {/* TODO: Add comments and comment form below the body*/}
     </>
   )
