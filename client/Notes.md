@@ -120,3 +120,8 @@ functions
     - allow create comments and update comments on post
 
   - Owner create, update, delete posts
+
+Done: show the post title and body
+Show comments in order
+Add form for writing comments
+Only allow logged in user to write commments
