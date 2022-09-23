@@ -19,7 +19,6 @@ export const getPosts = async (token: string): Promise<IPost[] | []> => {
   }
 }
 
-// TODO: add return type
 export const getPost = async (postID: string, token: string) => {
   interface IGetPostResponse {
     post: IPost[]
