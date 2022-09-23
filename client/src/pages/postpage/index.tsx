@@ -34,8 +34,6 @@ const PostPage = () => {
         <div className="border-b-2">{post?.body}</div>
         <Comments postComments={comments}/>
       </SBody>
-
-      {/* TODO: Add comments and comment form below the body*/}
     </>
   )
 }
