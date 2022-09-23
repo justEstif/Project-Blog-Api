@@ -42,3 +42,33 @@ export const getPost = async (postID: string, token: string) => {
     throw error
   }
 }
+
+export const createComment = async (
+  postID: string,
+  token: string,
+  body: string,
+  user: string
+) => {
+  const urlwithProxy = `/api/posts/${postID}/comment`
+
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+    const newComment: IComment = {
+      postId: postID,
+      body,
+      user
+    }
+
+    const response = await axios.post(urlwithProxy, { ...newComment }, config)
+    const data = response.data
+    return {
+      data
+    }
+  } catch (error) {
+    throw error
+  }
+}
