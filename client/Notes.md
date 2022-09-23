@@ -148,3 +148,12 @@ form:
     - on comments update the page ??
 
   - api url: POST /api/posts/:id/comment
+
+### Owner Page
+
+-User logs in
+
+  - if user show button on nav bar
+  - create page for owner
+  - owner create, update, delete post pages
+  - create routes that get redirected if not owner
