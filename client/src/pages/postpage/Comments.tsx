@@ -1,5 +1,4 @@
 import { nanoid } from 'nanoid'
-import { useState } from 'react'
 import IComment from '../../interface/IComment'
 import Comment from './Comment'
 import Form from "./Form"
@@ -13,6 +12,7 @@ const Comments = ({ postComments }: IProps) => {
   return (
     <div>
       <div className="text-2xl">Comments</div>
+      <Form />
       {typeof postComments !== 'undefined' ? (
         postComments.map((postComment) => (
           <Comment key={nanoid()} comment={postComment} />
