@@ -1,13 +1,8 @@
 import { useForm } from 'react-hook-form'
-import { useLocation } from 'react-router-dom'
 import IComment from '../../interface/IComment'
-import useStore from '../../store'
-import { Dispatch, SetStateAction } from 'react'
 import tw from 'tailwind-styled-components'
-
-interface IProps {
-  setComment: Dispatch<SetStateAction<IComment>>
-}
+import useComment from '../../hooks/useComment'
+import useStore from '../../store'
 
 const SInput = tw.input`
     max-w-xs
@@ -25,24 +20,13 @@ const SInput = tw.input`
     focus:border-purple-500
   `
 
-const Form = ({setComment}:IProps) => {
+const Form = () => {
   const { register, handleSubmit } = useForm<IComment>()
-  const store = useStore((state) => state)
-  const userId = store.user?.user._id || null
-  const postId = useLocation().state
-
-  const onSubmit = handleSubmit((data) => {
-    if (userId) {
-      const commentData: IComment = {
-        postId,
-        body: data.body,
-        user: userId
-      }
-      setComment(commentData)
-    } else {
-      return // NOTE: don't allow form submit if not logged in
-    }
-  })
+  const { setBody } = useComment()
+  const onSubmit = handleSubmit((data) => setBody(data.body))
+  const user = useStore((state) => state).user?.user._id
+  const placeholder = user ? 'Enter comment ...' : 'Login to comment'
+  const readOnly = !user
 
   return (
     <form onSubmit={onSubmit}>
@@ -50,7 +34,8 @@ const Form = ({setComment}:IProps) => {
         autoComplete="off"
         id="text"
         type="text"
-        placeholder="Enter comment..."
+        readOnly={readOnly}
+        placeholder={placeholder}
         {...register('body')}
       />
     </form>
