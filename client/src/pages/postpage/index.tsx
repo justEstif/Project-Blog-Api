@@ -1,20 +1,12 @@
-import { nanoid } from 'nanoid'
-import SHeader from '../../components/SHeader'
 import { useLocation } from 'react-router-dom'
 import useGetPost from '../../hooks/useGetPost'
 import tw from 'tailwind-styled-components'
 import Comments from './Comments'
+import Header from './Header'
 
 const PostPage = () => {
   const postID = useLocation().state
   const { post, comments } = useGetPost(postID)
-  const postPubDate = post?.publicationDate?.toString() ?? 'Not Published'
-
-  const postTags = post?.tags.map((tag) => (
-    <p key={nanoid()} className="text-red-700 text-md">
-      #{tag}{' '}
-    </p>
-  ))
 
   const SBody = tw.section`
     [&>*]:py-5
@@ -24,15 +16,10 @@ const PostPage = () => {
 
   return (
     <>
-      <SHeader>
-        <p className="text-5xl capitalize">{post?.title}</p>
-        <p className="uppercase text-md">{postPubDate}</p>
-        {postTags}
-      </SHeader>
-
+      <Header post={post} />
       <SBody>
         <div className="border-b-2">{post?.body}</div>
-        <Comments postComments={comments}/>
+        <Comments postComments={comments} />
       </SBody>
     </>
   )
