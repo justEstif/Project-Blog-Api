@@ -46,7 +46,7 @@ model: <https://hugotex.vercel.app/>
 
   - [X] create nav bar
     - [x] Logo -> link to home page
-  - [ ] User icon when not logged in
+  - [X] User icon when not logged in
   - [ ] Logout icon when logged in (with username)
 
 2. Create login page
@@ -148,3 +148,11 @@ form:
     - on comments update the page ??
 
   - api url: POST /api/posts/:id/comment
+
+
+# Owner setup
+
+user logs in
+- on log in, store user
+- if user is owner, show owner button
+- gives access to create post, delete post, update post pages
