@@ -1,5 +1,6 @@
 import {
   ArrayMinSize,
+  IsBoolean,
   IsNotEmpty,
   IsString,
   MinLength
@@ -51,6 +52,13 @@ class CreatePostDto {
     message: 'Tag must be at least 3 characters.'
   })
   tags: string[]
+
+  // NOTE add an optional published boolean
+  @IsBoolean({
+    message: 'Published must be a boolean'
+  })
+  published: boolean
+
 }
 
 export default CreatePostDto
