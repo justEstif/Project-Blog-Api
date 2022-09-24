@@ -149,6 +149,7 @@ form:
 
   - api url: POST /api/posts/:id/comment
 
+<<<<<<< HEAD
 
 # Owner setup
 
@@ -156,3 +157,13 @@ user logs in
 - on log in, store user
 - if user is owner, show owner button
 - gives access to create post, delete post, update post pages
+=======
+### Owner Page
+
+-User logs in
+
+  - if user show button on nav bar
+  - create page for owner
+  - owner create, update, delete post pages
+  - create routes that get redirected if not owner
+>>>>>>> owner
