@@ -4,8 +4,8 @@ interface IPost {
   summary: string
   tags: string[]
   published: boolean
-  publicationDate: Date | undefined
-  _id: string
+  publicationDate?: Date
+  _id?: string
 }
 
 export default IPost
