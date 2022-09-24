@@ -2,7 +2,6 @@ import { nanoid } from 'nanoid'
 import IComment from '../../interface/IComment'
 import Comment from './Comment'
 import Form from "./Form"
-// TODO: add useGetNewComment hook
 
 interface IProps {
   postComments: IComment[] | undefined

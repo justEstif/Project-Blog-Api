@@ -158,7 +158,6 @@ form:
   - owner create, update, delete post pages
   - create routes that get redirected if not owner
 
-
 - if owner show a delete button next to the post when deletes the post, and an update post
 - Show all posts in the owner page just like the home page
 
@@ -171,3 +170,7 @@ form:
 - Get posts
 - Update post form
 - Delete post
+
+
+- if owner show mark on nav bar then:
+  - if post page show and edit, delete and create button
