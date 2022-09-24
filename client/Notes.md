@@ -157,3 +157,17 @@ form:
   - create page for owner
   - owner create, update, delete post pages
   - create routes that get redirected if not owner
+
+
+- if owner show a delete button next to the post when deletes the post, and an update post
+- Show all posts in the owner page just like the home page
+
+- Add button that says create post
+- Open create post page which is a form with a title and body input and publish checkbox
+- If user open a post
+- show an update post and delete post button
+- update post open form with the posts content and on submit updates it
+- delete post asks for confirmation and deletes the post
+- Get posts
+- Update post form
+- Delete post
