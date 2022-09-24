@@ -48,3 +48,60 @@ export const createPost = async ({
     throw error
   }
 }
+
+interface IUpdatePostProps extends ICreatePostProp{
+  postId: string
+}
+export const updatePost = async ({
+  postId,
+  title,
+  body,
+  summary,
+  tags,
+  published,
+  token
+}: IUpdatePostProps) => {
+  // NOTE The backend might have a bug that doesn't let it take a published boolean
+
+  const apiUrl = `/api/posts/${postId}`
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+
+    const newPost: IPost = {
+      published,
+      title,
+      tags,
+      summary,
+      body
+    }
+
+    const response = await axios.put(apiUrl, { ...newPost }, config)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+
+interface IDeletePostProps {
+  token: string
+  postId: string
+}
+export const deletePost = async ({ postId, token }: IDeletePostProps) => {
+  const apiUrl = `/api/posts/${postId}`
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+    const response = await axios.delete(apiUrl, config)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
