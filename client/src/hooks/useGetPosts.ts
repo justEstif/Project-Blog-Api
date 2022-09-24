@@ -14,7 +14,6 @@ const useGetPosts = () => {
         const data = await getPosts(token)
         setPosts(() => data)
       } catch (error) {
-        // TODO: Better error handling
         console.log(error)
       }
     }

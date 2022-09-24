@@ -14,11 +14,15 @@ const useRegiser = () => {
 
   useEffect(() => {
     const handleRegister = async () => {
-      const response = await registerUser(register)
-      if (typeof response === 'string') {
-        setMessage(message)
-      } else {
-        store.loginUser(response)
+      try {
+        const response = await registerUser(register)
+        if (typeof response === 'string') {
+          setMessage(message)
+        } else {
+          store.loginUser(response)
+        }
+      } catch (error) {
+        console.log(error)
       }
     }
     register.email !== '' &&

@@ -5,17 +5,20 @@ import { createComment } from '../services/api'
 
 const useComment = () => {
   const store = useStore((state) => state)
-  const token = store.user?.token.token || null
-  const user = store.user?.user._id || null
+  const token = store.user?.token.token || ''
+  const user = store.user?.user._id || ''
   const postID = useLocation().state
-
   const [body, setBody] = useState('')
 
   useEffect(() => {
     const handleComment = async () => {
-      token && user && body && (await createComment(postID, token, body, user))
+      try {
+        await createComment(postID, token, body, user)
+      } catch (error) {
+        console.log(error)
+      }
     }
-    handleComment()
+    if (body) handleComment()
   }, [body])
 
   return { setBody }

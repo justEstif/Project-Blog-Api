@@ -1,20 +1,17 @@
 import { Link } from 'react-router-dom'
-import { HomeIcon, UserIcon, LogoutIcon, RegisterUserIcon } from './NavBarIcons'
+import {
+  HomeIcon,
+  UserIcon,
+  LogoutIcon,
+  RegisterUserIcon,
+  OwnerIcon
+} from './NavBarIcons'
 import useStore from '../store'
 
-interface Props {}
-
-// TODO: Add login, logout, register buttons
-// TODO: Create usercontext ->
-// if user show  logout svg
-// else user icon
-
-// TODO: some kind of logout handler
-function NavBar({}: Props) {
+function NavBar() {
   const store = useStore((state) => state)
-  const handleLogout = () => {
-    store.logoutUser()
-  }
+  const username = store.user?.user.username
+  const owner = store.user?.user.owner
 
   return (
     <nav className="mb-7">
@@ -25,9 +22,17 @@ function NavBar({}: Props) {
           </Link>
         </li>
         {store.user ? (
-          <button onClick={handleLogout}>
-            <LogoutIcon />
-          </button>
+          <div className="flex gap-5 justify-center content-center">
+            <p className="font-serif text-lg text-blue-800">{username}</p>
+            {owner && (
+              <Link to="owner">
+                <OwnerIcon />
+              </Link>
+            )}
+            <button onClick={store.logoutUser}>
+              <LogoutIcon />
+            </button>
+          </div>
         ) : (
           <div className="flex gap-3">
             <li>
