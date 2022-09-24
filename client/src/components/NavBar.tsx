@@ -24,11 +24,7 @@ function NavBar() {
         {store.user ? (
           <div className="flex gap-5 justify-center content-center">
             <p className="font-serif text-lg text-blue-800">{username}</p>
-            {owner && (
-              <Link to="owner">
-                <OwnerIcon />
-              </Link>
-            )}
+            {owner && <OwnerIcon />}
             <button onClick={store.logoutUser}>
               <LogoutIcon />
             </button>
