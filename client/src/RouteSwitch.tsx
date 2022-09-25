@@ -6,10 +6,10 @@ import Layout from './components/Layout'
 import RegisterPage from './pages/registerpage'
 import PostPage from './pages/postpage'
 
-interface Props {}
+interface Props { }
 
 // TODO: Move routes to a constant/Page.Routes.ts
-const RouteSwitch = ({}: Props) => {
+const RouteSwitch = ({ }: Props) => {
   const store = useStore((state) => state)
 
   return (
