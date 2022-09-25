@@ -29,9 +29,10 @@ const RouteSwitch = ({}: Props) => {
               store.user ? <Navigate replace to="/" /> : <RegisterPage />
             }
           />
+          <Route path="posts/*" element={<PostPage />} />
 
           <Route
-            path="owner"
+            path="/owner"
             element={
               store.user?.user.owner ? (
                 <OwnerPage />
@@ -40,7 +41,41 @@ const RouteSwitch = ({}: Props) => {
               )
             }
           />
-          <Route path="posts/*" element={<PostPage />} />
+
+          <Route
+            path="/owner/edit/*"
+            element={
+              store.user?.user.owner ? (
+                <EditPage />
+              ) : (
+                <Navigate replace to="/" />
+              )
+            }
+          />
+
+
+          <Route
+            path="/owner/delete/*"
+            element={
+              store.user?.user.owner ? (
+                <DeletePage />
+              ) : (
+                <Navigate replace to="/" />
+              )
+            }
+          />
+
+          <Route
+            path="/owner/create"
+            element={
+              store.user?.user.owner ? (
+                <CreatePage />
+              ) : (
+                <Navigate replace to="/" />
+              )
+            }
+          />
+
         </Route>
       </Routes>
     </BrowserRouter>
