@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom'
 import { nanoid } from 'nanoid'
 import useGetPosts from '../../hooks/useGetPosts'
 import tw from 'tailwind-styled-components'
+import { DeleteIcon, EditIcon } from './OwnerIcons'
+import SHeader from '../../components/SHeader'
 
 const STable = tw.table`
   table-auto
@@ -23,6 +26,7 @@ const STr = tw.tr`
   ease-in-out
   hover:bg-gray-100
 `
+
 const STd = tw.td`
   text-sm
   text-gray-900
@@ -36,9 +40,9 @@ const OwnerPage = () => {
   const posts = useGetPosts()
   return (
     <>
-      <div>
-        <div>This is the OwnerPage</div>
-      </div>
+      <SHeader>
+        <p className="text-5xl capitalize">Owner Page</p>
+      </SHeader>
 
       {posts.length === 0 ? (
         // TODO :add React framer when loading posts
@@ -62,6 +66,16 @@ const OwnerPage = () => {
                   {post.publicationDate
                     ? post.publicationDate.toString()
                     : 'N/A'}
+                </STd>
+                <STd>
+                  <Link to={`/owner/edit/${post._id}`}>
+                    <EditIcon />
+                  </Link>
+                </STd>
+                <STd>
+                  <Link to={`/owner/delete/${post._id}`}>
+                    <DeleteIcon />
+                  </Link>
                 </STd>
               </STr>
             ))}
