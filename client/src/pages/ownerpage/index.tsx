@@ -61,16 +61,14 @@ const OwnerPage = () => {
             {posts.map((post) => {
               const postTitle = post.title.replaceAll(' ', '_').toLowerCase()
               const postID = post._id
-
+              const postPubDate = post.publicationDate
+                ? post.publicationDate.toString()
+                : 'N/A'
               return (
                 <STr key={nanoid()}>
                   <STd>{post.title}</STd>
                   <STd>{post.published ? 'true' : 'false'}</STd>
-                  <STd>
-                    {post.publicationDate
-                      ? post.publicationDate.toString()
-                      : 'N/A'}
-                  </STd>
+                  <STd>{postPubDate}</STd>
                   <STd>
                     <Link to={`/owner/edit/${postTitle}`} state={postID}>
                       <EditIcon />
