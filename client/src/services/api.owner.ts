@@ -6,15 +6,7 @@
 
 import axios from 'axios'
 import IPost from '../interface/IPost'
-
-interface ICreatePostProp {
-  title: string
-  body: string
-  summary: string
-  tags: string[]
-  published: boolean
-  token: string
-}
+import ICreatePostProp from '../interface/ICreatePostProp'
 
 export const createPost = async ({
   title,
@@ -85,7 +77,6 @@ export const updatePost = async ({
     throw error
   }
 }
-
 
 interface IDeletePostProps {
   token: string
