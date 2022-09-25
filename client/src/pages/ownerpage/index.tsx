@@ -50,35 +50,40 @@ const OwnerPage = () => {
       ) : (
         <STable>
           <thead>
-            <tr>
+            <STr>
               <STh>Title</STh>
               <STh>Published</STh>
               <STh>Publication Date</STh>
-            </tr>
+            </STr>
           </thead>
 
           <tbody>
-            {posts.map((post) => (
-              <STr key={nanoid()}>
-                <STd>{post.title}</STd>
-                <STd>{post.published ? 'true' : 'false'}</STd>
-                <STd>
-                  {post.publicationDate
-                    ? post.publicationDate.toString()
-                    : 'N/A'}
-                </STd>
-                <STd>
-                  <Link to={`/owner/edit/${post._id}`}>
-                    <EditIcon />
-                  </Link>
-                </STd>
-                <STd>
-                  <Link to={`/owner/delete/${post._id}`}>
-                    <DeleteIcon />
-                  </Link>
-                </STd>
-              </STr>
-            ))}
+            {posts.map((post) => {
+              const postTitle = post.title.replaceAll(' ', '_').toLowerCase()
+              const postID = post._id
+
+              return (
+                <STr key={nanoid()}>
+                  <STd>{post.title}</STd>
+                  <STd>{post.published ? 'true' : 'false'}</STd>
+                  <STd>
+                    {post.publicationDate
+                      ? post.publicationDate.toString()
+                      : 'N/A'}
+                  </STd>
+                  <STd>
+                    <Link to={`/owner/edit/${postTitle}`} state={postID}>
+                      <EditIcon />
+                    </Link>
+                  </STd>
+                  <STd>
+                    <Link to={`/owner/delete/${postTitle}`} state={postID}>
+                      <DeleteIcon />
+                    </Link>
+                  </STd>
+                </STr>
+              )
+            })}
           </tbody>
         </STable>
       )}

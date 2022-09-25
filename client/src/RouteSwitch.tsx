@@ -6,6 +6,9 @@ import Layout from './components/Layout'
 import RegisterPage from './pages/registerpage'
 import PostPage from './pages/postpage'
 import OwnerPage from './pages/ownerpage'
+import CreatePage from './pages/createpage'
+import EditPage from './pages/editpage'
+import DeletePage from './pages/deletepage'
 
 interface Props {}
 
@@ -53,7 +56,6 @@ const RouteSwitch = ({}: Props) => {
             }
           />
 
-
           <Route
             path="/owner/delete/*"
             element={
@@ -75,7 +77,6 @@ const RouteSwitch = ({}: Props) => {
               )
             }
           />
-
         </Route>
       </Routes>
     </BrowserRouter>
