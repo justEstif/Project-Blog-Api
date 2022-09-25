@@ -5,11 +5,12 @@ import HomePage from './pages/homepage'
 import Layout from './components/Layout'
 import RegisterPage from './pages/registerpage'
 import PostPage from './pages/postpage'
+import OwnerPage from './pages/ownerpage'
 
-interface Props { }
+interface Props {}
 
 // TODO: Move routes to a constant/Page.Routes.ts
-const RouteSwitch = ({ }: Props) => {
+const RouteSwitch = ({}: Props) => {
   const store = useStore((state) => state)
 
   return (
@@ -26,6 +27,17 @@ const RouteSwitch = ({ }: Props) => {
             path="register"
             element={
               store.user ? <Navigate replace to="/" /> : <RegisterPage />
+            }
+          />
+
+          <Route
+            path="owner"
+            element={
+              store.user?.user.owner ? (
+                <OwnerPage />
+              ) : (
+                <Navigate replace to="/" />
+              )
             }
           />
           <Route path="posts/*" element={<PostPage />} />
