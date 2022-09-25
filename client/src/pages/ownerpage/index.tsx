@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { nanoid } from 'nanoid'
 import useGetPosts from '../../hooks/useGetPosts'
 import tw from 'tailwind-styled-components'
-import { DeleteIcon, EditIcon } from './OwnerIcons'
+import { AddIcon, DeleteIcon, EditIcon } from './OwnerIcons'
 import SHeader from '../../components/SHeader'
 
 const STable = tw.table`
@@ -43,6 +43,12 @@ const OwnerPage = () => {
       <SHeader>
         <p className="text-5xl capitalize">Owner Page</p>
       </SHeader>
+
+      <button>
+        <Link to={`/owner/create/`}>
+          <AddIcon />
+        </Link>
+      </button>
 
       {posts.length === 0 ? (
         // TODO :add React framer when loading posts
