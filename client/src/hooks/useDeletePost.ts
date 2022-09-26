@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react'
-import useStore from '../store'
 import { deletePost } from '../services/api.owner'
 
 const useDeletePost = () => {
-  const [postId, setPostId] = useState("")
-  const store = useStore((state) => state)
-  const owner = store.user?.user.owner
-  const token = store.user?.token.token
+  const [deleteData, setDeleteData] = useState({
+    postId: '',
+    token: ''
+  })
 
   useEffect(() => {
     const handlePost = async () => {
-      if(token && owner)
       try {
-        await deletePost({ postId, token })
+        await deletePost({ postId: deleteData.postId, token: deleteData.token })
       } catch (error) {
-        throw error
+        console.log(error)
       }
     }
-    postId.length && handlePost()
-  }, [postId])
+    deleteData.postId.length !== 0 &&
+      deleteData.token.length !== 0 &&
+      handlePost()
+  }, [deleteData.postId])
 
-  return { setPostId }
+  return { setDeleteData }
 }
 
 export default useDeletePost
