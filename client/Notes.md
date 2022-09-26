@@ -174,3 +174,6 @@ form:
 
 - if owner show mark on nav bar then:
   - if post page show and edit, delete and create button
+
+- TODO:
+  - refresh page after the comment is made

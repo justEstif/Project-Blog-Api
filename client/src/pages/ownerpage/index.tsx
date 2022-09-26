@@ -6,7 +6,7 @@ import { AddIcon, DeleteIcon, EditIcon } from './OwnerIcons'
 import SHeader from '../../components/SHeader'
 
 const STable = tw.table`
-  table-auto
+  table-fixed
 `
 const STh = tw.th`
   text-sm
@@ -32,6 +32,8 @@ const STd = tw.td`
   font-light
   px-6
   py-4
+  max-w-[200px]
+  overflow-hidden
   whitespace-nowrap
 `
 
