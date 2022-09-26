@@ -8,6 +8,7 @@ import axios from 'axios'
 import IPost from '../interface/IPost'
 import ICreatePostProp from '../interface/ICreatePostProp'
 import getTags from '../utils/getTags'
+import IUpdatePostProps from '../interface/IUpdatePostProp'
 
 export const createPost = async ({
   title,
@@ -41,9 +42,6 @@ export const createPost = async ({
   }
 }
 
-interface IUpdatePostProps extends ICreatePostProp {
-  postId: string
-}
 export const updatePost = async ({
   postId,
   title,
@@ -51,7 +49,7 @@ export const updatePost = async ({
   summary,
   tags,
   published,
-  token
+  token,
 }: IUpdatePostProps) => {
   // NOTE The backend might have a bug that doesn't let it take a published boolean
 
