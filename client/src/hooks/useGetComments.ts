@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import IPost from '../interface/IPost'
+import IComment from '../interface/IComment'
 import { getPost } from '../services/api'
 import useStore from '../store'
 
-const useGetPost = (postID: string) => {
-  const [post, setPost] = useState<IPost>()
+const useGetComments = (postID: string) => {
+  const [comments, setComments] = useState<IComment[]>()
   const store = useStore((state) => state)
   const token = store.user?.token.token || ''
 
@@ -12,7 +12,7 @@ const useGetPost = (postID: string) => {
     const fetchPost = async () => {
       try {
         const data = await getPost(postID, token)
-        setPost(() => data.post)
+        setComments(() => data.comment)
       } catch (error) {
         console.log(error)
       }
@@ -20,7 +20,7 @@ const useGetPost = (postID: string) => {
     fetchPost()
   }, [token])
 
-  return { post }
+  return { comments }
 }
 
-export default useGetPost
+export default useGetComments
