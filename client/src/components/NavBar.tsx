@@ -23,7 +23,7 @@ function NavBar() {
         </li>
         {store.user ? (
           <div className="flex gap-5 justify-center content-center">
-            <p className="font-serif text-lg text-blue-800">{username}</p>
+            <p className="font-serif text-lg">{username}</p>
             {owner && (
               <Link to="/owner">
                 <OwnerIcon />
