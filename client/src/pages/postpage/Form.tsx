@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form'
 import IComment from '../../interface/IComment'
 import tw from 'tailwind-styled-components'
-import useComment from '../../hooks/useComment'
 import useStore from '../../store'
 
 const SInput = tw.input`
@@ -20,9 +19,11 @@ const SInput = tw.input`
     focus:border-purple-500
   `
 
-const Form = () => {
+interface IProps {
+  setBody: React.Dispatch<React.SetStateAction<string>>
+}
+const Form = ({ setBody }: IProps) => {
   const { register, handleSubmit } = useForm<IComment>()
-  const { setBody } = useComment()
   const onSubmit = handleSubmit((data) => setBody(data.body))
   const user = useStore((state) => state).user?.user._id
   const placeholder = user ? 'Enter comment ...' : 'Login to comment'
