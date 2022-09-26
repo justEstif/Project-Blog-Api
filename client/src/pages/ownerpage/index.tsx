@@ -44,11 +44,13 @@ const OwnerPage = () => {
         <p className="text-5xl capitalize">Owner Page</p>
       </SHeader>
 
-      <button>
-        <Link to={`/owner/create/`}>
-          <AddIcon />
-        </Link>
-      </button>
+      <div className='flex justify-center content-center'>
+        <button>
+          <Link to={`/owner/create/`}>
+            <AddIcon />
+          </Link>
+        </button>
+      </div>
 
       {posts.length === 0 ? (
         // TODO :add React framer when loading posts
