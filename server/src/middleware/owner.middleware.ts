@@ -1,18 +1,24 @@
 import { RequestHandler } from 'express'
-import authMiddleware from './auth.middleware'
 // import NotOwnerException from '../exception/NotOwnerException'
+import passport from 'passport'
+import WrongAuthenticationTokenException from '../exception/WrongAuthenticationTokenMissingException'
 
 // Only owner is allowed on this route
 const ownerMiddleware: RequestHandler = (request, response, next) => {
-  authMiddleware(request, response, () => {
-    if (request.user.owner) {
-      next()
+  passport.authenticate('jwt', { session: false }, (err, user) => {
+    if (err || !user) {
+      next(new WrongAuthenticationTokenException())
     } else {
-      response.status(400).json({
-        message: 'Not owner: Route not allowed'
-      })
+      if (user.owner) {
+        next()
+      } else {
+        response.status(400).json({
+          message: 'Not owner: Route not allowed'
+        })
+      }
     }
-  })
+  })(request, response)
 }
 
 export default ownerMiddleware
+
