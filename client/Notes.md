@@ -177,3 +177,7 @@ form:
 
 - TODO:
   - refresh page after the comment is made
+
+
+NOTE:
+- There seems to be a bug when trying to  `useNavigate` after a post request
