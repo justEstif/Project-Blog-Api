@@ -1,9 +1,9 @@
-import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import useCreatePost from '../../hooks/useCreatePost'
 import useStore from '../../store'
 import ICreatePostProp from '../../interface/ICreatePostProp'
 import tw from 'tailwind-styled-components'
+import { useEffect, useState } from 'react'
+import { createPost } from '../../services/api.owner'
 
 const SInput = tw.input`
     max-w-xs
@@ -20,16 +20,41 @@ const SInput = tw.input`
     focus:bg-white
     focus:border-purple-500
 `
+
+const useCreatePost = () => {
+  const initialPost = {
+    title: '',
+    body: '',
+    summary: '',
+    tags: '',
+    published: false,
+    token: ''
+  }
+  const [post, setPost] = useState<ICreatePostProp>(initialPost)
+
+  useEffect(() => {
+    const handleCreate = async () => {
+      try {
+        await createPost(post)
+        setPost(initialPost)
+      } catch (error) {
+        throw error
+      }
+    }
+    !Object.is(initialPost, post) && handleCreate()
+  }, [post])
+  return { setPost }
+}
+
 const Form = () => {
   const { register, handleSubmit } = useForm<ICreatePostProp>()
   const { setPost } = useCreatePost()
-  const navigate = useNavigate()
-  const store = useStore((state) => state)
-  const token = store.user?.token.token || ''
+  const token = useStore((state) => state.user?.token.token)
   const onSubmit = handleSubmit((data) => {
-    data.token = token
-    setPost(data)
-    navigate('/owner')
+    if (token) {
+      data.token = token
+      setPost(data)
+    }
   })
   return (
     <form onSubmit={onSubmit}>
