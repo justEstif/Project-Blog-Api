@@ -7,6 +7,7 @@
 import axios from 'axios'
 import IPost from '../interface/IPost'
 import ICreatePostProp from '../interface/ICreatePostProp'
+import getTags from '../utils/getTags'
 
 export const createPost = async ({
   title,
@@ -29,7 +30,7 @@ export const createPost = async ({
     const newPost: IPost = {
       published,
       title,
-      tags,
+      tags: getTags(tags),
       summary,
       body
     }
@@ -66,7 +67,7 @@ export const updatePost = async ({
     const newPost: IPost = {
       published,
       title,
-      tags,
+      tags: getTags(tags),
       summary,
       body
     }

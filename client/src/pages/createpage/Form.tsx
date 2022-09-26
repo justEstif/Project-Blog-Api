@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import useCreatePost from '../../hooks/useCreatePost'
-import useStore from "../../store"
+import useStore from '../../store'
 import ICreatePostProp from '../../interface/ICreatePostProp'
 import tw from 'tailwind-styled-components'
 
@@ -28,7 +28,6 @@ const Form = () => {
   const token = store.user?.token.token || ''
   const onSubmit = handleSubmit((data) => {
     data.token = token
-    data.tags = ["tag1"]
     setPost(data)
     navigate('/owner')
   })
@@ -73,7 +72,7 @@ const Form = () => {
         <input type="text" {...register('tags')} />
       </div>
 
-      <div className='flex flex-col gap-3'>
+      <div className="flex flex-col gap-3">
         <label htmlFor="Tags" className="font-mono font-bold text-gray-500">
           Published
         </label>

@@ -7,16 +7,15 @@ const useCreatePost = () => {
     title: '',
     body: '',
     summary: '',
-    tags: [],
+    tags: "",
     published: false,
-    token: ""
+    token: ''
   })
 
   useEffect(() => {
     const handleCreate = async () => {
       try {
-        const response = await createPost(post)
-        console.log(response.data)
+        await createPost(post)
       } catch (error) {
         throw error
       }
