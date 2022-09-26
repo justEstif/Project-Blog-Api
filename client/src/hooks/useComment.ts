@@ -21,7 +21,7 @@ const useComment = () => {
     if (body) handleComment()
   }, [body])
 
-  return { setBody }
+  return { body, setBody }
 }
 
 export default useComment
