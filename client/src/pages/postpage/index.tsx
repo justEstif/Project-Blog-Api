@@ -4,11 +4,17 @@ import tw from 'tailwind-styled-components'
 import Comments from './Comments'
 import Header from './Header'
 import useGetComments from '../../hooks/useGetComments'
+import { useForm } from 'react-hook-form'
+import IComment from '../../interface/IComment'
+import useComment from '../../hooks/useComment'
+import Form from './Form'
+import { useEffect } from 'react'
 
 const PostPage = () => {
   const postID = useLocation().state
   const { post } = useGetPost(postID)
-  const {comments} = useGetComments(postID)
+  const { comments } = useGetComments(postID)
+  const { body, setBody } = useComment()
 
   const SBody = tw.section`
     [&>*]:py-5
@@ -20,7 +26,7 @@ const PostPage = () => {
       <Header post={post} />
       <SBody>
         <div className="border-b-2">{post?.body}</div>
-        <Comments postComments={comments} />
+        <Comments Form={<Form setBody={setBody} />} postComments={comments} />
       </SBody>
     </>
   )

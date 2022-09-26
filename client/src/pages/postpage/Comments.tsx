@@ -1,17 +1,17 @@
 import { nanoid } from 'nanoid'
 import IComment from '../../interface/IComment'
 import Comment from './Comment'
-import Form from "./Form"
 
 interface IProps {
   postComments: IComment[] | undefined
+  Form: JSX.Element
 }
 
-const Comments = ({ postComments }: IProps) => {
+const Comments = ({ postComments, Form }: IProps) => {
   return (
     <div>
       <div className="text-2xl">Comments</div>
-      <Form />
+      {Form}
       {typeof postComments !== 'undefined' ? (
         postComments.map((postComment) => (
           <Comment key={nanoid()} comment={postComment} />
