@@ -35,8 +35,7 @@ export const createPost = async ({
       body
     }
 
-    const response = await axios.post(apiUrl, { ...newPost }, config)
-    return response.data
+    await axios.post(apiUrl, { ...newPost }, config)
   } catch (error) {
     throw error
   }
