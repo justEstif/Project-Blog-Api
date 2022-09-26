@@ -8,8 +8,8 @@ interface Props {
 }
 
 const Post = ({ post }: Props) => {
-  const postUrl = `posts/${post.title.replaceAll(' ', '_').toLowerCase()}`
   const postID = post._id
+  const postUrl = `posts/${postID}`
 
   return (
     <div className="flex flex-col gap-3 my-8">
