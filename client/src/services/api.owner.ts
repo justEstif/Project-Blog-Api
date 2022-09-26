@@ -41,7 +41,7 @@ export const createPost = async ({
   }
 }
 
-interface IUpdatePostProps extends ICreatePostProp{
+interface IUpdatePostProps extends ICreatePostProp {
   postId: string
 }
 export const updatePost = async ({
@@ -83,15 +83,14 @@ interface IDeletePostProps {
   postId: string
 }
 export const deletePost = async ({ postId, token }: IDeletePostProps) => {
-  const apiUrl = `/api/posts/${postId}`
+  const urlwithProxy = `/api/posts/${postId}`
   try {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`
       }
     }
-    const response = await axios.delete(apiUrl, config)
-    return response.data
+    await axios.delete(urlwithProxy, config)
   } catch (error) {
     throw error
   }

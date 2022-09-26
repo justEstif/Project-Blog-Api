@@ -21,11 +21,13 @@ const RouteSwitch = ({}: Props) => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
+
           {/* NOTE: If there is a user redirect to home */}
           <Route
             path="login"
             element={store.user ? <Navigate replace to="/" /> : <LoginPage />}
           />
+
           <Route
             path="register"
             element={
