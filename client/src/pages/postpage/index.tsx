@@ -3,18 +3,36 @@ import useGetPost from '../../hooks/useGetPost'
 import tw from 'tailwind-styled-components'
 import Comments from './Comments'
 import Header from './Header'
-import useGetComments from '../../hooks/useGetComments'
-import { useForm } from 'react-hook-form'
-import IComment from '../../interface/IComment'
 import useComment from '../../hooks/useComment'
 import Form from './Form'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import IComment from '../../interface/IComment'
+import useStore from '../../store'
+import { getPost } from '../../services/api'
 
 const PostPage = () => {
   const postID = useLocation().state
   const { post } = useGetPost(postID)
-  const { comments } = useGetComments(postID)
   const { body, setBody } = useComment()
+  const store = useStore((state) => state)
+  const token = store.user?.token.token || ''
+
+  const [comments, setComments] = useState<IComment[] | undefined>(undefined)
+
+  const fetchComments = async () => {
+    try {
+      const data = await getPost(postID, token)
+      setComments(() => data.comment)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    fetchComments()
+  }, [])
+  useEffect(() => {
+    fetchComments()
+  }, [body])
 
   const SBody = tw.section`
     [&>*]:py-5
