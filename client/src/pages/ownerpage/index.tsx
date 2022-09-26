@@ -8,7 +8,6 @@ import SHeader from '../../components/SHeader'
 const STable = tw.table`
   table-auto
 `
-
 const STh = tw.th`
   text-sm
   font-medium
@@ -62,6 +61,8 @@ const OwnerPage = () => {
               <STh>Title</STh>
               <STh>Published</STh>
               <STh>Publication Date</STh>
+              <STh>Edit</STh>
+              <STh>Delete</STh>
             </STr>
           </thead>
 
