@@ -5,7 +5,6 @@ const CreatePage = () => {
   // TODO Make sure the tags are fixed
   return (
     <div>
-      <div>This is the createpage</div>
       <Form />
     </div>
   )
