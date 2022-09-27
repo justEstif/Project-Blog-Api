@@ -4,6 +4,7 @@ import useStore from '../../store'
 import SHeader from '../../components/SHeader'
 import useGetPost from '../../hooks/useGetPost'
 import useDeletePost from './useDeletepost'
+import SButton from '../../components/SButton'
 
 interface IPostId {
   postid: string
@@ -35,11 +36,9 @@ const DeletePage = () => {
       <div className="flex justify-center content-center">
         <form onSubmit={onSubmit}>
           <div className="flex gap-4">
-            <button type="submit" className="py-2 px-4 bg-red-500">
-              Confirm
-            </button>
+            <SButton type="submit">Confirm</SButton>
             <Link to={`/owner`}>
-              <button className="py-2 px-4 bg-gray-400">Cancel</button>
+              <SButton $cancel={true}>Cancel</SButton>
             </Link>
           </div>
         </form>

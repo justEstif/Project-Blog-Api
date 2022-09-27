@@ -1,9 +1,12 @@
-import tw from "tailwind-styled-components"
+import tw from 'tailwind-styled-components'
 
-const SButton = tw.button`
+interface IButtonProps {
+  $cancel?: boolean
+}
+const SButton = tw.button<IButtonProps>`
+    ${(p) => (p.$cancel ? 'bg-red-600' : 'bg-purple-500')}
+    ${(p) => (p.$cancel ? 'hover:bg-red-500' : 'hover:bg-purple-400')}
     shadow
-    bg-purple-500
-    hover:bg-purple-400
     focus:shadow-outline
     focus:outline-none
     text-white

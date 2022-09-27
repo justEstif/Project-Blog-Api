@@ -1,11 +1,22 @@
+import { useForm } from 'react-hook-form'
+import useStore from '../../store'
+import ICreatePostProp from '../../interface/ICreatePostProp'
 import Form from './Form'
+import useCreatePost from './useCreatePost'
 
 const CreatePage = () => {
-  // TODO make page pretty
-  // TODO Make sure the tags are fixed
+  const { register, handleSubmit } = useForm<ICreatePostProp>()
+  const { setPost } = useCreatePost()
+  const token = useStore((state) => state.user?.token.token)
+  const onSubmit = handleSubmit((data) => {
+    if (token) {
+      data.token = token
+      setPost(data)
+    }
+  })
   return (
     <div>
-      <Form />
+      <Form onSubmit={onSubmit} register={register} />
     </div>
   )
 }
