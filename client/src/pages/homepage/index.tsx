@@ -14,7 +14,7 @@ const HomePage = ({}: Props) => {
       {/* TODO Add Create post page */}
       {posts.length === 0 ? (
         // TODO :add React framer when loading posts
-        <p>Loading posts ... </p>
+        <p>No posts</p>
       ) : (
         posts.map((post) => <Post key={nanoid()} post={post} />)
       )}

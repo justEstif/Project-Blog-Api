@@ -55,7 +55,7 @@ const OwnerPage = () => {
 
       {posts.length === 0 ? (
         // TODO :add React framer when loading posts
-        <p>Loading posts ... </p>
+        <p>No Posts</p>
       ) : (
         <STable>
           <thead>
