@@ -1,56 +1,20 @@
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'react-router-dom'
 import useStore from '../../store'
-import tw from 'tailwind-styled-components'
-import { useEffect, useState } from 'react'
-import { updatePost } from '../../services/api.owner'
 import IUpdatePostProps from '../../interface/IUpdatePostProp'
 import IPost from '../../interface/IPost'
-
-const SInput = tw.input`
-    max-w-xs
-    appearance-none
-    bg-gray-200
-    border-2
-    border-gray-200
-    rounded
-    py-2
-    px-4
-    text-gray-700
-    leading-tight
-    focus:outline-none
-    focus:bg-white
-    focus:border-purple-500
-`
-
-const useUpdatePost = () => {
-  const initialPost = {
-    title: '',
-    body: '',
-    summary: '',
-    tags: '',
-    published: false,
-    token: '',
-    postId: ''
-  }
-  const [post, setPost] = useState<IUpdatePostProps>(initialPost)
-
-  useEffect(() => {
-    const handleUpdate = async () => {
-      try {
-        await updatePost(post)
-      } catch (error) {
-        throw error
-      }
-    }
-    !Object.is(initialPost, post) && handleUpdate()
-  }, [post])
-  return { setPost }
-}
+import SButton from '../../components/SButton'
+import useUpdatePost from './useUpdatePost'
+import SInput from '../../components/SInput'
+import tw from 'tailwind-styled-components'
+import STextArea from '../../components/STextArea'
 
 interface IProps {
   post: IPost | undefined
 }
+
+const STextAreaB = tw(STextArea)`h-80`
+const STextAreaS = tw(STextArea)`h-60`
 
 const Form = ({ post }: IProps) => {
   const { register, handleSubmit } = useForm<IUpdatePostProps>({
@@ -73,7 +37,7 @@ const Form = ({ post }: IProps) => {
     }
   })
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="flex flex-col gap-4">
       <div className="flex flex-col gap-3">
         <label htmlFor="title" className="font-mono font-bold text-gray-500">
           Title
@@ -91,7 +55,11 @@ const Form = ({ post }: IProps) => {
         <label htmlFor="body" className="font-mono font-bold text-gray-500">
           Body
         </label>
-        <textarea id="body" placeholder="Enter body..." {...register('body')} />
+        <STextAreaB
+          id="body"
+          placeholder="Enter body..."
+          {...register('body')}
+        />
       </div>
 
       <div className="flex flex-col gap-3">
@@ -99,7 +67,7 @@ const Form = ({ post }: IProps) => {
           Summary
         </label>
 
-        <textarea
+        <STextAreaS
           id="summary"
           placeholder="Enter summary ..."
           {...register('summary')}
@@ -110,18 +78,19 @@ const Form = ({ post }: IProps) => {
         <label htmlFor="Tags" className="font-mono font-bold text-gray-500">
           Tags <span className="italic">(separate by comma)</span>
         </label>
-        <input type="text" {...register('tags')} />
+        <SInput type="text" {...register('tags')} />
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex gap-3 content-center">
         <label htmlFor="Tags" className="font-mono font-bold text-gray-500">
-          Published
+          Publish
         </label>
         <input type="checkbox" {...register('published')} />
       </div>
 
-      {/* NOTE separate tags using comma */}
-      <button type="submit">Submit</button>
+      <div className="flex justify-center content-center my-6">
+        <SButton type="submit">Update Post</SButton>
+      </div>
     </form>
   )
 }

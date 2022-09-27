@@ -3,15 +3,10 @@ import useGetPost from '../../hooks/useGetPost'
 import Form from './Form'
 
 const EditPage = () => {
-  const postID = useLocation().state
-  const { post } = useGetPost(postID)
+  const postId = useLocation().state
+  const { post } = useGetPost(postId)
 
-  return (
-    <div>
-      <div>This is the edit page: {postID}</div>
-      {!post ? <p>Loading</p> : <Form post={post} />}
-    </div>
-  )
+  return <>{!post ? <p>Loading</p> : <Form post={post} />}</>
 }
 
 export default EditPage
