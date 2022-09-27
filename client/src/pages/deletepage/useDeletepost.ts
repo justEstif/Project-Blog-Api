@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import IDeletePostProps from '../../interface/IDeletePostProps'
 import { deletePost } from '../../services/api.owner'
 
 const useDeletePost = () => {
@@ -6,21 +7,27 @@ const useDeletePost = () => {
     postId: '',
     token: ''
   }
-  const [deleteData, setDeleteData] = useState(initialValue)
+  const [deleteData, setDeleteData] = useState<IDeletePostProps | null>(null)
+  const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     const handlePost = async () => {
-      try {
-        await deletePost({ postId: deleteData.postId, token: deleteData.token })
-        setDeleteData(initialValue)
-      } catch (error) {
-        console.log(error)
+      if (deleteData) {
+        try {
+          await deletePost({
+            postId: deleteData.postId,
+            token: deleteData.token
+          })
+          setSuccess(true)
+        } catch (error) {
+          console.log(error)
+        }
       }
     }
     !Object.is(initialValue, deleteData) && handlePost()
-  }, [deleteData.postId])
+  }, [deleteData])
 
-  return { setDeleteData }
+  return { success,setDeleteData }
 }
 
 export default useDeletePost

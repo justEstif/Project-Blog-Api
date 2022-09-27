@@ -1,10 +1,11 @@
-import { useLocation, Link } from 'react-router-dom'
+import { useLocation, Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import useStore from '../../store'
 import SHeader from '../../components/SHeader'
 import useGetPost from '../../hooks/useGetPost'
 import useDeletePost from './useDeletepost'
 import SButton from '../../components/SButton'
+import { useEffect } from 'react'
 
 interface IPostId {
   postid: string
@@ -12,8 +13,9 @@ interface IPostId {
 
 const DeletePage = () => {
   const { handleSubmit } = useForm<IPostId>()
-  const { setDeleteData } = useDeletePost()
+  const { success, setDeleteData } = useDeletePost()
   const store = useStore((state) => state)
+  const navigate = useNavigate()
   const postId = useLocation().state
   const { post } = useGetPost(postId)
   const token = store.user?.token.token || null
@@ -23,9 +25,12 @@ const DeletePage = () => {
         postId: postId,
         token: token
       })
-      // TODO Navigate to home page after completed
     }
   })
+
+  useEffect(() => {
+    success && navigate('/owner')
+  }, [success])
   return (
     <>
       <SHeader>

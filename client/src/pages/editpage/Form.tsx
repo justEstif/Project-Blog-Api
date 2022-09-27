@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import useStore from '../../store'
 import IUpdatePostProps from '../../interface/IUpdatePostProp'
 import IPost from '../../interface/IPost'
@@ -8,6 +8,7 @@ import useUpdatePost from './useUpdatePost'
 import SInput from '../../components/SInput'
 import tw from 'tailwind-styled-components'
 import STextArea from '../../components/STextArea'
+import { useEffect } from 'react'
 
 interface IProps {
   post: IPost | undefined
@@ -26,9 +27,10 @@ const Form = ({ post }: IProps) => {
       published: post?.published
     }
   })
-  const { setPost } = useUpdatePost()
+  const { success, setPost } = useUpdatePost()
   const token = useStore((state) => state.user?.token.token)
   const postID = useLocation().state
+  const navigate = useNavigate()
   const onSubmit = handleSubmit((data) => {
     if (token) {
       data.token = token
@@ -36,6 +38,10 @@ const Form = ({ post }: IProps) => {
       setPost(data)
     }
   })
+
+  useEffect(() => {
+    success && navigate('/owner')
+  }, [success])
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4">
       <div className="flex flex-col gap-3">

@@ -1,30 +1,25 @@
-import { useState, useEffect } from "react"
-import ICreatePostProp from "../../interface/ICreatePostProp"
-import { createPost } from "../../services/api.owner"
+import { useState, useEffect } from 'react'
+import ICreatePostProp from '../../interface/ICreatePostProp'
+import { createPost } from '../../services/api.owner'
 
 const useCreatePost = () => {
-  const initialPost = {
-    title: '',
-    body: '',
-    summary: '',
-    tags: '',
-    published: false,
-    token: ''
-  }
-  const [post, setPost] = useState<ICreatePostProp>(initialPost)
+  const [post, setPost] = useState<ICreatePostProp | null>(null)
+  const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     const handleCreate = async () => {
-      try {
-        await createPost(post)
-        setPost(initialPost)
-      } catch (error) {
-        throw error
+      if (post) {
+        try {
+          await createPost(post)
+          setSuccess(true)
+        } catch (error) {
+          throw error
+        }
       }
     }
-    !Object.is(initialPost, post) && handleCreate()
+    handleCreate()
   }, [post])
-  return { setPost }
+  return { success, setPost }
 }
 
 export default useCreatePost

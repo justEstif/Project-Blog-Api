@@ -9,6 +9,7 @@ import IPost from '../interface/IPost'
 import ICreatePostProp from '../interface/ICreatePostProp'
 import getTags from '../utils/getTags'
 import IUpdatePostProps from '../interface/IUpdatePostProp'
+import IDeletePostProps from '../interface/IDeletePostProps'
 
 export const createPost = async ({
   title,
@@ -49,7 +50,7 @@ export const updatePost = async ({
   summary,
   tags,
   published,
-  token,
+  token
 }: IUpdatePostProps) => {
   // NOTE The backend might have a bug that doesn't let it take a published boolean
 
@@ -76,10 +77,6 @@ export const updatePost = async ({
   }
 }
 
-interface IDeletePostProps {
-  token: string
-  postId: string
-}
 export const deletePost = async ({ postId, token }: IDeletePostProps) => {
   const urlwithProxy = `/api/posts/${postId}`
   try {

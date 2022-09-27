@@ -1,30 +1,25 @@
-import { useState, useEffect } from "react"
-import IUpdatePostProps from "../../interface/IUpdatePostProp"
-import { updatePost } from "../../services/api.owner"
+import { useState, useEffect } from 'react'
+import IUpdatePostProps from '../../interface/IUpdatePostProp'
+import { updatePost } from '../../services/api.owner'
 
 const useUpdatePost = () => {
-  const initialPost = {
-    title: '',
-    body: '',
-    summary: '',
-    tags: '',
-    published: false,
-    token: '',
-    postId: ''
-  }
-  const [post, setPost] = useState<IUpdatePostProps>(initialPost)
+  const [post, setPost] = useState<IUpdatePostProps | null>(null)
+  const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     const handleUpdate = async () => {
-      try {
-        await updatePost(post)
-      } catch (error) {
-        throw error
+      if (post) {
+        try {
+          await updatePost(post)
+          setSuccess(true)
+        } catch (error) {
+          throw error
+        }
       }
     }
-    !Object.is(initialPost, post) && handleUpdate()
+    handleUpdate()
   }, [post])
-  return { setPost }
+  return { success, setSuccess, setPost }
 }
 
 export default useUpdatePost
