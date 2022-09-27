@@ -1,43 +1,20 @@
-import { Link } from 'react-router-dom'
-import { useLocation } from 'react-router-dom'
-import useStore from '../../store'
+import { useLocation, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import useStore from '../../store'
 import SHeader from '../../components/SHeader'
 import useGetPost from '../../hooks/useGetPost'
-import { useState, useEffect } from 'react'
-import { deletePost } from '../../services/api.owner'
+import useDeletePost from './useDeletepost'
 
 interface IPostId {
   postid: string
 }
 
-const useDeletePost = () => {
-  const initialValue = {
-    postId: '',
-    token: ''
-  }
-  const [deleteData, setDeleteData] = useState(initialValue)
-
-  useEffect(() => {
-    const handlePost = async () => {
-      try {
-        await deletePost({ postId: deleteData.postId, token: deleteData.token })
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    !Object.is(initialValue, deleteData) && handlePost()
-  }, [deleteData.postId])
-
-  return { setDeleteData }
-}
-
 const DeletePage = () => {
   const { handleSubmit } = useForm<IPostId>()
   const { setDeleteData } = useDeletePost()
+  const store = useStore((state) => state)
   const postId = useLocation().state
   const { post } = useGetPost(postId)
-  const store = useStore((state) => state)
   const token = store.user?.token.token || null
   const onSubmit = handleSubmit((_) => {
     if (token) {
@@ -45,6 +22,7 @@ const DeletePage = () => {
         postId: postId,
         token: token
       })
+      // TODO Navigate to home page after completed
     }
   })
   return (
@@ -57,11 +35,11 @@ const DeletePage = () => {
       <div className="flex justify-center content-center">
         <form onSubmit={onSubmit}>
           <div className="flex gap-4">
-            <button type="submit" className="hover:bg-green-500">
+            <button type="submit" className="py-2 px-4 bg-red-500">
               Confirm
             </button>
             <Link to={`/owner`}>
-              <button>Cancel</button>
+              <button className="py-2 px-4 bg-gray-400">Cancel</button>
             </Link>
           </div>
         </form>
