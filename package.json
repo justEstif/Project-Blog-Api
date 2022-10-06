@@ -19,7 +19,7 @@
     "url": "https://github.com/justEstif/project_blog_api/issues"
   },
   "homepage": "https://github.com/justEstif/project_blog_api#readme",
-  "devDependencies": {
+  "dependencies": {
     "concurrently": "^7.4.0"
   }
 }
