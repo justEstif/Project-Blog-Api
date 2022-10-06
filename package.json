@@ -4,8 +4,8 @@
   "description": "## Description",
   "main": ".eslintrc.js",
   "scripts": {
-    "dev": "concurrently \"cd ./server && npm run dev\" \"cd ./client && npm run dev\""
-    "start": "concurrently \"cd ./server && npm run dev\" \"cd ./client && npm run dev\""
+    "dev": "concurrently \"cd ./server && npm run dev\" \"cd ./client && npm run dev\"",
+    "start": "concurrently \"cd ./server && npm run dev\" \"cd ./client && npm run dev\"",
     "build": "concurrently \"cd ./server && npm run build\" \"cd ./client && npm run build\""
   },
   "repository": {
